@@ -6,6 +6,9 @@ AutoHotKey Script for processing Chinese, Japanese, Korean and other non-Roman s
     Windows 10 (not tested on previous OS) PC
   </li>
   <li>
+    <a href="https://www.google.com/chrome/">Google Chrome Browser</a> (not tested in other browsers)
+  </li>
+  <li>
     <a href="https://www.autohotkey.com/">AutoHotKey</a>
   </li>
 </ol>
