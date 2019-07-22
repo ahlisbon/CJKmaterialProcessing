@@ -979,14 +979,3 @@ exit
 \::
 reload
 exit
-
-;==============================
-+esc::
-sendInput {raw}msgBox, 
-send {enter}
-sendInput {raw}exit
-send {enter}
-send {up}
-send {end}
-send {space}
-exit
