@@ -25,11 +25,11 @@ AutoHotKey Script for processing Chinese, Japanese, Korean and other non-Roman s
 </ul>
 <ul>
   <li>
-    F6
+    F6: When a row has a worldcat.org search result link in column O, use this macro to reload those results.
   </li>
 </ul>
 <ul>
   <li>
-    F7
+    F7: In a worldcat.org search that has multiple results, find a worldcat.org record that you want to import to the Google Sheet. Use this to extract the data for that record and paste it to the Google Sheet.
   </li>
 </ul>
