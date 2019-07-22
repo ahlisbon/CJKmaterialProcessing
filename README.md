@@ -12,4 +12,24 @@ AutoHotKey Script for processing Chinese, Japanese, Korean and other non-Roman s
     <a href="https://www.autohotkey.com/">AutoHotKey (AHK)</a> (software that can run the macro)
   </li>
 </ol>
-  
+<h1>Hotkeys to Activate Macro</h1>
+<ul>
+  <li>
+    PrintScreen: runs the macro on the Google Sheet, uses the ISBN-13 in column M to Look up book in worldcat.org and stops.
+  </li>
+</ul>
+<ul>
+  <li>
+    ctrl + PrintScreen: same as above, but if there is only one record in worldcat.org, that record will be opened and the bibliographic data will be pasted to the Google Sheet. If there is more than one record, a link back to the search results will be pasted in column O for you to return to and check manually. This macro will loop, going to each row in the Google Sheet until there is an empty row.
+  </li>
+</ul>
+<ul>
+  <li>
+    F6
+  </li>
+</ul>
+<ul>
+  <li>
+    F7
+  </li>
+</ul>
