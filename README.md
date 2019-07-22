@@ -15,7 +15,7 @@ AutoHotKey Script for processing Chinese, Japanese, Korean and other non-Roman s
 <h1>Hotkeys to Activate Macro</h1>
 <ul>
   <li>
-    <span font-weight: bold;>PrintScreen:</span> runs the macro on the Google Sheet, uses the ISBN-13 in column M to Look up book in worldcat.org and stops.
+    <span style="font-weight: bold;">PrintScreen:</span> runs the macro on the Google Sheet, uses the ISBN-13 in column M to Look up book in worldcat.org and stops.
   </li>
 </ul>
 <ul>
