@@ -363,7 +363,7 @@ if clipboard contains Boulder,, CO 80309 United States ;The double comma is need
 	vvBibArray[12]:= "y"
 	else
 		vvBibArray[12]:= "n"
-if clipboard contains Add to list Add tags Write a review 
+if clipboard contains << Return to Search Results
 	goTo getSourceCode
 	else
 		{
@@ -427,6 +427,7 @@ parseISBN10fromWC()
 		return
 		}
 	clipboard:= regExReplace(clipboard, ".*ISBN/ISSN:", "ISBN/ISSN:")
+		clipboard:= regExReplace(clipboard, ".*ISBN/ISSN: .............", "")
 	clipboard:= regExReplace(clipboard, ".*ISBN/ISSN: ", "")
 	clipboard:= regExReplace(clipboard, " ............. ", " ")
 	clipboard:= regExReplace(clipboard, " .............OCLC.*", "")
@@ -978,4 +979,15 @@ exit
 ;==============================
 \::
 reload
+exit
+
+;==============================
++esc::
+sendInput {raw}msgBox, 
+send {enter}
+sendInput {raw}exit
+send {enter}
+send {up}
+send {end}
+send {space}
 exit
