@@ -38,4 +38,7 @@ AutoHotKey Script for processing Chinese, Japanese, Korean and other non-Roman s
   <li>
     line 200: You must change the addess to how your library appears in a worldcat.org record. For example, the University of Colorado appears as "Boulder, CO 80309 United States" - This helps with checking if a requested book is already owned by your library, and a "y" (for yes) will be pasted to column L. In the code itself, you must use two comma's:"Boulder,, CO 80309 United States" because a single comma is used as code in the AHK language, but two commas are recognized as an actual comma.
   </li>
+  <li>
+    line 362: Same as above.
+  </li>
 </ul>
