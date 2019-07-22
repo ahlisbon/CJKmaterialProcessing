@@ -49,3 +49,9 @@ AutoHotKey Script for processing Chinese, Japanese, Korean and other non-Roman s
     line 362: Same as above.
   </li>
 </ul>
+<h1>Known Issues</h1>
+<ul>
+  <li>
+    When pressing the killswitch (the "\" key) sometimes the "ctrl" or "alt" or "shift" keys can stick. Tap each of them quickly to unstick them. I have experienced one time a situation it which they would not unstick at all. Implying another key was stuck. I restarted my machine in this instance.
+  </li>
+</ul>
