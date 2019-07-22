@@ -20,6 +20,9 @@ AutoHotKey Script for processing Chinese, Japanese, Korean and other non-Roman s
   <li>
     You must keep the columns in the spreadsheet in the same order as they are provided. It is possible to change what data goes to which column in this macro, but it takes more than basic knowledge of the AHK code to do this.
   </li>
+  <li>
+    The name of your Google Sheet must start with "Collection Development - " (note that there is a final space after the hyphen. This is because the code is looking for a tab in the Google Chrome browser with this name. The macro stops it if does not find it. If you want to rename the spreadsheet, you must also edit the code on line 389 to reflect the new name you choose.
+  </li>
 </ul>
   </li>
 <h1>Hotkeys to Activate Macro</h1>
