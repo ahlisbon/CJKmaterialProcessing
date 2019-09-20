@@ -170,7 +170,7 @@ if clipboard contains results match your search for
 	sleep 1000 ;this delay is needed for the "down" command on the next line to work correctly, not known why.
 	send {down}
 	sleep 1000
-	goTo bibSearch 
+	goTo bibSearch
 	}
 ;---------------
 ;One result in worldcat.org.
@@ -314,7 +314,6 @@ return
 ;Pulls data from column L of spreadsheet to bring up results for searches with more than one result that must be selected manually.
 ;---------------
 F6::
-vvBibArray:= []
 googleSheetConfirm()
 send {home}
 send +{space}
@@ -326,7 +325,7 @@ if vvBibArray[15]= ""
 	msgBox, This is no data, the macro has stopped.
 	exit
 	}
-if clipboard contains www.worldcat.org/search
+if clipboard contains www.worldcat.org
 	{
 	send ^n
 	sleep 2000
@@ -363,7 +362,7 @@ if clipboard contains Boulder,, CO 80309 United States ;The double comma is need
 	vvBibArray[12]:= "y"
 	else
 		vvBibArray[12]:= "n"
-if clipboard contains << Return to Search Results
+if clipboard contains Add to list Add tags Write a review 
 	goTo getSourceCode
 	else
 		{
@@ -410,7 +409,7 @@ parseISBN13fromWC()
 	clipboard:= regExReplace(clipboard, " ..........OCLC.*", "")
 	clipboard:= regExReplace(clipboard, "OCLC.*", "")
 	clipboard:= regExReplace(clipboard, " ..........OCLC.*","")
-		clipboard:= regExReplace(clipboard, ".*ISBN/ISSN: ", "")
+	clipboard:= regExReplace(clipboard, ".*ISBN/ISSN: ", "")
 	if clipboard contains <!DOPUBLIC ;This text string occurs for worldcat.org records with no ISBN. This command clears the variable.
 		clipboard:= "no ISBN"
 	if clipboard contains PUBLICXHTML ;This text string occurs for worldcat.org records with no ISBN. This command clears the variable.
@@ -427,11 +426,11 @@ parseISBN10fromWC()
 		return
 		}
 	clipboard:= regExReplace(clipboard, ".*ISBN/ISSN:", "ISBN/ISSN:")
-		clipboard:= regExReplace(clipboard, ".*ISBN/ISSN: .............", "")
 	clipboard:= regExReplace(clipboard, ".*ISBN/ISSN: ", "")
 	clipboard:= regExReplace(clipboard, " ............. ", " ")
 	clipboard:= regExReplace(clipboard, " .............OCLC.*", "")
 	clipboard:= regExReplace(clipboard, "OCLC.*", "")
+	clipboard:= regExReplace(clipboard, "............. ","")
 	if clipboard contains <!DOPUBLIC ;This text string occurs for worldcat.org records with no ISBN. This command clears the variable.
 		clipboard:= "no ISBN"
 	if clipboard contains PUBLICXHTML ;This text string occurs for worldcat.org records with no ISBN. This command clears the variable.
@@ -449,10 +448,10 @@ parseOCLCfromWC()
 	
 parseAuthorRfromWC()
 	{
-	if vvSourceCode contains not bib-author-cell
+	if vvSourceCode not contains "bib-author-cell"
 		{
-		clipboard:= "n/a"
-		goto noAuthorRdata
+		vvAuthorR:= "n/a"
+		goTo noAuthorR
 		}
 	clipboard:= vvSourceCode
 	clipboard:= regExReplace(clipboard, ".*bib-author-cell.>", "<td>")
@@ -478,15 +477,15 @@ parseAuthorRfromWC()
 		StringLower, clipboard, clipboard, T ;I don't fully understand how this code words, but it does apply Title Case
 	fixDiacritics()
 	vvAuthorR:= clipboard
-	noAuthorRdata:
+	noAuthorR:
 	}
 
 parseAuthorVfromWC()
 	{
-	if vvSourceCode contains not bib-author-cell
+	if vvSourceCode not contains bib-author-cell
 		{
-		clipboard:= "n/a"
-		goto noAuthorVdata
+		vvAuthorV:= "n/a"
+		goTo noAuthorV
 		}
 	clipboard:= vvSourceCode
 	clipboard:= regExReplace(clipboard, ".*bib-author-cell.>", "<td>")
@@ -507,7 +506,7 @@ parseAuthorVfromWC()
 		clipboard:= regExReplace(clipboard, "</td>", "")
 		clipboard:= regExReplace(clipboard, " +", " ")
 	vvAuthorV:= clipboard
-	noAuthorVdata:
+	noAuthorV:
 	}
 
 parseTitleRfromWC()
@@ -589,10 +588,10 @@ parseSeriesTitlefromWC()
 
 parsePublisherRfromWC()
 	{
-	if vvSourceCode contains not bib-publisher-cell
+	if vvSourceCode not contains bib-publisher-cell
 		{
 		vvPublisherR:= "n/a"
-		goto noPublisherRdata
+		goTo noPublisherR
 		}
 	clipboard:= vvSourceCode
 	clipboard:= regExReplace(clipboard, ".*bib-publisher-cell.>", "<td>")
@@ -622,15 +621,15 @@ parsePublisherRfromWC()
 	fixDiacritics()
 	fixPubR()
 	vvPublisherR:= clipboard
-	noPublisherRdata:
+	noPublisherR:
 	}
 
 parsePublisherVfromWC()
 {
-	if vvSourceCode contains not bib-publisher-cell
+	if vvSourceCode not contains bib-publisher-cell
 		{
 		vvPublisherV:= "n/a"
-		goto noPublisherVdata
+		goto noPublisherV
 		}
 	clipboard:= vvSourceCode
 	clipboard:= regExReplace(clipboard, ".*bib-publisher-cell.>", "<td>")
@@ -652,7 +651,7 @@ parsePublisherVfromWC()
 		clipboard:= regExReplace(clipboard, "</td>", "")
 		clipboard:= regExReplace(clipboard, " +", " ")	
 	vvPublisherV:= clipboard
-	noPublisherVdata:
+	noPublisherV:
 	}
 
 parsePublisherDatefromWC()
@@ -720,6 +719,8 @@ fixPubR()
 		clipboard:= "Bunka Shobō Hakubunsha"
 ;c
 	if clipboard= chikumashobo
+		clipboard:= "Chikuma Shobō"
+	if clipboard= chikumashobō
 		clipboard:= "Chikuma Shobō"
 	if clipboard= chikurashobō
 		clipboard:= "Chikura Shobō"
@@ -850,6 +851,9 @@ fixPubR()
 		clipboard:= "Kōdansha"
 	if clipboard= kokusaishoin
 		clipboard:= "Kokusai Shōin"
+	if clipboard= Kōyōshobō
+		clipboard:= "Kōyō Shobō"
+	
 	if clipboard= kyōeishobō
 		clipboard:= "Kyōei Shobo"
 	if clipboard= Kyōtodaigakugakujutsushuppankai
@@ -909,6 +913,8 @@ fixPubR()
 	if clipboard= paintanashonaru
 		clipboard:= "Pai Intānashonaru"
 ;r
+	if clipboard= Rekishishunjushuppan
+		clipboard:= "Rekishi Shunjun Shuppan"
 	if clipboard= rikkashuppan
 		clipboard:= "Rikka Shuppan"
 	if clipboard= rōdōchōsakai
@@ -922,6 +928,8 @@ fixPubR()
 		clipboard:= "San'ninsha"
 	if clipboard= sanninsha
 		clipboard:= "San'ninsha"
+	if clipboard= Seibundōshuppan
+		clipboard:= "Seibundō Shuppan"
 	if clipboard= seirinshoin
 		clipboard:= "Seirin Shoin"
 	if clipboard= sekaishisōsha
@@ -953,6 +961,8 @@ fixPubR()
 		clipboard:= "Tōhō Shoten"
 	if clipboard= tōkyōdaigakushuppankai
 		clipboard:= "Tōkyō Daigaku Shuppankai"
+	if clipboard= Tokyodoshuppan
+		clipboard:= "Tōkyōdō Shuppan"
 	if clipboard= tōkyōhōreishuppan
 		clipboard:= "Tōkyō Hōrei Shuppan"
 ;u
@@ -961,6 +971,8 @@ fixPubR()
 ;y
 	if clipboard= yachiyoshuppan
 		clipboard:= "Yahiyo Shuppan"
+	if clipboard= Yamakawashuppansha
+		clipboard:= "Yamakawa Shuppansha"
 	if clipboard= yoshikawakōbunkan
 		clipboard:= "Yoshikawa Kōbunkan"
 	if clipboard= yoshikawakobunkan
@@ -979,15 +991,4 @@ exit
 ;==============================
 \::
 reload
-exit
-
-;==============================
-+esc::
-sendInput {raw}msgBox, 
-send {enter}
-sendInput {raw}exit
-send {enter}
-send {up}
-send {end}
-send {space}
 exit
