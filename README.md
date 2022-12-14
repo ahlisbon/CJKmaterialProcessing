@@ -76,3 +76,8 @@ Open the spreadsheet, there will be several rows of samples to try with the macr
       - If there is 1 result in FS/WC, that record will load instantly.
       - If there are multiple results, the macro will stop at this list.
         - You should click on the record that appears to be of the highest quality/accuracy.
+5. Assess the quality of the record for if you want to import the data.
+   - If you feel the recrd is low quality, you can press _numpad7/F7_ to see what other records are available.
+     - A list of records will load and then each record will attempt to be loaded individually in a new tab.
+     - You can quickly browse through these tabs by pressing _numpad0_.
+     - You can remove the tabs of records you have ruled out be pressing _numpad-_ (numapd minus sign).
