@@ -12,11 +12,11 @@ This is a macro script for screen scraping data form OCLC's WorldCat.org or Firs
 
 This macro has been tested extensively in FireFox while using the spreadsheet as an Excel File. It has successfully worked in Google Chrome and Microsoft Edge, though has not undergone extensive testing in those browsers. Additionally, The Excel File may be used as a spreadsheet in Office 365 or Google Drive. Again, testing has been very limited in these alternative environments, but successful.
 
-## Must Knows 
+## Must Knows ⚠
 - The "kill switch" for the macro is the backslash "\\" (above the "enter" key on most keyboards). Unusual behavior is always possible and this hotkey will stop the macro.
 - Slower internet connections may cause the macro to malfunction and stop.
 
-## Hotkeys to Activate Macro
+## Hotkeys to Activate Macro 
 Several keyboard keys are repurposed to start and stop the macro, referred to as "Hotkeys." F1 through F12 and the numpad keys are repuprosed for quick and easy use of the macro. It is *highly* recommended that you use a keyboard with a numpad as it is much each easier to use. In case you do not have a keyboard with a numpad, the function keys will suffice.
 
 - Pause / F12
@@ -53,10 +53,10 @@ These spreadsheets work in tandem with the macro to bring data from WC/FS. The m
 Further, both spreadsheets use a great deal of data validation and conditional formatting. Much of these formatting choices were done to give real time feedback on common errors and to improve readability. However, these can be removed entirely. There are also many additional sheets, beginning with "s-", for doing data analysis on your donations/orders as well. These can also be ignored/removed/deleted.
 
 ## How the Macro Works
-The macro works in tandem with the speadsheet ([see more below](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#how-the-spreadsheet-works)) to present bibliographic data in a way that makes tracking library materials, either as orders or donations, or any other number of use cases, easier to manage.
+The macro works in tandem with the speadsheet ([see more above](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#how-the-spreadsheet-works)) to present bibliographic data in a way that makes tracking library materials, either as orders or donations, or any other number of use cases, easier to manage.
 
 ### The Interface & Setup
-Content pending, follow the walkthrough for now.
+When you double click the .exe file. An interface will appear. It is important you fill out the data fields and follow the associated directions for the macro to run. Be sure to click "Update Settings" afer providing the necessary information.
 
 ### Basic Walkthrough
 _Double click_ the .exe file to start the program.
