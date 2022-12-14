@@ -50,17 +50,14 @@ The macro works in tandem with the speadsheet ((see more below)[https://github.c
 Contend pending, follow the walkthrough for now.
 
 ### Basic Walkthrough
-_Press Numpad 1/F1_ to Start the Macro.
+_Double click_ the .exe file to start the program.
 - An interface will appear, provide the title of your spreadsheet and the name of your Library as it appears in WorldCat.org
-- Click "Update Settings"
+- _Click_ "Update Settings"
 
 Open the spreadsheet, there will be several rows of samples to try in the _Donation_ sheet. Alternatively, you would enter an OCLC#, ISBN10, ISBN13, or title in the appropriate column and then run the macro to find a record in WorldCat.org or FirstSearch (WC/FS from now on) and bring all of the associated metadata into the spreadsheet. We will follow a simple example:
 
 1. A donation has arrvied. Using a scan gun, the barcode on a book is scanned to populate the ISBN-13 column.
-2. With any cell in the same row as the ISBN13 highlighted, press numpad1/F1 to run the macro.
-   - Show more information
-
-
+2. With any cell in the same row as the ISBN13 highlighted, _press numpad1/F1_ to run the macro.
 
 ## How the Spreadsheet Works
-test
+Content Pending
