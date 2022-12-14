@@ -2,18 +2,11 @@
 AutoHotKey Script for processing Chinese, Japanese, Korean and other non-Roman scripts. Used to process Library material requests and donations. For use with Google Sheets and WorldCat.org in the Google Chrome browser.
 
 ## Basic Requirements for Use
-<ol>
-  <li>
-    PC with Windows 10 Operating System (not tested on previous OS)
-  </li>
-  <li>
-    <a href="https://www.google.com/chrome/">Google Chrome Browser</a> (not tested in other browsers)
-  </li>
-  <li>
-    <a href="https://www.autohotkey.com/">AutoHotKey (AHK)</a> (software that can run the macro)
-  </li>
-  <li>
-    Copy this <a href="https://docs.google.com/spreadsheets/d/1z5u8osiseDQukIZDDsYTLa0pQa5Qa_jIJpN85okah9I/edit?usp=drive_web&ouid=117743676212596273827">Demo Sheet</a> to you Google Drive. It is still a work in progress and may not be ready for a while (as of July 7, 2019) but will be updated to help you learn how the spreadsheet and the macro work in tandem.
+1. PC with Windows 10 Operating System.
+  - Previous Windows OS should be okay, but have not been tested with.
+2. The AHK executible file: *BibData to Spreadsheet.exe*
+3. 
+Copy this <a href="https://docs.google.com/spreadsheets/d/1z5u8osiseDQukIZDDsYTLa0pQa5Qa_jIJpN85okah9I/edit?usp=drive_web&ouid=117743676212596273827">Demo Sheet</a> to you Google Drive. It is still a work in progress and may not be ready for a while (as of July 7, 2019) but will be updated to help you learn how the spreadsheet and the macro work in tandem.
   </li>
 </ol>
 
