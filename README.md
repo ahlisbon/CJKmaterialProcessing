@@ -11,7 +11,7 @@ This is a script for screen scraping data form OCLC's WorldCat.org or FirstSearc
    - Ordering Materials Template (Not yet available)
 
 ## Must Knows
-- The "kill switch" for the macro is the backslash "\" (above the "enter" key on most keyboards). Unusual behavior is always possible and this hotkey will stop the macro.
+- The "kill switch" for the macro is the backslash "\\" (above the "enter" key on most keyboards). Unusual behavior is always possible and this hotkey will stop the macro.
 
 ## Hotkeys to Activate Macro
 
