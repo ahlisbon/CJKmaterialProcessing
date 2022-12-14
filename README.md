@@ -76,8 +76,22 @@ Open the spreadsheet, there will be several rows of samples to try with the macr
       - If there is 1 result in FS/WC, that record will load instantly.
       - If there are multiple results, the macro will stop at this list.
         - You should click on the record that appears to be of the highest quality/accuracy.
+      - If you run a title search, the macro ALWAYS stops at the list of results.
+      - If there are no results, the macro will end the search and return to the spreadsheet and enter n/a into the current row of cells.
+        - At this point you will have to enter data about your item manually.
 5. Assess the quality of the record for if you want to import the data.
    - If you feel the recrd is low quality, you can press _numpad7/F7_ to see what other records are available.
      - A list of records will load and then each record will attempt to be loaded individually in a new tab.
      - You can quickly browse through these tabs by pressing _numpad0_.
      - You can remove the tabs of records you have ruled out be pressing _numpad-_ (numapd minus sign).
+     - When you have found a record you want to import to the spreadsheet, press _numpad6/F6_.
+       - Alternatively, you can press _numpad4/F4_ to only pull Subject Heading data. This option is available becuase sometimes a good record can have poor subject headings, and you may with to opt for the subject headings of a different record. In this situation, you would restart the search process by pressing numpad1/F1, the record would appear instatntly because the macro is now using the OCLC# to load the exact record. Press numpad7/F7 to see other records and when you have found a record with subject headings you appove us, press numpad4/F4 to bring them into the spreadsheet.
+      - You can press _numpad5/F5_ if you only want to import the OCLC number.
+6. The bibliographic data from FS/WC will paste to the spreadsheet. The macro will move to the next row for you to run the macro again.
+7. Checking the quality of the data:
+   - What to check for:
+     - Are there any columns you need to fill out manually? Either columns designed to be filled out manually or ones that say "n/a" that require your review.
+     - Are there any errors to fix?
+   - You can check as you row by row, or at the end. Checking row by row is best for donations, as you may need the item in your hands to confirm data that might be missing.
+    
+    
