@@ -16,7 +16,7 @@ This macro has been tested extensively in FireFox while using the spreadsheet as
 - The "kill switch" for the macro is the backslash "\\" (above the "enter" key on most keyboards). Unusual behavior is always possible and this hotkey will stop the macro.
 - Slower internet connections may cause the macro to malfunction and stop.
 
-## Hotkeys to Activate Macro 
+## Hotkeys to Activate Macro 🔥
 Several keyboard keys are repurposed to start and stop the macro, referred to as "Hotkeys." F1 through F12 and the numpad keys are repuprosed for quick and easy use of the macro. It is *highly* recommended that you use a keyboard with a numpad as it is much each easier to use. In case you do not have a keyboard with a numpad, the function keys will suffice.
 
 - Pause / F12
