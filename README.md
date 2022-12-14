@@ -60,10 +60,13 @@ When you double click the .exe file. An interface will appear. It is important y
 
 ### Basic Walkthrough
 _Double click_ the .exe file to start the program.
-- An interface will appear, provide the title of your spreadsheet and the name of your Library as it appears in WorldCat.org
-- _Click_ "Update Settings"
+- An interface will appear, provide the following information:
+  - The title of your spreadsheet and the name of your Library as it appears in WorldCat.org.
+  - The URL your institution uses to access FirstSearch
+  - The title of your Library as it appears in WorldCat.org.
+- _Click_ "Update Settings." These will all be saved for the next time you use the macro.
 
-Open the spreadsheet, there will be several rows of samples to try in the _Donation_ sheet. Alternatively, you would enter an OCLC#, ISBN10, ISBN13, or title in the appropriate column and then run the macro to find a record in WorldCat.org or FirstSearch (WC/FS from now on) and bring all of the associated metadata into the spreadsheet. We will follow a simple example:
+Open the spreadsheet, there will be several rows of samples to try witht the macro. Alternatively, you would enter an OCLC#, ISBN10, ISBN13, or title in the appropriate column and then run the macro to find a record in WorldCat.org or FirstSearch (WC/FS from now on) and bring all of the associated metadata into the spreadsheet. We will follow a simple example:
 
 1. A donation has arrvied. Using a scan gun, the barcode on a book is scanned to populate the ISBN-13 column.
 2. With any cell in the same row as the ISBN13 highlighted, _press numpad1/F1_ to run the macro.
