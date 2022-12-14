@@ -9,9 +9,6 @@ This is a script for screen scraping data form OCLC's WorldCat.org or FirstSearc
 3. One of two compatiable Spreadsheets:
    - [Donation Intake Template]()
    - Ordering Materials Template (Not yet available)
-Copy this <a href="https://docs.google.com/spreadsheets/d/1z5u8osiseDQukIZDDsYTLa0pQa5Qa_jIJpN85okah9I/edit?usp=drive_web&ouid=117743676212596273827">Demo Sheet</a> to you Google Drive. It is still a work in progress and may not be ready for a while (as of July 7, 2019) but will be updated to help you learn how the spreadsheet and the macro work in tandem.
-  </li>
-</ol>
 
 ## Must Knows
 <ul>
