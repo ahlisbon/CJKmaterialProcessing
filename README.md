@@ -93,7 +93,7 @@ Open the spreadsheet, there will be several rows of samples to try with the macr
      - Are there any columns you need to fill out manually? Either columns designed to be filled out manually or ones that say "n/a" that require your review.
      - Are there any errors to fix?
    - You can check as you row by row, or at the end. Checking row by row is best for donations, as you may need the item in your hands to confirm data that might be missing.
-8. If you plan to use slips, and you plan to use the slips sheet in the spreadsheet ([see below](https://github.com/ahlisbon/CJKmaterialProcessing#-how-the-spreadsheets-work)). if is imperative that you keep the physical books in precise order so that the other of the slips and the order of the books is the same.
+8. If you plan to use slips, and you plan to use the slips sheet in the spreadsheet ([see below](https://github.com/ahlisbon/CJKmaterialProcessing#-using-slips)). if is imperative that you keep the physical books in precise order so that the other of the slips and the order of the books is the same.
 
 ## 📃 Using Slips
     
