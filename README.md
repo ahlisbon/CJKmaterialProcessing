@@ -58,6 +58,7 @@ Open the spreadsheet, there will be several rows of samples to try in the _Donat
 
 1. A donation has arrvied. Using a scan gun, the barcode on a book is scanned to populate the ISBN-13 column.
 2. With any cell in the same row as the ISBN13 highlighted, _press numpad1/F1_ to run the macro.
+Further Steps Pending
 
 ## How the Spreadsheet Works
 Content Pending
