@@ -10,7 +10,7 @@ This is a macro script for screen scraping data form OCLC's WorldCat.org or Firs
    - [Donation Intake Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Donation%20-%20Template.xlsm)
    - Ordering Materials Template (Not yet available)
 
-This macro has been tested extensivly in FireFox while using the spreadsheet as an Excel File. It has successfully worked in Google Chrome and Microsoft Edge, though has not undergone extensive testing in those browsers. Additionally, The Excel File may be used as a spreadsheet in Office 365 or Google Drive. Again, testing has been very limited in these alternative environments, but successful.
+This macro has been tested extensively in FireFox while using the spreadsheet as an Excel File. It has successfully worked in Google Chrome and Microsoft Edge, though has not undergone extensive testing in those browsers. Additionally, The Excel File may be used as a spreadsheet in Office 365 or Google Drive. Again, testing has been very limited in these alternative environments, but successful.
 
 ## Must Knows
 - The "kill switch" for the macro is the backslash "\\" (above the "enter" key on most keyboards). Unusual behavior is always possible and this hotkey will stop the macro.
@@ -43,11 +43,16 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
     - Date of Publication (Romanized)
     - Subject Headings
 
+## How the Spreadsheet(s) Works 📊
+There are to spreadsheet templates to choose from:
+- (Collection Development - Donations - Template.xslx)[https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Donation%20-%20Template.xlsm]
+- (Collection Development - Orders - Template.xslx)[https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Orders%20-%20Template.xlsm]
+
 ## How the Macro Works
 The macro works in tandem with the speadsheet ((see more below)[https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#how-the-spreadsheet-works]) to present bibliographic data in a way that makes tracking library materials, either as orders or donations, or any other number of use cases, easier to manage.
 
 ### The Interface & Setup
-Contend pending, follow the walkthrough for now.
+Content pending, follow the walkthrough for now.
 
 ### Basic Walkthrough
 _Double click_ the .exe file to start the program.
@@ -59,6 +64,3 @@ Open the spreadsheet, there will be several rows of samples to try in the _Donat
 1. A donation has arrvied. Using a scan gun, the barcode on a book is scanned to populate the ISBN-13 column.
 2. With any cell in the same row as the ISBN13 highlighted, _press numpad1/F1_ to run the macro.
 Further Steps Pending
-
-## How the Spreadsheet Works
-Content Pending
