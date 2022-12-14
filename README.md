@@ -16,7 +16,8 @@ AutoHotKey Script for processing Chinese, Japanese, Korean and other non-Roman s
     Copy this <a href="https://docs.google.com/spreadsheets/d/1z5u8osiseDQukIZDDsYTLa0pQa5Qa_jIJpN85okah9I/edit?usp=drive_web&ouid=117743676212596273827">Demo Sheet</a> to you Google Drive. It is still a work in progress and may not be ready for a while (as of July 7, 2019) but will be updated to help you learn how the spreadsheet and the macro work in tandem.
   </li>
 </ol>
-<h1>Must Knows</h1>
+
+## Must Knows
 <ul>
   <li>
     The "kill switch" for the macro is the backslash "\" (above the "etner" key on most keyboards). Unusual behavior is always possible and this hotkey will stop the macro.
@@ -29,7 +30,7 @@ AutoHotKey Script for processing Chinese, Japanese, Korean and other non-Roman s
   </li>
 </ul>
   </li>
-<h1>Hotkeys to Activate Macro</h1>
+## Hotkeys to Activate Macro
 <ul>
   <li>
     PrintScreen: runs the macro on the Google Sheet, uses the ISBN-13 in column M to Look up book in worldcat.org and stops.
