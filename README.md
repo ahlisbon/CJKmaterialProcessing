@@ -1,11 +1,14 @@
 # CJK Material Processing
-AutoHotKey Script for processing Chinese, Japanese, Korean and other non-Roman scripts. Used to process Library material requests and donations. For use with Google Sheets and WorldCat.org in the Google Chrome browser.
+This is a script for screen scraping data form OCLC's WorldCat.org or FirstSearch database. It's primary purpose is to quickly get bibliographic data into a spreadsheet ot help with processing library material requests and orders. It works for materials in any language with a special emphasis on Japanese in particular. The script is written in AutoHotKey (AHK) and is designed to work in tandem with custom designed spreadsheets.
 
 ## Basic Requirements for Use
 1. PC with Windows 10 Operating System.
-  - Previous Windows OS should be okay, but have not been tested with.
+   - Previous Windows OS should be okay, but have not been tested with.
 2. The AHK executible file: *BibData to Spreadsheet.exe*
-3. 
+   - Download it at the top of this page.
+3. One of two compatiable Spreadsheets:
+   - [Donation Intake Template]()
+   - Ordering Materials Template (Not yet available)
 Copy this <a href="https://docs.google.com/spreadsheets/d/1z5u8osiseDQukIZDDsYTLa0pQa5Qa_jIJpN85okah9I/edit?usp=drive_web&ouid=117743676212596273827">Demo Sheet</a> to you Google Drive. It is still a work in progress and may not be ready for a while (as of July 7, 2019) but will be updated to help you learn how the spreadsheet and the macro work in tandem.
   </li>
 </ol>
