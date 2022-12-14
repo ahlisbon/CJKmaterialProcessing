@@ -44,9 +44,13 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
     - Subject Headings
 
 ## How the Spreadsheet(s) Works 📊
-There are to spreadsheet templates to choose from:
+There are two spreadsheet templates to choose from:
 - [Collection Development - Donations - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Donation%20-%20Template.xlsm)
 - [Collection Development - Orders - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Orders%20-%20Template.xlsm)
+
+These spreadsheets work in tandem with the macro to bring data from WC/FS. The most important element is that *the order of the columns CANNOT be changed*. However, there is a great deal that can be altered. Each spreadsheet has a "Guide" sheet that explains how the spreadsheet works.
+
+Further, both spreadsheets use a great deal of data validation and conditional formatting. Much of these formatting choices were done to give real time feedback on common errors and to improve readability. However, these can be removed entirely. There are also many additional sheets, beginning with "s-", for doing data analysis on your donations/orders as well. These can also be ignored/removed/deleted.
 
 ## How the Macro Works
 The macro works in tandem with the speadsheet ([see more below](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#how-the-spreadsheet-works)) to present bibliographic data in a way that makes tracking library materials, either as orders or donations, or any other number of use cases, easier to manage.
