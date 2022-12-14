@@ -47,8 +47,11 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 The macro works in tandem with the speadsheet ((see more below)[https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#how-the-spreadsheet-works]) to present bibliographic data in a way that makes tracking library materials, either as orders or donations, or any other number of use cases, easier to manage.
 
 ### The Interface & Setup
+Contend pending, follow 
 
 ### Basic Walkthrough
+
+#### Start the Macro
 Open the spreadsheet, there will be several rows of samples to try in the _Donation_ sheet. Alternatively, you would enter an OCLC#, ISBN10, ISBN13, or title in the appropriate column and then run the macro to find a record in WorldCat.org or FirstSearch (WC/FS from now on) and bring all of the associated metadata into the spreadsheet. We will follow a simple example:
 
 1. A donation has arrvied. Using a scan gun, the barcode on a book is scanned to populate the ISBN-13 column.
