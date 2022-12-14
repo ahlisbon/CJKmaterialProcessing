@@ -45,11 +45,11 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 
 ## How the Spreadsheet(s) Works 📊
 There are to spreadsheet templates to choose from:
-- (Collection Development - Donations - Template.xslx)[https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Donation%20-%20Template.xlsm]
-- (Collection Development - Orders - Template.xslx)[https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Orders%20-%20Template.xlsm]
+- [Collection Development - Donations - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Donation%20-%20Template.xlsm)
+- [Collection Development - Orders - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Orders%20-%20Template.xlsm)
 
 ## How the Macro Works
-The macro works in tandem with the speadsheet ((see more below)[https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#how-the-spreadsheet-works]) to present bibliographic data in a way that makes tracking library materials, either as orders or donations, or any other number of use cases, easier to manage.
+The macro works in tandem with the speadsheet ([see more below](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#how-the-spreadsheet-works)) to present bibliographic data in a way that makes tracking library materials, either as orders or donations, or any other number of use cases, easier to manage.
 
 ### The Interface & Setup
 Content pending, follow the walkthrough for now.
