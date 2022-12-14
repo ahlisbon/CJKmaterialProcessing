@@ -1,7 +1,7 @@
 # CJK Material Processing
 This is a macro script for screen scraping data form OCLC's WorldCat.org or FirstSearch database. It's primary purpose is to quickly get bibliographic data into a spreadsheet ot help with processing library material requests and orders. It works for materials in any language with a special emphasis on Japanese in particular. The macro is written in [AutoHotKey](https://www.autohotkey.com/) (AHK) and is designed to work in tandem with custom designed spreadsheets.
 
-## Basic Requirements for Use
+## Basic Requirements for Use 🔰
 1. PC with Windows OS.
    - This macro has only been tested in Windows 10. It should work with previous versions as far back as Windows 8.
 2. The AHK executible file: *BibData to Spreadsheet.exe*
@@ -12,7 +12,7 @@ This is a macro script for screen scraping data form OCLC's WorldCat.org or Firs
 
 This macro has been tested extensively in FireFox while using the spreadsheet as an Excel File. It has successfully worked in Google Chrome and Microsoft Edge, though has not undergone extensive testing in those browsers. Additionally, The Excel File may be used as a spreadsheet in Office 365 or Google Drive. Again, testing has been very limited in these alternative environments, but successful.
 
-## Must Knows
+## Must Knows 
 - The "kill switch" for the macro is the backslash "\\" (above the "enter" key on most keyboards). Unusual behavior is always possible and this hotkey will stop the macro.
 - Slower internet connections may cause the macro to malfunction and stop.
 
@@ -43,7 +43,7 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
     - Date of Publication (Romanized)
     - Subject Headings
 
-## How the Spreadsheet(s) Works 📊
+## How the Spreadsheets Work 📊
 There are two spreadsheet templates to choose from:
 - [Collection Development - Donations - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Donation%20-%20Template.xlsm)
 - [Collection Development - Orders - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Orders%20-%20Template.xlsm)
