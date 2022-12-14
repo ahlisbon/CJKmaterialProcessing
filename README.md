@@ -96,4 +96,24 @@ Open the spreadsheet, there will be several rows of samples to try with the macr
 8. If you plan to use slips, and you plan to use the slips sheet in the spreadsheet ([see below](https://github.com/ahlisbon/CJKmaterialProcessing#-using-slips)). if is imperative that you keep the physical books in precise order so that the other of the slips and the order of the books is the same.
 
 ## 📃 Using Slips
-    
+
+Slips help assist with processsing donations. There primary purpose is to help colleagues in other units process the donation if it is written in a language they don't read. The slips reference the spreadsheet you are using that your colleagues consult if they have any questions about the book. Each book has a slip in it with critical information:
+- The name of the donation.
+- An emoji, to make a visual distincition between donations. This is optional.
+- A "key number" that corresponds to the key number in the spreadsheet for cross referencing.
+- An identifier such as an OCLC# that colleagues will use to load a record for the book into the library catalog. 
+- Volume information, especially useful for large sets of books that look the same.
+- Notes, anything else you might need to add.
+
+You have to options for creating slips. Manual and Semi-automatic, each option with it's pros and cons.
+
+### Prepping Slips
+Regardless of what method you will use. You need to do some basic preperation before printing slips.
+1. In the spreadsheet, go to the "Slips" sheet.
+2. In column B, name the donation and copy it into every cell in the B column.
+3. Optional - in the A column, choose an emoji to distinguish slips for the donation visually.
+4. What you do next depends on if you will write the slips by hand or prepopulate them before printing.
+
+### Manual Slips
+
+### Semi Automatic Slips
