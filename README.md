@@ -7,8 +7,10 @@ This is a macro script for screen scraping data form OCLC's WorldCat.org or Firs
 2. The AHK executible file: *BibData to Spreadsheet.exe*
    - Download it at the top of this page.
 3. One of two compatiable Spreadsheets:
-   - [Donation Intake Template]()
+   - [Donation Intake Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Donation%20-%20Template.xlsm)
    - Ordering Materials Template (Not yet available)
+
+This macro has been tested extensivly in FireFox while using the spreadsheet as an Excel File. It has successfully worked in Google Chrome and Microsoft Edge, though has not undergone extensive testing in those browsers. Additionally, The Excel File may be used as a spreadsheet in Office 365 or Google Drive. Again, testing has been very limited in these alternative environments, but successful.
 
 ## Must Knows
 - The "kill switch" for the macro is the backslash "\\" (above the "enter" key on most keyboards). Unusual behavior is always possible and this hotkey will stop the macro.
@@ -28,4 +30,21 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 - Numpad 6 / F6
   - On a loaded WorldCat.org / FirstSearch record, pulls "all" data into the spreadsheet that is available, including:
     - ISBN 10
+    - ISBN 13
+    - OCLC#
+    - Title (Romanized)
+    - Title (Non-Romanized)
+    - Author/Creator (Romanized)
+    - Author/Creator (Non-Romanized)
+    - Series Title (Romanized)
+    - Series Title (Non-Romanized)
+    - Publisher (Romanized)
+    - Publisher (Non-Romanized)
+    - Date of Publication (Romanized)
+    - Subject Headings
 
+## How the Macro Works
+The macro works in tandem with the speadsheet (see more about the spreadsheet below.
+
+## How the Spreadsheet Works
+test
