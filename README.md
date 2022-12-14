@@ -55,9 +55,6 @@ Further, both spreadsheets use a great deal of data validation and conditional f
 ## ℹ How the Macro Works
 The macro works in tandem with the speadsheet ([see more above](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#how-the-spreadsheet-works)) to present bibliographic data in a way that makes tracking library materials, either as orders or donations, or any other number of use cases, easier to manage.
 
-### The Interface & Setup
-When you double click the .exe file. An interface will appear. It is important you fill out the data fields and follow the associated directions for the macro to run. Be sure to click "Update Settings" afer providing the necessary information.
-
 ### Basic Walkthrough
 _Double click_ the .exe file to start the program.
 - An interface will appear, provide the following information:
@@ -66,8 +63,16 @@ _Double click_ the .exe file to start the program.
   - The title of your Library as it appears in WorldCat.org.
 - _Click_ "Update Settings." These will all be saved for the next time you use the macro.
 
-Open the spreadsheet, there will be several rows of samples to try witht the macro. Alternatively, you would enter an OCLC#, ISBN10, ISBN13, or title in the appropriate column and then run the macro to find a record in WorldCat.org or FirstSearch (WC/FS from now on) and bring all of the associated metadata into the spreadsheet. We will follow a simple example:
+Open the spreadsheet, there will be several rows of samples to try with the macro. You can delete these if you don't want to try some practice runs. Alternatively, you would enter an OCLC#, ISBN10, ISBN13, or title in the appropriate column and then run the macro to find a record in WorldCat.org or FirstSearch (WC/FS from now on) and bring all of the associated metadata into the spreadsheet. We will follow a simple example:
 
-1. A donation has arrvied. Using a scan gun, the barcode on a book is scanned to populate the ISBN-13 column.
-2. With any cell in the same row as the ISBN13 highlighted, _press numpad1/F1_ to run the macro.
-Further Steps Pending
+1. A donation has arrived. Using a scan gun, the barcode on a book is scanned to populate the ISBN-13 column.
+2. Make sure a browser window is open.
+   - If using FS, make sure to initially login.
+4. With any cell in the same row as the ISBN13 highlighted, _press numpad1/F1_ to run the macro.
+   - In WC, the macro will activate your broswer window, then open a new window to actually search WC.
+   - In FS, the search will happen in the same window.
+   - Expect to see some flashing blue as the macro highlights text to determine what to do next.
+   - One Result vs. Multiple Results:
+      - If there is 1 result in FS/WC, that record will load instantly.
+      - If there are multiple results, the macro will stop at this list.
+        - You should click on the record that appears to be of the highest quality/accuracy.
