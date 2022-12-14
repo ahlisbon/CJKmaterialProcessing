@@ -24,11 +24,11 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 - Numpad 1 / F1
   - Starts the macro.
 - Numpad 4 / F4
-  - On a loaded WorldCat.org / FirstSearch record, pulls the Subject Heading data into the spreadsheet.
+  - On a loaded FS/WC record, pulls the Subject Heading data into the spreadsheet.
 - Numpad 5 / F5
-  - On a loaded WorldCat.org / FirstSearch record, pulls the OCLC# into the spreadsheet.
+  - On a loaded FS/WC record, pulls the OCLC# into the spreadsheet.
 - Numpad 6 / F6
-  - On a loaded WorldCat.org / FirstSearch record, pulls "all" data into the spreadsheet that is available, including:
+  - On a loaded FS/WC record, pulls "all" data into the spreadsheet that is available, including:
     - ISBN 10
     - ISBN 13
     - OCLC#
@@ -42,6 +42,8 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
     - Publisher (Non-Romanized)
     - Date of Publication (Romanized)
     - Subject Headings
+- Numpad 7 / F7
+  - On a loaded FS/WC record, will load other formats and editions of the item to compare records.
 
 ## 📊 How the Spreadsheets Work
 There are two spreadsheet templates to choose from:
