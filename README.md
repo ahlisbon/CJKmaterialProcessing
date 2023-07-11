@@ -7,10 +7,10 @@ This is a macro script for screen scraping data form OCLC's WorldCat.org or Firs
 2. The AHK executible file: *BibData to Spreadsheet.exe*
    - Download it at the top of this page.
 3. One of three compatiable Spreadsheets:
-   - [Donation Intake Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Donation%20-%20Template.xlsm)
-      - Optimized for processing donations of recieved materials.
    - [Collection Development / Ordering Materials Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Orders%20-%20Template.xlsm)
       - Optimzed for general collection development.
+   - [Donation Intake Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Donation%20-%20Template.xlsm)
+      - Optimized for processing donations of recieved materials.
    - [Selecting Materials Template]() (Not Yet Available)
       - Optimized for letting a Librarian share lists of items for their users to select.
 
