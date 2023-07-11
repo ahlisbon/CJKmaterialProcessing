@@ -10,7 +10,9 @@ This is a macro script for screen scraping data form OCLC's WorldCat.org or Firs
    - [Donation Intake Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Donation%20-%20Template.xlsm)
       - Optimized for processing donations of recieved materials.
    - [Collection Development / Ordering Materials Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Orders%20-%20Template.xlsm)
+      - Optimzed for general collection development.
    - [Selecting Materials Template]() (Not Yet Available)
+      - Optimized for letting a Librarian share lists of items for their users to select.
 
 This macro has been tested extensively in FireFox while using the spreadsheet as an Excel File. It has successfully worked in Google Chrome and Microsoft Edge, though has not undergone extensive testing in those browsers. Additionally, The Excel File may be used as a spreadsheet in Office 365 or Google Drive. Again, testing has been very limited in these alternative environments, but successful.
 
