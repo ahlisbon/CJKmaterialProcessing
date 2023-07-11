@@ -8,6 +8,7 @@ This is a macro script for screen scraping data form OCLC's WorldCat.org or Firs
    - Download it at the top of this page.
 3. One of three compatiable Spreadsheets:
    - [Donation Intake Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Donation%20-%20Template.xlsm)
+      - Optimized for processing donations of recieved materials.
    - [Collection Development / Ordering Materials Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Orders%20-%20Template.xlsm)
    - [Selecting Materials Template]() (Not Yet Available)
 
