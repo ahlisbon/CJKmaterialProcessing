@@ -6,7 +6,7 @@ This is a macro script for screen scraping data form OCLC's WorldCat.org or Firs
    - This macro has only been tested in Windows 10. It should work with previous versions as far back as Windows 8.
 2. The AHK executible file: *BibData to Spreadsheet.exe*
    - Download it at the top of this page.
-3. One of three compatiable Spreadsheets:
+3. One of three compatible Excel spreadsheets:
    - [Collection Development / Ordering Materials Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Orders%20-%20Template.xlsm)
       - Optimzed for general collection development.
    - [Donation Intake Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Donation%20-%20Template.xlsm)
