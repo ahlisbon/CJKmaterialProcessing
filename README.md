@@ -32,6 +32,8 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
   - On a search results page in FirstSearch: opens each record in a new browser tab to compare records for importing into a spreadsheet.
 - Numpad 3 / F3
   - On a FirstSearch Record: copies the record on screena and reformats it to paste to a spreadsheet.
+- ctrl + Numpad 7 / F7
+  - Derives an ISBN-10 from an ISBN-13 and pastes it into the ISBN-10 column.
 - ctrl + Numpad 8 / F8
   - Experimental⭐: Opens a menu to fix the ISBN columns in a spreadsheet when there are multiple ISBNs in a cell.
 - Numpad 7 / F7
