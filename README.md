@@ -33,19 +33,6 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
   - On a loaded FS/WC record, pulls the OCLC# into the spreadsheet.
 - Numpad 6 / F6
   - On a loaded FS/WC record, pulls "all" data into the spreadsheet that is available, including:
-    - ISBN 10
-    - ISBN 13
-    - OCLC#
-    - Title (Romanized)
-    - Title (Non-Romanized)
-    - Author/Creator (Romanized)
-    - Author/Creator (Non-Romanized)
-    - Series Title (Romanized)
-    - Series Title (Non-Romanized)
-    - Publisher (Romanized)
-    - Publisher (Non-Romanized)
-    - Date of Publication (Romanized)
-    - Subject Headings
 - Numpad 7 / F7
   - On a loaded FS/WC record, will load other formats and editions of the item to compare records.
 
