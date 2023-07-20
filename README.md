@@ -25,9 +25,9 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 
 - Pause / F12
   - Deativates hotkeys so you can use your keyboard like normal. Press again to reactivate hotkey functionality.
-- Numpad 1 / F1
-  - Starts the macro.
-- Numpad 4 / F4
+- Numpad-Enter / F1
+  - Copies a row of data from the spreadsheet to find a book/item in FirstSearch.
+- Numpad 2 / F2
   - On a loaded FS/WC record, pulls the Subject Heading data into the spreadsheet.
 - Numpad 5 / F5
   - On a loaded FS/WC record, pulls the OCLC# into the spreadsheet.
