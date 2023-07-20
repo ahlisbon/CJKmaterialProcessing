@@ -30,8 +30,8 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 - Numpad 2 / F2
   - On a FirstSearch Record: activates the "Search for versions with same title and author" link to see other versions of the same item.
   - On a search results page in FirstSearch: opens each record in a new browser tab to compare records for importing into a spreadsheet.
-- Numpad 5 / F5
-  - On a loaded FS/WC record, pulls the OCLC# into the spreadsheet.
+- Numpad 3 / F3
+  - On a FirstSearch Record: copies the record on screena and reformats it to paste to a spreadsheet.
 - Numpad 6 / F6
   - On a loaded FS/WC record, pulls "all" data into the spreadsheet that is available, including:
 - Numpad 7 / F7
