@@ -35,7 +35,7 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 - ctrl + Numpad 7 / F7
   - Derives an ISBN-10 from an ISBN-13 and pastes it into the ISBN-10 column.
 - ctrl + Numpad 8 / F8
-  - Experimental⭐: Opens a menu to fix the ISBN columns in a spreadsheet when there are multiple ISBNs in a cell.
+  - *Experimental:* Opens a menu to fix the ISBN columns in a spreadsheet when there are multiple ISBNs in a cell.
 - ctrl + Numpad 9 / F9
   - Copies a cell and if it contains a misformatted Japanese publisher name, will try to fix it.
 - Numpad-Minus
