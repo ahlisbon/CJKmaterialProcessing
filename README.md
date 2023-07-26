@@ -67,6 +67,8 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
 
 Further, both spreadsheets use a great deal of data validation and conditional formatting. Much of these formatting choices were done to give real time feedback on common errors and to improve readability. However, these can be removed entirely. There are also many additional sheets, beginning with "s-", for doing data analysis on your donations/orders as well. These can also be ignored/removed/deleted.
 
+## 🖱 Understanding the GUI
+
 ## 📃 Using Slips
 
 Slips help assist with processsing donations. There primary purpose is to help colleagues in other units process the donation if it is written in a language they don't read. The slips reference the spreadsheet you are using that your colleagues consult if they have any questions about the book. Each book has a slip in it with critical information:
