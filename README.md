@@ -1,7 +1,7 @@
 # CJK Material Processing
 This is a macro script for screen scraping data form OCLC's WorldCat.org or FirstSearch database. It's primary purpose is to quickly get bibliographic data into a spreadsheet ot help with processing library material requests and orders. It works for materials in any language with a special emphasis on Japanese in particular. The macro is written in [AutoHotKey](https://www.autohotkey.com/) (AHK) and is designed to work in tandem with custom designed spreadsheets.
 
-## 🔰 Basic Requirements for Use
+# 🔰 Basic Requirements for Use
 1. PC with Windows OS.
    - This macro has only been tested in Windows 10. It should work with previous versions as far back as Windows 8.
 2. The AHK executible file: *BibData to Spreadsheet.exe*
@@ -16,11 +16,12 @@ This is a macro script for screen scraping data form OCLC's WorldCat.org or Firs
 
 This macro has been tested extensively in FireFox while using the spreadsheet as an Excel File. It has successfully worked in Google Chrome and Microsoft Edge, though has not undergone extensive testing in those browsers. Additionally, The Excel File may be used as a spreadsheet in Office 365 or Google Drive. Again, testing has been very limited in these alternative environments, but successful.
 
-## ⚠ Must Knows
+# ⚠ Must Knows
 - The "kill switch" for the macro is the backslash ctrl + "\\" (above the "enter" key on most keyboards). Unusual behavior is always possible and this hotkey will stop the macro.
 - Slower internet connections may cause the macro to malfunction and stop.
 
-## 🔥 Hotkeys to Activate Macro
+
+# 🔥 Hotkeys to Activate Macro
 Several keyboard keys are repurposed to start and stop the macro, referred to as "Hotkeys." F1 through F12 and the numpad keys are repuprosed for quick and easy use of the macro. It is *highly* recommended that you use a keyboard with a numpad as it is much each easier to use. In case you do not have a keyboard with a numpad, the function keys will suffice.
 
 - \\
@@ -52,7 +53,7 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 - Other Features
   - Includes features from the "Diacritics and Nengō" project. [Read more here](https://github.com/ahlisbon/diacriticsAndNengo#typing-vowels-with-diacritics).
 
-## 📊 How the Spreadsheets Work
+# 📊 How the Spreadsheets Work
 There are two spreadsheet templates to choose from:
 - [Donations - Donations - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Donation%20-%20Template.xlsm)
 - [Collection Development - Orders - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Orders%20-%20Template.xlsm)
@@ -68,10 +69,10 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
 
 Further, both spreadsheets use a great deal of data validation and conditional formatting. Much of these formatting choices were done to give real time feedback on common errors and to improve readability. However, these can be removed entirely. There are also many additional sheets, beginning with "s-", for doing data analysis on your donations/orders as well. These can also be ignored/removed/deleted.
 
-## 🖱 Understanding the GUI
+# 🖱 Understanding the GUI
 You have 6 data fields to fill out in the GUI that affect how the script will function.
 
-### File Name Prefixes
+## File Name Prefixes
 You can rename your files to whatever you like. However for data to be pasted correctly, the script needs to know which type of spreadsheet you are using. If you are preparing different books for purchase, make sure all your spreadsheets start with the same prefix, such as:
 - Collection Development - 2022-23
 - Collection Development - Rare Korean Books
@@ -80,19 +81,19 @@ Other things to be aware of regarding naming conventions:
 - Do not use the same prefix for different types of sheets.
 - Avoid having two sheets open at once.
 
-### FirstSearch URL for Your Institution
+## FirstSearch URL for Your Institution
 In order to pull data like an OCLC#, ISBN#, or Title to search FirstSearch, you need to provide the script with a URL that can load FirstSearch
 
 - Do NOT log into FirstSearch and copy that URL, it will not work.
 - Identify they URL your institution uses to access FirstSearch. Whatever link you are using to open FirstSearch, copy that link and paste it here.
 
-### Use Check Mode
+## Use Check Mode
 Before pasting data to your spreadhseet, a window will appear for you to review the bibliographic data.
 
-### Wait longer for Websites to Load
+## Wait longer for Websites to Load
 IF you are using a slower connection speed, you can increase the time the script will wait to load. The default, 1, equals 3 seconds. 2 and 3 are multiplies so the script will wait 6 or 9 seconds respectively.
 
-## 📃 Using Slips
+# 📃 Using Slips
 
 Slips help assist with processsing donations. There primary purpose is to help colleagues in other units process the donation if it is written in a language they don't read. The slips reference the spreadsheet you are using that your colleagues consult if they have any questions about the book. Each book has a slip in it with critical information:
 - The name of the donation.
@@ -104,7 +105,7 @@ Slips help assist with processsing donations. There primary purpose is to help c
 
 You have to options for creating slips. Manual and Semi-automatic, each option with it's pros and cons.
 
-### Prepping Slips
+## Prepping Slips
 Regardless of what method you will use. You need to do some basic preperation before printing slips.
 1. In the spreadsheet, go to the "Slips" sheet.
 2. In column B, name the donation and copy it into every cell in the B column.
@@ -113,7 +114,7 @@ Regardless of what method you will use. You need to do some basic preperation be
    - If so, you need to shorten the text of something in the slip, or turn off "Word Wrap."
 6. What you do next depends on if you will write the slips by hand or prepopulate them before printing.
 
-### Manual Slips
+## Manual Slips
 1. Print however many pages you will need for all the items in your donation.
 2. After printing, cut the slips with a paper slicer. Do not slice too many sheets of paper at once, 4 or 5 max.
 3. Fill out the slips manually, making sure the key number and OCLC number match.
