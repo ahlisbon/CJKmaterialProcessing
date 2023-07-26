@@ -62,6 +62,8 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
   - if the column says "srcipt" you cannot repurpost that column.
   - if the column says "free" you can put any data you like there.
     - "free" columns be renamed and repurporsed.
+- Never hide columns, the script will paste data incorrectly. You can reduce the width of any "free" columns you are not using.
+  - In the donation template Excel file, columns B, C, D, and F are much smaller as the script never interacts with those columns, but they can be repurposed for manual data entry.
 
 Further, both spreadsheets use a great deal of data validation and conditional formatting. Much of these formatting choices were done to give real time feedback on common errors and to improve readability. However, these can be removed entirely. There are also many additional sheets, beginning with "s-", for doing data analysis on your donations/orders as well. These can also be ignored/removed/deleted.
 
