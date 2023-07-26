@@ -83,14 +83,15 @@ You have to options for creating slips. Manual and Semi-automatic, each option w
 Regardless of what method you will use. You need to do some basic preperation before printing slips.
 1. In the spreadsheet, go to the "Slips" sheet.
 2. In column B, name the donation and copy it into every cell in the B column.
-3. Optional - in the A column, choose an emoji to distinguish slips for the donation visually.
+3. Optional - in column A, choose an emoji to visually distinguish slips for different donations.
 4. Make sure that the cells are not spilling over into the page to the right.
-   - If so, you need to shorten the text of something in the slip.
+   - If so, you need to shorten the text of something in the slip, or turn off "Word Wrap."
 6. What you do next depends on if you will write the slips by hand or prepopulate them before printing.
 
 ### Manual Slips
 1. Print however many pages you will need for all the items in your donation.
-2. After printing, cut the slips with a paper slicer. Do not slice too many sheets of paper at once, 4 or 5 max. 
+2. After printing, cut the slips with a paper slicer. Do not slice too many sheets of paper at once, 4 or 5 max.
+3. Fill out the slips manually, making sure the key number and OCLC number match.
 
 ### Semi Automatic Slips
 Content Pending.
