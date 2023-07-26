@@ -38,6 +38,7 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
   - On a FirstSearch Record: copies the record on screen and reformats it to paste to a spreadsheet.
 - ctrl + Numpad 7 / F7
   - Derives an ISBN-10 from an ISBN-13 and pastes it into the ISBN-10 column.
+  - This will not work for ISBN's beginning with 979.
 - ctrl + Numpad 8 / F8
   - Opens a menu to fix the ISBN columns in a spreadsheet when there are multiple ISBNs in a cell.
 - ctrl + Numpad 9 / F9
@@ -71,6 +72,25 @@ Further, both spreadsheets use a great deal of data validation and conditional f
 You have 6 data fields to fill out in the GUI that affect how the script will function.
 
 ### File Name Prefixes
+You can rename your files to whatever you like. However for data to be pasted correctly, the script needs to know which type of spreadsheet you are using. If you are preparing different books for purchase, make sure all your spreadsheets start with the same prefix, such as:
+- Collection Development - 2022-23
+- Collection Development - Rare Korean Books
+
+Other things to be aware of regarding naming conventions:
+- Do not use the same prefix for different types of sheets.
+- Avoid having two sheets open at once.
+
+### FirstSearch URL for Your Institution
+In order to pull data like an OCLC#, ISBN#, or Title to search FirstSearch, you need to provide the script with a URL that can load FirstSearch
+
+- Do NOT log into FirstSearch and copy that URL, it will not work.
+- Identify they URL your institution uses to access FirstSearch. Whatever link you are using to open FirstSearch, copy that link and paste it here.
+
+### Use Check Mode
+Before pasting data to your spreadhseet, a window will appear for you to review the bibliographic data.
+
+### Wait longer for Websites to Load
+IF you are using a slower connection speed, you can increase the time the script will wait to load. The default, 1, equals 3 seconds. 2 and 3 are multiplies so the script will wait 6 or 9 seconds respectively.
 
 ## 📃 Using Slips
 
