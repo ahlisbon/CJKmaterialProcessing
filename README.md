@@ -39,7 +39,7 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 - ctrl + Numpad 9 / F9
   - Copies a cell and if it contains a misformatted Japanese publisher name, will try to fix it.
 - Numpad-Division (/)
-  - For cells with multiple ISBNs, double click into the cell to edit it, place the cursor within the ISBN you want to keep, then hit the hot key and it removes all other content. 
+  - For cells with multiple ISBNs: double click into a cell to edit it, place the cursor within the ISBN, then hit the hot key remove all other content. 
 - Numpad-Minus (-)
    - On a browser tab with "WorldCat List of Records" OR "WorldCat Detailed Record" in the title: closes the tab.
    - On a spreadheet: Will try to translate the title of a non-English with ChatGPT and paste it into the "translated title" column.
