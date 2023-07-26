@@ -57,7 +57,8 @@ There are two spreadsheet templates to choose from:
 - [Collection Development - Orders - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Orders%20-%20Template.xlsm)
 - User Selection (pending)
 
-These spreadsheets work in tandem with the macro to bring data from WC/FS. The most important element is that *the order of the columns CANNOT be changed*. However, there is a great deal that can be altered. Each spreadsheet has a "Guide" sheet that explains how the spreadsheet works.
+These spreadsheets work in tandem with the the CJK Processing Script to bring data from a FirstSeach WorldCat record and paste it to a spreadsheet. For the script to work correctly, the order of the columns cannot be changed:
+- test
 
 Further, both spreadsheets use a great deal of data validation and conditional formatting. Much of these formatting choices were done to give real time feedback on common errors and to improve readability. However, these can be removed entirely. There are also many additional sheets, beginning with "s-", for doing data analysis on your donations/orders as well. These can also be ignored/removed/deleted.
 
