@@ -68,6 +68,9 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
 Further, both spreadsheets use a great deal of data validation and conditional formatting. Much of these formatting choices were done to give real time feedback on common errors and to improve readability. However, these can be removed entirely. There are also many additional sheets, beginning with "s-", for doing data analysis on your donations/orders as well. These can also be ignored/removed/deleted.
 
 ## 🖱 Understanding the GUI
+You have 6 data fields to fill out in the GUI that affect how the script will function.
+
+### File Name Prefixes
 
 ## 📃 Using Slips
 
