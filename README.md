@@ -58,7 +58,10 @@ There are two spreadsheet templates to choose from:
 - User Selection (pending)
 
 These spreadsheets work in tandem with the the CJK Processing Script to bring data from a FirstSeach WorldCat record and paste it to a spreadsheet. For the script to work correctly, the order of the columns cannot be changed:
-- test
+- Look in row 5 of any spreadsheet.
+  - if the column says "srcipt" you cannot repurpost that column.
+  - if the column says "free" you can put any data you like there.
+    - "free" columns be renamed and repurporsed.
 
 Further, both spreadsheets use a great deal of data validation and conditional formatting. Much of these formatting choices were done to give real time feedback on common errors and to improve readability. However, these can be removed entirely. There are also many additional sheets, beginning with "s-", for doing data analysis on your donations/orders as well. These can also be ignored/removed/deleted.
 
