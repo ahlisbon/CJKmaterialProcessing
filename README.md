@@ -38,7 +38,8 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
   - Opens a menu to fix the ISBN columns in a spreadsheet when there are multiple ISBNs in a cell.
 - ctrl + Numpad 9 / F9
   - Copies a cell and if it contains a misformatted Japanese publisher name, will try to fix it.
-- Numpad-Minus
+- Numpad-Division (/)
+- Numpad-Minus (-)
    - On a browser tab with "WorldCat List of Records" OR "WorldCat Detailed Record" in the title: closes the tab.
    - On a spreadheet: Will try to translate the title of a non-English with ChatGPT and paste it into the "translated title" column.
    - On the ChatGPT website with in a "chat" labeled "Translate": Copies the translated result and pastes it in the *Translated Title* column
