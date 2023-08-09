@@ -31,8 +31,9 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
   - Stope the script and closes the program. You will no longer see the green square with an "H" in the taskbar.
 - Pause / F12
   - Deativates hotkeys so you can use your keyboard like normal. Press again to reactivate hotkey functionality.
+##  ⌨ Hotkeys, listed in order of how to get bibliographic data on the spreadsheet.
 - Numpad-Enter / F1
-  - On a spreadsheet: Copies a row of data from the spreadsheet to find a book/item in FirstSearch.
+  - On a spreadsheet: Copies a row of data from the spreadsheet to find a book/item in FirstSearch. Assumes you are storing at least OCLC#, ISBN, or Title to on the spreadsheet to look up in FirstSearch.
 - Numpad Enter / F1
   - On a FirstSearch Record: activates the "Search for versions with same title and author" link to see other versions of the same item.
   - On a search results page in FirstSearch: opens each record in a new browser tab to compare records for importing into a spreadsheet.
