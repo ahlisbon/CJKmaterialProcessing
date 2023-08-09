@@ -65,9 +65,16 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
    - To translate mulitple titles, highlight however many titles in the "Title (N)" column (column U).
 
 ## 💴 Price Estimate HotKeys
+If you are interested in tracking the general cost of the books you are selecting, this scirpt will look up materials to compare prices. Extracting the price works one of two ways once you have identified a price you believe is acceptable to pay for the item:
 **Only available for Japanese at the moment**
 - ctrl + Numpad Plus
-- 
+  - On a spreadsheet: Looks up the item in four websites:
+    - Once an amazon page has loaded, you will need to browse for an appropriate price and select the text of price. Then **press enter** to bring that price back to the spreadsheet. 
+      - [Amazon.jp](https://www.amazon.co.jp/)
+      - [Amazon.com] (https://www.amazon.com/)
+    - 
+    - [Nihon no Furuhonya](https://www.kosho.or.jp/)
+    - [JPT Book News](https://jptbooknews.jptco.co.jp/)
 
 ## 🍹 Quality of Life HotKeys
   - Includes features from the "Diacritics and Nengō" project. [Read more here](https://github.com/ahlisbon/diacriticsAndNengo#typing-vowels-with-diacritics).
