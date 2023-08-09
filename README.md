@@ -20,7 +20,6 @@ This macro has been tested extensively in FireFox while using the spreadsheet as
 - The "kill switch" for the macro is the backslash ctrl + "\\" (above the "enter" key on most keyboards). Unusual behavior is always possible and this hotkey will stop the macro.
 - Slower internet connections may cause the macro to malfunction and stop.
 
-
 # 🔥 Hotkeys to Activate Macro
 Several keyboard keys are repurposed to start and stop the macro, referred to as "Hotkeys." F1 through F12 and the numpad keys are repuprosed for quick and easy use of the macro. It is *highly* recommended that you use a keyboard with a numpad as it is much each easier to use. In case you do not have a keyboard with a numpad, the function keys will suffice.
 
@@ -32,10 +31,15 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 - Pause / F12
   - Deativates hotkeys so you can use your keyboard like normal. Press again to reactivate hotkey functionality.
 ##  ⌨ Hotkeys, listed in order of how to get bibliographic data on the spreadsheet.
+**Important:**
+  - The same key will perform different actions depending on the active window. For example, the Numpad Enter key does something different in Excel than in a browser window.
+  - Emphasis should be on learning to use the hotkeys on the numpad, as it is compact and easy to rest your hand. Equivalent hotkeys are also available in the function keys row for when the numpad is not available on a keyboard. 
 - Numpad-Enter / F1
   - On a spreadsheet: Copies a row of data from the spreadsheet to find a book/item in FirstSearch. Assumes you are storing at least OCLC#, ISBN, or Title to on the spreadsheet to look up in FirstSearch.
-- Numpad Enter / F1
+- Numpad +
   - On a FirstSearch Record: activates the "Search for versions with same title and author" link to see other versions of the same item.
+- Numpad Enter / F1
+  - 
   - On a search results page in FirstSearch: opens each record in a new browser tab to compare records for importing into a spreadsheet.
 - Numpad 3 / F3
   - On a FirstSearch Record: copies the record on screen and reformats it to paste to a spreadsheet.
