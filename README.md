@@ -116,8 +116,10 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
   - **Reset Formatting:** this resets all defaults regarding formatting in the spreadsheet. Over time, the spreadsheet can become "bloated" with formatting rules. This reset button instanly resets all formatting and improves the performance of the spreadsheet.
   - **Convert CJK Currencies:** Becuase of some limitations around how data is brought into the spreadsheet, it is necessary to run this macro to ensure Chinese Yuan, Japanese Yen, and Korean Won all display correctly in the "USD Estimate" column (AG)
 
+
+
 # 🖱 Understanding the GUI
-You have 6 data fields to fill out in the GUI that affect how the script will function.
+When you run the EXE file for the script, you have 6 data fields to fill out in the GUI that affect how the script will function.
 
 ## File Name Prefixes
 You can rename your files to whatever you like. However for data to be pasted correctly, the script needs to know which type of spreadsheet you are using. If you are preparing different books for purchase, make sure all your spreadsheets start with the same prefix, such as:
