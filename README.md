@@ -141,7 +141,7 @@ In order to pull data like an OCLC#, ISBN#, or Title from the spreadsheet to sea
 Before pasting data to your spreadhseet, a window will appear for you to review the bibliographic data.
 
 ## Wait longer for Websites to Load
-IF you are using a slower connection speed, you can increase the time the script will wait to load. The default, 1, equals 3 seconds. 2 and 3 are multipliers, so the script will wait 6 or 9 seconds respectively.
+IF you are using a slower connection speed, you can increase the time the script will wait to load. The default is 1, which equals 3 seconds. 2 and 3 are multipliers, so the script will wait 6 or 9 seconds respectively.
 
 # 📃 Using Slips
 
