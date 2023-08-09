@@ -83,7 +83,7 @@ There are three spreadsheet templates to choose from:
   - hide columns
   - change the order of columns
   - rename column headers in row 6. Exceptions explained below.
-  - try to add your own formatting. There is an Excel macro ([see below]( )) that when activated will wipe most custom formatting you try to setup.
+  - try to add your own formatting. There is an Excel macro ([see below](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#-excel-macros)) that when activated will wipe most custom formatting you try to setup.
 
 These spreadsheets work in tandem with the the CJK Processing Script to bring data from a FirstSeach WorldCat record and paste it to a spreadsheet. For the script to work correctly, the order of the columns cannot be changed:
 - Look in row 5 of any spreadsheet.
