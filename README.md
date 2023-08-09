@@ -38,11 +38,12 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 
 - Numpad Enter / F1
   - On a spreadsheet: Copies a row of data from the spreadsheet to find a book/item in FirstSearch. Assumes you are storing at least OCLC#, ISBN, or Title to on the spreadsheet to look up in FirstSearch.
-- Numpad +
+- Numpad Plus
   - On a FirstSearch Record: activates the "Search for versions with same title and author" link to see other versions of the same item.
 - Numpad Enter / F1
   - On a FirstSeach record: imports bibliographic data from the record into a spreadsheet.
   - On a search results page in FirstSearch: opens each record in a new browser tab to compare records for importing into a spreadsheet.
+   - After the tabs have loaded, use ctrl + Numpad 0 to quickly cycle through the tabs. Use Numpad Minus to quickly close a tab for a record you don't want to import. Helps quickly compare records to choose when one to import to a spreadsheet.
 - Numpad 3 / F3
   - On a FirstSearch Record: copies the record on screen and reformats it to paste to a spreadsheet.
 - ctrl + Numpad 7 / F7
