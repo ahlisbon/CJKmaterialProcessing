@@ -69,10 +69,10 @@ If you are interested in tracking the general cost of the books you are selectin
 **Only available for Japanese at the moment**
 - ctrl + Numpad Plus
   - On a spreadsheet: Looks up the item in four websites:
-    - Once an amazon page has loaded, you will need to browse for an appropriate price and select highlight it. Then **press enter** to bring that price back to the spreadsheet. 
+    - Once an amazon page has loaded, you will need to browse for an appropriate price and select highlight it. Then **press Numpad Enter or Enter** to bring that price back to the spreadsheet. 
       - [Amazon.jp](https://www.amazon.co.jp/)
       - [Amazon.com] (https://www.amazon.com/)
-    - One you have loaded a record on this site, **press enter** to bring that price back to the spreadsheet.
+    - One you have loaded a record on this site, **press Numpad Enter or Enter** to bring that price back to the spreadsheet.
       - [Nihon no Furuhonya](https://www.kosho.or.jp/)
       - [JPT Book News](https://jptbooknews.jptco.co.jp/)
    - Th "URL for Price Check" column (H) will update with the relvant URL.
