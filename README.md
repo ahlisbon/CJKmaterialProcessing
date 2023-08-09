@@ -96,7 +96,7 @@ Other things to be aware of regarding naming conventions:
 - Avoid having two sheets open at once. The script will not let you continue if you have more than one open.
 
 ## FirstSearch URL for Your Institution
-In order to pull data like an OCLC#, ISBN#, or Title to search FirstSearch, you need to provide the script with a URL that can load FirstSearch
+In order to pull data like an OCLC#, ISBN#, or Title from the spreadsheet to search FirstSearch, you need to provide the script with a URL that can load FirstSearch
 
 - Do NOT log into FirstSearch and copy that URL, it will not work.
 - Identify they URL your institution uses to access FirstSearch. Whatever link you are using to open FirstSearch, copy that link and paste it here.
@@ -105,7 +105,7 @@ In order to pull data like an OCLC#, ISBN#, or Title to search FirstSearch, you 
 Before pasting data to your spreadhseet, a window will appear for you to review the bibliographic data.
 
 ## Wait longer for Websites to Load
-IF you are using a slower connection speed, you can increase the time the script will wait to load. The default, 1, equals 3 seconds. 2 and 3 are multiplies so the script will wait 6 or 9 seconds respectively.
+IF you are using a slower connection speed, you can increase the time the script will wait to load. The default, 1, equals 3 seconds. 2 and 3 are multipliers, so the script will wait 6 or 9 seconds respectively.
 
 # 📃 Using Slips
 
