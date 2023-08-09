@@ -47,22 +47,27 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 
 ## 🧽 Data Clean up Hotkeys
 - ctrl + Numpad 7 / F7
-  - Derives an ISBN-10 from an ISBN-13 and pastes it into the ISBN-10 column. Will also add an amazon URL to check price.
-  - This will not work for ISBN's beginning with 979.
+  - On a spredsheet: Derives an ISBN-10 from an ISBN-13 and pastes it into the ISBN-10 column. Will also add an amazon URL to check price.
+    - This will not work for ISBN's beginning with 979.
 - ctrl + Numpad 8 / F8
-  - Opens a menu to fix the ISBN columns in a spreadsheet when there are multiple ISBNs in a cell. Includes a contextual menu on how to use.
+  - On a spredsheet: Opens a menu to fix the ISBN columns in a spreadsheet when there are multiple ISBNs in a cell. Includes a contextual menu on how to use.
 - ctrl + Numpad 9 / F9
-  - Copies a cell and if it contains a misformatted Japanese publisher name, will try to fix it.
+  - On a spreadsheet: Copies a cell and if it contains a misformatted Japanese publisher name, will try to fix it.
 - Numpad Division (/)
-  - For cells with multiple ISBNs: double click into a cell, place the cursor within an ISBN, then hit the hot key remove all other content.
+  - On a spreadsheet: For cells with multiple ISBNs: double click into a cell, place the cursor within an ISBN, then hit the hot key remove all other content.
  
-## 💬 Chat GPT Translation Assistance
+## 💬 Chat GPT Translation Assistance HotKeys
 **Important**
    - You must make an acount with Chat GPT and make sure you have a brower window with ChatGPT open.
    - You must create a "new chat" and name it "Translate" - After you've created this chat, make sure to activate it before running the script.
 - Numpad Minus (-)
    - On a spreadheet: Will try to translate the title of a non-English with ChatGPT and paste it into the "translated title" column. By default will only translate the title in the row your cursor is on.
    - To translate mulitple titles, highlight however many titles in the "Title (N)" column (column U).
+
+## 💴 Price Estimate HotKeys
+**Only available for Japanese at the moment**
+- ctrl + Numpad Plus
+- 
 
 ## 🍹 Quality of Life HotKeys
   - Includes features from the "Diacritics and Nengō" project. [Read more here](https://github.com/ahlisbon/diacriticsAndNengo#typing-vowels-with-diacritics).
