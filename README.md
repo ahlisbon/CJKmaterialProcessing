@@ -45,7 +45,7 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
   - On a search results page in FirstSearch: opens each record in a new browser tab to compare records for importing into a spreadsheet.
     - After the tabs have loaded, use **ctrl + Numpad 0** to quickly cycle through the tabs. Use **Numpad Minus** to quickly close a tab for a record you don't want to import.
 
-## ⌨ Data Clean up Hotkeys
+## 🧽 Data Clean up Hotkeys
 - ctrl + Numpad 7 / F7
   - Derives an ISBN-10 from an ISBN-13 and pastes it into the ISBN-10 column. Will also add an amazon URL to check price.
   - This will not work for ISBN's beginning with 979.
