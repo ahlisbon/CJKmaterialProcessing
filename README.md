@@ -24,15 +24,16 @@ This macro has been tested extensively in FireFox while using the spreadsheet as
 # 🔥 Hotkeys to Activate Macro
 Several keyboard keys are repurposed to start and stop the macro, referred to as "Hotkeys." F1 through F12 and the numpad keys are repuprosed for quick and easy use of the macro. It is *highly* recommended that you use a keyboard with a numpad as it is much each easier to use. In case you do not have a keyboard with a numpad, the function keys will suffice.
 
+## ⌨ Essential Hotkeys
 - \\
-  - Stops the Script
+  - Stops the script
 - ctrl + \\
-  - Exits out the script entirely and closes the program. You will no longer see the green square with an "H" in the taskbar.
+  - Stope the script and closes the program. You will no longer see the green square with an "H" in the taskbar.
 - Pause / F12
   - Deativates hotkeys so you can use your keyboard like normal. Press again to reactivate hotkey functionality.
 - Numpad-Enter / F1
-  - Copies a row of data from the spreadsheet to find a book/item in FirstSearch.
-- Numpad 2 / F2
+  - On a spreadsheet: Copies a row of data from the spreadsheet to find a book/item in FirstSearch.
+- Numpad Enter / F1
   - On a FirstSearch Record: activates the "Search for versions with same title and author" link to see other versions of the same item.
   - On a search results page in FirstSearch: opens each record in a new browser tab to compare records for importing into a spreadsheet.
 - Numpad 3 / F3
@@ -54,7 +55,7 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
   - Includes features from the "Diacritics and Nengō" project. [Read more here](https://github.com/ahlisbon/diacriticsAndNengo#typing-vowels-with-diacritics).
 
 # 📊 How the Spreadsheets Work
-There are two spreadsheet templates to choose from:
+There are three spreadsheet templates to choose from:
 - [Donations - Donations - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Donation%20-%20Template.xlsm)
 - [Collection Development - Orders - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Orders%20-%20Template.xlsm)
 - User Selection (pending)
