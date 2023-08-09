@@ -93,6 +93,10 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
   - If a title or series title appears twice, it turns yellow.
 - Incorect formatting for an ISBN
   - If there is a space in the ISBN, the cell will turn yellow and should be addressed.
+- Preferred Vendor and Collection Columns (F and I)
+  - These colums will stay red until they are filled out.
+- Note for Acquistions Column (G)
+  - Turns yellow, emphasizes there is something to read and review.
 
 ## Data Validation
 
