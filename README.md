@@ -98,9 +98,11 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
 - Note for Acquistions Column (G)
   - Turns yellow, emphasizes there is something to read and review.
 
-## Data Validation
-
-Further, both spreadsheets use a great deal of data validation and conditional formatting. Much of these formatting choices were done to give real time feedback on common errors and to improve readability. However, these can be removed entirely. There are also many additional sheets, beginning with "s-", for doing data analysis on your donations/orders as well. These can also be ignored/removed/deleted.
+## 🛠 Excel Macros
+- There are two important Excel macros built into the "Collection Development" and "Donation" Excel templates. Each macro has a button you can push to activate it in the upper right of the table in either spreadsheet.
+  - **Reset Formatting:** this resets all defaults regarding formatting in the spreadsheet. Over time, the spreadsheet can become "bloated" with formatting rules. This reset button instanly resets all formatting and improves the performance of the spreadsheet.
+  - **Convert CJK Currencies:** Becuase of some limitations around how data is brought into the spreadsheet, it is necessary to run this macro to ensure Chinese Yuan, Japanese Yen, and Korean Won all display correctly in the "USD Estimate" column (AG)
+  - 
 
 
 
