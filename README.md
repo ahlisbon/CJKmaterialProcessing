@@ -73,15 +73,32 @@ There are three spreadsheet templates to choose from:
 - [Collection Development - Orders - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Orders%20-%20Template.xlsm)
 - User Selection (pending)
 
+## 👨‍🏫 Spreadsheet Fundamentals
+- *Do NOT*
+  - hide columns
+  - change the order of columns
+  - rename column headers in row 6. Exceptions explained below.
+
 These spreadsheets work in tandem with the the CJK Processing Script to bring data from a FirstSeach WorldCat record and paste it to a spreadsheet. For the script to work correctly, the order of the columns cannot be changed:
 - Look in row 5 of any spreadsheet.
-  - if the column says "srcipt" you cannot repurpost that column.
-  - if the column says "free" you can put any data you like there.
-    - "free" columns can renamed and repurporsed.
-- Never hide columns, the script will paste data incorrectly. You can reduce the width of any "free" columns you are not using.
+  - if the column says "srcipt" you cannot repurpose that column.
+  - if the column says "free" you can repurpose those columns for any kind of manual data entry. You can also rename the headers (row 6) in these columns.
   - In the donation template Excel file, columns B, C, D, and F are much smaller as the script never interacts with those columns, but they can be repurposed for manual data entry.
+  - In the select template Excel file, columns B through O are narrow and do not show text. This is to remove visual clutter.
+
+## 🎨 Formatting 
+- The "Collection Development" and "Donation" Excel templates use condtional formatting to help quickly identify anomalies.
+- Duplicate Checking:
+  - If an ISBN or OCLC# appears twice, it will turn red.
+  - If a title or series title appears twice, it turns yellow.
+- Incorect formatting for an ISBN
+  - If there is a space in the ISBN, the cell will turn yellow and should be addressed.
+
+## Data Validation
 
 Further, both spreadsheets use a great deal of data validation and conditional formatting. Much of these formatting choices were done to give real time feedback on common errors and to improve readability. However, these can be removed entirely. There are also many additional sheets, beginning with "s-", for doing data analysis on your donations/orders as well. These can also be ignored/removed/deleted.
+
+
 
 # 🖱 Understanding the GUI
 You have 6 data fields to fill out in the GUI that affect how the script will function.
