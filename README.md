@@ -38,25 +38,26 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 
 - Numpad Enter / F1
   - On a spreadsheet: Copies a row of data from the spreadsheet to find a book/item in FirstSearch. Assumes you are storing at least OCLC#, ISBN, or Title to on the spreadsheet to look up in FirstSearch.
-- Numpad Plus
+- Numpad Plus / F2
   - On a FirstSearch Record: activates the "Search for versions with same title and author" link to see other versions of the same item.
 - Numpad Enter / F1
   - On a FirstSeach record: imports bibliographic data from the record into a spreadsheet.
   - On a search results page in FirstSearch: opens each record in a new browser tab to compare records for importing into a spreadsheet.
-   - After the tabs have loaded, use ctrl + Numpad 0 to quickly cycle through the tabs. Use Numpad Minus to quickly close a tab for a record you don't want to import. Helps quickly compare records to choose when one to import to a spreadsheet.
-- Numpad 3 / F3
-  - On a FirstSearch Record: copies the record on screen and reformats it to paste to a spreadsheet.
+    - After the tabs have loaded, use **ctrl + Numpad 0** to quickly cycle through the tabs. Use **Numpad Minus** to quickly close a tab for a record you don't want to import.
+
+## ⌨ Data Clean up Hotkeys
 - ctrl + Numpad 7 / F7
-  - Derives an ISBN-10 from an ISBN-13 and pastes it into the ISBN-10 column.
+  - Derives an ISBN-10 from an ISBN-13 and pastes it into the ISBN-10 column. Will also add an amazon URL to check price.
   - This will not work for ISBN's beginning with 979.
 - ctrl + Numpad 8 / F8
-  - Opens a menu to fix the ISBN columns in a spreadsheet when there are multiple ISBNs in a cell.
+  - Opens a menu to fix the ISBN columns in a spreadsheet when there are multiple ISBNs in a cell. Includes a contextual menu on how to use.
 - ctrl + Numpad 9 / F9
   - Copies a cell and if it contains a misformatted Japanese publisher name, will try to fix it.
-- Numpad-Division (/)
-  - For cells with multiple ISBNs: double click into a cell, place the cursor within an ISBN, then hit the hot key remove all other content. 
-- Numpad-Minus (-)
-   - On a browser tab with "WorldCat List of Records" OR "WorldCat Detailed Record" in the title: closes the tab.
+- Numpad Division (/)
+  - For cells with multiple ISBNs: double click into a cell, place the cursor within an ISBN, then hit the hot key remove all other content.
+ 
+## 💬 Chat GPT Translation Assistance
+- Numpad Minus (-)
    - On a spreadheet: Will try to translate the title of a non-English with ChatGPT and paste it into the "translated title" column.
    - On the ChatGPT website with in a "chat" labeled "Translate": Copies the translated result and pastes it in the *Translated Title* column
 - Other Features
@@ -72,7 +73,7 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
 - Look in row 5 of any spreadsheet.
   - if the column says "srcipt" you cannot repurpost that column.
   - if the column says "free" you can put any data you like there.
-    - "free" columns be renamed and repurporsed.
+    - "free" columns can renamed and repurporsed.
 - Never hide columns, the script will paste data incorrectly. You can reduce the width of any "free" columns you are not using.
   - In the donation template Excel file, columns B, C, D, and F are much smaller as the script never interacts with those columns, but they can be repurposed for manual data entry.
 
@@ -88,7 +89,7 @@ You can rename your files to whatever you like. However for data to be pasted co
 
 Other things to be aware of regarding naming conventions:
 - Do not use the same prefix for different types of sheets.
-- Avoid having two sheets open at once.
+- Avoid having two sheets open at once. The script will not let you continue if you have more than one open.
 
 ## FirstSearch URL for Your Institution
 In order to pull data like an OCLC#, ISBN#, or Title to search FirstSearch, you need to provide the script with a URL that can load FirstSearch
