@@ -57,10 +57,14 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
   - For cells with multiple ISBNs: double click into a cell, place the cursor within an ISBN, then hit the hot key remove all other content.
  
 ## 💬 Chat GPT Translation Assistance
+**Important**
+   - You must make an acount with Chat GPT and make sure you have a brower window with ChatGPT open.
+   - You must create a "new chat" and name it "Translate" - After you've created this chat, make sure to activate it before running the script.
 - Numpad Minus (-)
-   - On a spreadheet: Will try to translate the title of a non-English with ChatGPT and paste it into the "translated title" column.
-   - On the ChatGPT website with in a "chat" labeled "Translate": Copies the translated result and pastes it in the *Translated Title* column
-- Other Features
+   - On a spreadheet: Will try to translate the title of a non-English with ChatGPT and paste it into the "translated title" column. By default will only translate the title in the row your cursor is on.
+   - To translate mulitple titles, highlight however many titles in the "Title (N)" column (column U).
+
+## 🍹 Quality of Life HotKeys
   - Includes features from the "Diacritics and Nengō" project. [Read more here](https://github.com/ahlisbon/diacriticsAndNengo#typing-vowels-with-diacritics).
 
 # 📊 How the Spreadsheets Work
