@@ -178,5 +178,5 @@ Regardless of what method you will use. You need to do some basic preperation be
 2. After printing, cut the slips with a paper slicer. Do not slice too many sheets of paper at once, 4 or 5 max.
 3. Fill out the slips manually, making sure the key number and OCLC number match.
 
-## -- 🖨 Semi Automatic Slips
+## -- ⬜ Semi Automatic Slips
 Content Pending.
