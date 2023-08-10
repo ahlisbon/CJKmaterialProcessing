@@ -91,7 +91,8 @@ There are three spreadsheet templates to choose from:
   - hide columns
   - change the order of columns
   - rename column headers in row 6. Exceptions explained below.
-  - try to add your own formatting. There is an Excel macro ([see below](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#-excel-macros)) that when activated will wipe most custom formatting you try to setup.
+  - add your own formatting. There is an Excel macro ([see below](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#-excel-macros)) that when activated will wipe most custom formatting you try to setup.
+  - rename the various sheets within the workbook.
 
 These spreadsheets work in tandem with the the CJK Processing Script to bring data from a FirstSeach WorldCat record and paste it to a spreadsheet. For the script to work correctly, the order of the columns cannot be changed:
 - Look in row 5 of any spreadsheet.
@@ -116,6 +117,9 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
 - There are two important Excel macros built into the "Collection Development" and "Donation" Excel templates. Each macro has a button you can push to activate it in the upper right of the table in either spreadsheet.
   - **Reset Formatting:** this resets all defaults regarding formatting in the spreadsheet. Over time, the spreadsheet can become "bloated" with formatting rules. This reset button instanly resets all formatting and improves the performance of the spreadsheet.
   - **Convert CJK Currencies:** Becuase of some limitations around how data is brought into the spreadsheet, it is necessary to run this macro to ensure Chinese Yuan, Japanese Yen, and Korean Won all display correctly in the "USD Estimate" column (AG)
+
+## -- 📈 Statistics Sheets
+There are several additional sheets including the orders sheets.
 
 
 
