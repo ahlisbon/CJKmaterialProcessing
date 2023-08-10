@@ -131,7 +131,7 @@ There are several additional worksheets besides the "Orders" or "Donations" shee
 # 🖱 Understanding the GUI
 When you run the EXE file for the script, you have 6 data fields to fill out in the GUI that affect how the script will function.
 
-## -- File Name Prefixes
+## -- 📁 File Name Prefixes
 You can rename your files to whatever you like. However for data to be pasted correctly, the script needs to know which type of spreadsheet you are using. If you are preparing different books for purchase, make sure all your spreadsheets start with the same prefix, such as:
 - Collection Development - 2022-23
 - Collection Development - Rare Korean Books
@@ -140,16 +140,16 @@ Other things to be aware of regarding naming conventions:
 - Do not use the same prefix for different types of sheets.
 - Avoid having two sheets open at once. The script will not let you continue if you have more than one open.
 
-## -- FirstSearch URL for Your Institution
+## -- 🌐 FirstSearch URL for Your Institution
 In order to pull data like an OCLC#, ISBN#, or Title from the spreadsheet to search FirstSearch, you need to provide the script with a URL that can load FirstSearch
 
 - Do NOT log into FirstSearch and copy that URL, it will not work.
 - Identify they URL your institution uses to access FirstSearch. Whatever link you are using to open FirstSearch, copy that link and paste it here.
 
-## -- Use Check Mode
+## -- ✅ Use Check Mode
 Before pasting data to your spreadhseet, a window will appear for you to review the bibliographic data.
 
-## -- Wait longer for Websites to Load
+## -- 🕗 Wait longer for Websites to Load
 IF you are using a slower connection speed, you can increase the time the script will wait to load. The default is 1, which equals 3 seconds. 2 and 3 are multipliers, so the script will wait 6 or 9 seconds respectively.
 
 # 📃 Using Slips
@@ -164,7 +164,7 @@ Slips help assist with processsing donations. There primary purpose is to help c
 
 You have to options for creating slips. Manual and Semi-automatic, each option with it's pros and cons.
 
-## -- Prepping Slips
+## -- 🖨 Prepping Slips
 Regardless of what method you will use. You need to do some basic preperation before printing slips.
 1. In the spreadsheet, go to the "Slips" sheet.
 2. In column B, name the donation and copy it into every cell in the B column.
@@ -173,10 +173,10 @@ Regardless of what method you will use. You need to do some basic preperation be
    - If so, you need to shorten the text of something in the slip, or turn off "Word Wrap."
 6. What you do next depends on if you will write the slips by hand or prepopulate them before printing.
 
-## -- Manual Slips
+## -- ✒ Manual Slips
 1. Print however many pages you will need for all the items in your donation.
 2. After printing, cut the slips with a paper slicer. Do not slice too many sheets of paper at once, 4 or 5 max.
 3. Fill out the slips manually, making sure the key number and OCLC number match.
 
-## --# Semi Automatic Slips
+## -- 🖨 Semi Automatic Slips
 Content Pending.
