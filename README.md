@@ -119,7 +119,9 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
   - **Convert CJK Currencies:** Becuase of some limitations around how data is brought into the spreadsheet, it is necessary to run this macro to ensure Chinese Yuan, Japanese Yen, and Korean Won all display correctly in the "USD Estimate" column (AG)
 
 ## -- 📈 Statistics Sheets
-There are several additional sheets including the orders sheets.
+There are several additional worksheets besides the "Orders" or "Donations" sheet (depending on which Excel file you are using) where you record materials for purchase. All of these have the suffix "s-" for "statistics." Each sheet provides insights about your materials. You can delete these sheets if you are interested in them.
+**What to know:**
+- You can delete the sheets starting with "s-" and they will have no effect on the "Orders" or "Donations" sheet.
 
 
 
