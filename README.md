@@ -121,7 +121,10 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
 ## -- 📈 Statistics Sheets
 There are several additional worksheets besides the "Orders" or "Donations" sheet (depending on which Excel file you are using) where you record materials for purchase. All of these have the suffix "s-" for "statistics." Each sheet provides insights about your materials. You can delete these sheets if you are interested in them.
 **What to know:**
-- You can delete the sheets starting with "s-" and they will have no effect on the "Orders" or "Donations" sheet.
+  - You can delete the sheets starting with "s-" and they will have no effect on the "Orders" or "Donations" sheet.
+  - Data does not update automatically, you need to click the "Refresh Data" button on each sheet.
+  - Do not try to move or rename tables, pivot tables, or charts.
+  - Do not try to edit the data in a pivot table, if you see a mistake, you need to fix it at the source, which will be the "Orders" or "Donations" sheet depending on which Excel template you are using.
 
 
 
