@@ -23,7 +23,7 @@ This macro has been tested extensively in FireFox while using the spreadsheet as
 # 🔥 Hotkeys to Activate Macro
 Several keyboard keys are repurposed to start and stop the macro, referred to as "Hotkeys." F1 through F12 and the numpad keys are repuprosed for quick and easy use of the macro. It is *highly* recommended that you use a keyboard with a numpad as it is much each easier to use. In case you do not have a keyboard with a numpad, the function keys will suffice.
 
-## ⌨ Essential Hotkeys
+## -- ⌨ Essential Hotkeys
 - \\
   - Stops the script
 - ctrl + \\
@@ -31,7 +31,7 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 - Pause / F12
   - Deativates hotkeys so you can use your keyboard like normal. Press again to reactivate hotkey functionality.
 
-##  ⌨ Hotkeys, listed in order of how to get bibliographic data on the spreadsheet.
+## --  ⌨ Hotkeys, listed in order of how to get bibliographic data on the spreadsheet.
 **Important:**
   - The same key will perform different actions depending on the active window. For example, the Numpad Enter key does something different in Excel than in a browser window.
   - Emphasis should be on learning to use the hotkeys on the numpad, as it is compact and easy to rest your hand. Equivalent hotkeys are also available in the function keys row for when the numpad is not available on a keyboard.
@@ -45,7 +45,7 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
   - On a search results page in FirstSearch: opens each record in a new browser tab to compare records for importing into a spreadsheet.
     - After the tabs have loaded, use **ctrl + Numpad 0** to quickly cycle through the tabs. Use **Numpad Minus** to quickly close a tab for a record you don't want to import.
 
-## 🧽 Data Clean up Hotkeys
+## -- 🧽 Data Clean up Hotkeys
 - ctrl + Numpad 7 / F7
   - On a spredsheet: Derives an ISBN-10 from an ISBN-13 and pastes it into the ISBN-10 column. Will also add an amazon URL to check price.
     - This will not work for ISBN's beginning with 979.
@@ -56,7 +56,7 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 - Numpad Division (/)
   - On a spreadsheet: For cells with multiple ISBNs: double click into a cell, place the cursor within an ISBN, then hit the hot key remove all other content.
  
-## 💬 Chat GPT Translation Assistance HotKeys
+## -- 💬 Chat GPT Translation Assistance HotKeys
 **Important**
    - You must make an acount with Chat GPT and make sure you have a brower window with ChatGPT open.
    - You must create a "new chat" and name it "Translate" - After you've created this chat, make sure to activate it before running the script.
@@ -64,7 +64,7 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
    - On a spreadheet: Will try to translate the title of a non-English with ChatGPT and paste it into the "translated title" column. By default will only translate the title in the row your cursor is on.
    - To translate mulitple titles, highlight however many titles in the "Title (N)" column (column U).
 
-## 💴 Price Estimate HotKeys
+## -- 💴 Price Estimate HotKeys
 If you are interested in tracking the general cost of the books you are selecting, this scirpt will look up materials to compare prices. Extracting the price works one of two ways once you have identified a price you believe is acceptable to pay for the item:
 **Only available for Japanese at the moment**
 - ctrl + Numpad Plus
@@ -77,7 +77,7 @@ If you are interested in tracking the general cost of the books you are selectin
       - [JPT Book News](https://jptbooknews.jptco.co.jp/)
    - Th "URL for Price Check" column (H) will update with the relvant URL.
 
-## 🍹 Quality of Life HotKeys
+## -- 🍹 Quality of Life HotKeys
   - Includes features from the "Diacritics and Nengō" project. [Read more here](https://github.com/ahlisbon/diacriticsAndNengo#typing-vowels-with-diacritics).
 
 # 📊 How the Spreadsheets Work
@@ -86,7 +86,7 @@ There are three spreadsheet templates to choose from:
 - [Collection Development - Orders - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Orders%20-%20Template.xlsm)
 - User Selection (pending)
 
-## 👨‍🏫 Spreadsheet Fundamentals
+## -- 👨‍🏫 Spreadsheet Fundamentals
 - *Do NOT*
   - hide columns
   - change the order of columns
@@ -100,7 +100,7 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
   - In the donation template Excel file, columns B, C, D, and F are much smaller as the script never interacts with those columns, but they can be repurposed for manual data entry.
   - In the select template Excel file, columns B through O are narrow and do not show text. This is to remove visual clutter.
 
-## 🎨 Formatting 
+## -- 🎨 Formatting 
 - The "Collection Development" and "Donation" Excel templates use condtional formatting to help quickly identify anomalies.
 - Duplicate Checking:
   - If an ISBN or OCLC# appears twice, it will turn red.
@@ -112,7 +112,7 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
 - Note for Acquistions Column (G)
   - Turns yellow, emphasizes there is something to read and review.
 
-## 🛠 Excel Macros
+## -- 🛠 Excel Macros
 - There are two important Excel macros built into the "Collection Development" and "Donation" Excel templates. Each macro has a button you can push to activate it in the upper right of the table in either spreadsheet.
   - **Reset Formatting:** this resets all defaults regarding formatting in the spreadsheet. Over time, the spreadsheet can become "bloated" with formatting rules. This reset button instanly resets all formatting and improves the performance of the spreadsheet.
   - **Convert CJK Currencies:** Becuase of some limitations around how data is brought into the spreadsheet, it is necessary to run this macro to ensure Chinese Yuan, Japanese Yen, and Korean Won all display correctly in the "USD Estimate" column (AG)
@@ -122,7 +122,7 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
 # 🖱 Understanding the GUI
 When you run the EXE file for the script, you have 6 data fields to fill out in the GUI that affect how the script will function.
 
-## File Name Prefixes
+## -- File Name Prefixes
 You can rename your files to whatever you like. However for data to be pasted correctly, the script needs to know which type of spreadsheet you are using. If you are preparing different books for purchase, make sure all your spreadsheets start with the same prefix, such as:
 - Collection Development - 2022-23
 - Collection Development - Rare Korean Books
@@ -131,16 +131,16 @@ Other things to be aware of regarding naming conventions:
 - Do not use the same prefix for different types of sheets.
 - Avoid having two sheets open at once. The script will not let you continue if you have more than one open.
 
-## FirstSearch URL for Your Institution
+## -- FirstSearch URL for Your Institution
 In order to pull data like an OCLC#, ISBN#, or Title from the spreadsheet to search FirstSearch, you need to provide the script with a URL that can load FirstSearch
 
 - Do NOT log into FirstSearch and copy that URL, it will not work.
 - Identify they URL your institution uses to access FirstSearch. Whatever link you are using to open FirstSearch, copy that link and paste it here.
 
-## Use Check Mode
+## -- Use Check Mode
 Before pasting data to your spreadhseet, a window will appear for you to review the bibliographic data.
 
-## Wait longer for Websites to Load
+## -- Wait longer for Websites to Load
 IF you are using a slower connection speed, you can increase the time the script will wait to load. The default is 1, which equals 3 seconds. 2 and 3 are multipliers, so the script will wait 6 or 9 seconds respectively.
 
 # 📃 Using Slips
@@ -155,7 +155,7 @@ Slips help assist with processsing donations. There primary purpose is to help c
 
 You have to options for creating slips. Manual and Semi-automatic, each option with it's pros and cons.
 
-## Prepping Slips
+## -- Prepping Slips
 Regardless of what method you will use. You need to do some basic preperation before printing slips.
 1. In the spreadsheet, go to the "Slips" sheet.
 2. In column B, name the donation and copy it into every cell in the B column.
@@ -164,10 +164,10 @@ Regardless of what method you will use. You need to do some basic preperation be
    - If so, you need to shorten the text of something in the slip, or turn off "Word Wrap."
 6. What you do next depends on if you will write the slips by hand or prepopulate them before printing.
 
-## Manual Slips
+## -- Manual Slips
 1. Print however many pages you will need for all the items in your donation.
 2. After printing, cut the slips with a paper slicer. Do not slice too many sheets of paper at once, 4 or 5 max.
 3. Fill out the slips manually, making sure the key number and OCLC number match.
 
-### Semi Automatic Slips
+## --# Semi Automatic Slips
 Content Pending.
