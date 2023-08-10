@@ -162,7 +162,7 @@ Slips help assist with processsing donations. There primary purpose is to help c
 - Volume information, especially useful for large sets of books that look the same.
 - Notes, anything else you might need to add.
 
-You have to options for creating slips. Manual and Semi-automatic, each option with it's pros and cons.
+You have two options for creating slips. Manual and Semi-automatic, each option with it's pros and cons.
 
 ## -- 🖨 Prepping Slips
 Regardless of what method you will use. You need to do some basic preperation before printing slips.
