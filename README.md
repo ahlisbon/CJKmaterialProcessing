@@ -39,7 +39,7 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
   - Emphasis should be on learning to use the hotkeys on the numpad, as it is compact and easy to rest your hand. Equivalent hotkeys are also available in the function keys row for when the numpad is not available on a keyboard.
 
 - **Numpad Enter / F1**
-  - On a spreadsheet_: Copies a row of data from the spreadsheet to find a book/item in FirstSearch. Assumes you are storing at least OCLC#, ISBN, or Title to on the spreadsheet to look up in FirstSearch.
+  - _On a spreadsheet_: Copies a row of data from the spreadsheet to find a book/item in FirstSearch. Assumes you are storing at least OCLC#, ISBN, or Title to on the spreadsheet to look up in FirstSearch.
 - **Numpad Plus / F2**
   - _On a FirstSearch Record_: activates the "Search for versions with same title and author" link to see other versions of the same item.
 - **Numpad Enter / F1**
