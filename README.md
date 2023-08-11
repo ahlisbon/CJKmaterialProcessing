@@ -116,7 +116,7 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
   - Turns yellow, emphasizes there is something to read and review.
 
 ## -- 🛠 Excel Macros
-- There are two important Excel macros built into the "Collection Development" and "Donation" Excel templates. Each macro has a button you can push to activate it in the upper right of the table in either spreadsheet.
+- There are two important Excel macros built into the "Collection Development" and "Donation" Excel templates. Each macro has a button you can push to activate it in the upper right of the table in either spreadsheet. If you choose to use these spreadsheets on any web platform (Microsoft 365, Google Sheets), these will not be available to you.
   - **Reset Formatting:** this resets all defaults regarding formatting in the spreadsheet. Over time, the spreadsheet can become "bloated" with formatting rules. This reset button instanly resets all formatting and improves the performance of the spreadsheet.
   - **Convert CJK Currencies:** Becuase of some limitations around how data is brought into the spreadsheet, it is necessary to run this macro to ensure Chinese Yuan, Japanese Yen, and Korean Won all display correctly in the "USD Estimate" column (AG)
 
