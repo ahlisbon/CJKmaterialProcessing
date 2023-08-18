@@ -1,12 +1,12 @@
 # CJK Material Processing
-This is a macro script for screen scraping data form OCLC's WorldCat.org or FirstSearch database. It's primary purpose is to quickly get bibliographic data into a spreadsheet ot help with processing library material requests and orders. It works for materials in any language with a special emphasis on Japanese in particular. The macro is written in [AutoHotKey](https://www.autohotkey.com/) (AHK) and is designed to work in tandem with custom designed spreadsheets.
+This is a macro script for screen scraping data form OCLC's WorldCat.org or FirstSearch database. It's primary purpose is to quickly get bibliographic data into a spreadsheet ot help with processing library material requests and orders. It works for materials in any language with a special emphasis on Japanese in particular. The macro is written in [AutoHotkey](https://www.autohotkey.com/) (AHK) and is designed to work in tandem with custom designed spreadsheets.
 
 # 🔰 Basic Requirements for Use
 1. PC with Windows OS.
    - This macro has only been tested in Windows 10. It should work with previous versions as far back as Windows 8.
 2. Files to download:
-   - The AHK executible file: *BibData to Spreadsheet.exe*
-   - The INI file: *Bibdata to Spreadsheet.ini* (this is for saving your settings and preferences
+   - The AHK executible file: [BibData to Spreadsheet.exe](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/BibData%20to%20Spreadsheet.exe)
+   - The INI file: [Bibdata to Spreadsheet.ini](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/BibData%20to%20Spreadsheet.ini) (this is for saving your settings and preferences)
    - Always keep the two files above together in the same folder.
    - One of three compatible Excel spreadsheets:
      - [Ordering Materials Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Orders%20-%2020xx-xx%20-%20Template.xlsm)
