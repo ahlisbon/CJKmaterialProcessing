@@ -26,12 +26,12 @@ This macro has been tested extensively in FireFox while using the spreadsheet as
 Several keyboard keys are repurposed to start and stop the macro, referred to as "Hotkeys." F1 through F12 and the numpad keys are repuprosed for quick and easy use of the macro. It is *highly* recommended that you use a keyboard with a numpad as it is much each easier to use. In case you do not have a keyboard with a numpad, the function keys will suffice.
 
 ## -- ⌨ Essential Hotkeys
-- \\
-  - Stops the script
 - ctrl + \\
   - Stope the script and closes the program. You will no longer see the green square with an "H" in the taskbar.
 - Pause / F12
   - Deativates hotkeys so you can use your keyboard like normal. Press again to reactivate hotkey functionality.
+- ctrl + shift + \\
+  - Completely turns off off the script.
 
 ## --  ⌨ Hotkeys, listed in order of how to get bibliographic data on the spreadsheet.
 **Important:**
