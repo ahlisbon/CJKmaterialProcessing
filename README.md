@@ -42,6 +42,7 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
   - _On a spreadsheet_: Copies a row of data from the spreadsheet to find a book/item in FirstSearch. Assumes you are storing at least OCLC#, ISBN, or Title to on the spreadsheet to look up in FirstSearch.
 - **Numpad Plus / F2**
   - _On a FirstSearch Record_: activates the "Search for versions with same title and author" link to see other versions of the same item.
+  - _On a list of FirstSearch Results_: opens each search result in a new tab.
 - **Numpad Enter / F1**
   - _On a FirstSeach record_: imports bibliographic data from the record into a spreadsheet.
   - On a search results page in FirstSearch: opens each record in a new browser tab to compare records for importing into a spreadsheet.
