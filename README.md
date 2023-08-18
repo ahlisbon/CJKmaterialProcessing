@@ -33,7 +33,7 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 - **ctrl + shift + \\**
   - Completely turns off off the script.
 
-## --  ⌨ Hotkeys, listed in order of how to get bibliographic data on the spreadsheet.
+## -- ⌨ Hotkeys, listed in order of how to get bibliographic data on the spreadsheet.
 **Important:**
   - The same key will perform different actions depending on the active window. For example, the Numpad Enter key does something different in Excel than in a browser window.
   - Emphasis should be on learning to use the hotkeys on the numpad, as it is compact and easy to rest your hand. Equivalent hotkeys are also available in the function keys row for when the numpad is not available on a keyboard.
