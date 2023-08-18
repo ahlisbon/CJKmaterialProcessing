@@ -49,15 +49,14 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
     - After the tabs have loaded, use **ctrl + Numpad 0** to quickly cycle through the tabs. Use **Numpad Minus** to quickly close a tab for a record you don't want to import.
 
 ## -- 🧽 Data Clean up Hotkeys
-- ctrl + Numpad 7 / F7
-  - On a spredsheet: Derives an ISBN-10 from an ISBN-13 and pastes it into the ISBN-10 column. Will also add an amazon URL to check price.
-    - This will not work for ISBN's beginning with 979.
-- ctrl + Numpad 8 / F8
-  - On a spredsheet: Opens a menu to fix the ISBN columns in a spreadsheet when there are multiple ISBNs in a cell. Includes a contextual menu on how to use.
-- ctrl + Numpad 9 / F9
-  - On a spreadsheet: Copies a cell and if it contains a misformatted Japanese publisher name, will try to fix it.
-- Numpad Division (/)
-  - On a spreadsheet: For cells with multiple ISBNs: double click into a cell, place the cursor within an ISBN, then hit the hot key remove all other content.
+- **ctrl + Numpad 7 / F7**
+  - _On a spredsheet_: Derives an ISBN-10 from an ISBN-13 and pastes it into the ISBN-10 column. Will also add an amazon URL to check price. ⚠ This will not work for ISBN's beginning with 979.
+- **ctrl + Numpad 8 / F8**
+  - _On a spredsheet_: Opens a menu to fix the ISBN columns in a spreadsheet when there are multiple ISBNs in a cell. Includes a contextual menu on how to use.
+- **ctrl + Numpad 9 / F9**
+  - _On a spreadsheet_: Copies a cell and if it contains a misformatted Japanese publisher name, will try to fix it.
+- **Numpad Division (/)**
+  - _On a spreadsheet_: For cells with multiple ISBNs: double click into a cell, place the cursor within an ISBN, then hit the hot key remove all other content.
  
 ## -- 💬 Chat GPT Translation Assistance HotKeys
 **Important**
