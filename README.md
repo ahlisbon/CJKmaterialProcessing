@@ -7,7 +7,7 @@ This is a macro script for screen scraping data form OCLC's WorldCat.org or Firs
 2. Files to download:
    - The AHK executible file: [BibData to Spreadsheet.exe](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/BibData%20to%20Spreadsheet.exe)
    - The INI file: [Bibdata to Spreadsheet.ini](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/BibData%20to%20Spreadsheet.ini) (this is for saving your settings and preferences)
-   - Always keep the two files above together in the same folder.
+     - ⚠ Always keep the two files above together in the same folder.
    - One of three compatible Excel spreadsheets:
      - [Ordering Materials Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Orders%20-%2020xx-xx%20-%20Template.xlsm)
        - Optimized for general collection development.
