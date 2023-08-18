@@ -35,8 +35,8 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
 
 ## -- ⌨ Hotkeys, listed in order of how to get bibliographic data on the spreadsheet.
 **Important:**
-  - The same key will perform different actions depending on the active window. For example, the Numpad Enter key does something different in Excel than in a browser window.
-  - Emphasis should be on learning to use the hotkeys on the numpad, as it is compact and easy to rest your hand. Equivalent hotkeys are also available in the function keys row for when the numpad is not available on a keyboard.
+1. The same key will perform different actions depending on the active window. For example, the Numpad Enter key does something different in Excel than in a browser window.
+2. Emphasis should be on learning to use the hotkeys on the numpad, as it is compact and easy to rest your hand. Equivalent hotkeys are also available in the function keys row for when the numpad is not available on a keyboard.
 - **Numpad Enter / F1**
   -  _On a spreadsheet_: Copies a row of data from the spreadsheet to find a book/item in FirstSearch. Assumes you are storing at least OCLC#, ISBN, or Title to on the spreadsheet to look up in FirstSearch.
 - **Numpad Plus / F2**
