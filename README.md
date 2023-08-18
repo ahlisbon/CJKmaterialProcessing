@@ -20,7 +20,7 @@ This is a macro script for screen scraping data form OCLC's WorldCat.org or Firs
 This macro has been tested extensively in FireFox while using the spreadsheet as an Excel File. It has successfully worked in Google Chrome and Microsoft Edge, though has not undergone extensive testing in those browsers. Additionally, The Excel File may be used as a spreadsheet in Office 365 or Google Drive. Again, testing has been very limited in these alternative environments, but successful.
 
 # ⚠ Must Knows
-- The "kill switch" for the macro is the backslash ctrl + \\ (above the "enter" key on most keyboards). Unusual behavior is always possible and this hotkey will stop the macro.
+- The "kill switch" for the macro is the backslash ctrl + \\ (above the "enter" key on most keyboards). Unusual behavior is always possible and this hotkey will stop the script.
 - Slower internet connections may cause the macro to malfunction and stop.
 
 # 🔥 Hotkeys to Activate Macro
