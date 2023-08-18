@@ -84,9 +84,9 @@ If you are interested in tracking the general cost of the books you are selectin
 
 # 📊 How the Spreadsheets Work
 There are three spreadsheet templates to choose from:
-- [Donations - Donations - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Donation%20-%20Template.xlsm)
-- [Collection Development - Orders - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Collection%20Development%20-%20Orders%20-%20Template.xlsm)
-- User Selection (pending)
+- [Collection Development - Orders - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Orders%20-%2020xx-xx%20-%20Template.xlsm)
+- [Donations - Donations - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Donation%20-%20Template.xlsm)
+- [Select Monograph - User Name - Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Select%20Monographs%20-%20User%20Name%20-%20Template.xlsm)
 
 ## -- 👨‍🏫 Spreadsheet Fundamentals
 - *Do NOT*
