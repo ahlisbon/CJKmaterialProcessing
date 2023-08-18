@@ -70,7 +70,10 @@ If you are interested in tracking the general cost of the books you are selectin
 **Only available for Japanese at the moment**
 - **ctrl + Numpad Plus or F4**
   - On a spreadsheet: Looks up the item across several websites to compare prices.
-  - Once an amazon page has loaded, you will need to browse for an appropriate price and select highlight it.
+  - Once the web pages have all loaded, you will can browse for an appropriate price and select highlight it.
+  - You can use **ctrl + 0** to quickly cycle through tabs.
+  - On Amazon.com or Amazon.jp, you need to highlight the price (including the currency symbol) with your mouse before pressing the next hotkey.
+  - On Furuhonya and JPT, you need to make sure to open an individual record before pressing the next hotkey.
 - **press ctrl+ Numpad Enter** or **ctrl + Enter** to bring that price back to the spreadsheet.
    - The "URL for Price Check" column (H) will update with the relvant URL.
 
@@ -122,8 +125,6 @@ There are several additional worksheets besides the "Orders" or "Donations" shee
   - Data does not update automatically, you need to click the "Refresh Data" button on each sheet.
   - Do not try to move or rename tables, pivot tables, or charts.
   - Do not try to edit the data in a pivot table, if you see a mistake, you need to fix it at the source, which will be the "Orders" or "Donations" sheet depending on which Excel template you are using.
-
-
 
 # 🖱 Understanding the GUI
 When you run the EXE file for the script, you have 6 data fields to fill out in the GUI that affect how the script will function.
