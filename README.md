@@ -31,29 +31,29 @@ Several keyboard keys are repurposed to start and stop the macro, referred to as
   - Stops the script and closes the program. You will no longer see the green square with an "H" in the taskbar.
 - **Pause *or* F12**
   - Deativates hotkeys so you can use your keyboard like normal. Press again to reactivate hotkey functionality.
-- **ctrl + shift + \\**
+- **ctrl + shift + backslack (above the enter key)**
   - Completely turns off off the script.
 
 ## -- ⌨ Hotkeys, listed in order of how to get bibliographic data on the spreadsheet.
 **Important:**
 1. The same key will perform different actions depending on the active window. For example, the Numpad Enter key does something different in Excel than in a browser window.
 2. Emphasis should be on learning to use the hotkeys on the numpad, as it is compact and easy to rest your hand. Equivalent hotkeys are also available in the function keys row for when the numpad is not available on a keyboard.
-- **Numpad Plus / F1**
+- **Numpad Plus *or* F1**
   -  _On a spreadsheet_: Copies a row of data from the spreadsheet to find a book/item in FirstSearch. Assumes you are have at least an OCLC#, ISBN, or Title in the appropriate column on the spreadsheet to look up in FirstSearch.
-- **Numpad Plus / F1**
+- **Numpad Plus *or* F1**
   - _On a FirstSearch Record_: activates the "Search for versions with same title and author" link to see other versions of the same item.
   - _On a list of FirstSearch Results_: opens each search result in a new tab.
-- **Numpad Enter / F2**
+- **Numpad Enter *or* F2**
   - _On a FirstSeach record_: imports bibliographic data from the record into a spreadsheet.
   - _On a search results page in FirstSearch_: opens each record in a new browser tab to compare records for importing into a spreadsheet.
     After the tabs have loaded, use **ctrl + Numpad 0** to quickly cycle through the tabs. Use **Numpad Minus** to quickly close a tab for a record you don't want to import.
 
 ## -- 🧽 Data Clean up Hotkeys
-- **ctrl + Numpad 7 / F7**
+- **ctrl + Numpad 7 *or* F7**
   - _On a spredsheet_: Derives an ISBN-10 from an ISBN-13 and pastes it into the ISBN-10 column. Will also add an amazon URL to check price. ⚠ This will not work for ISBN's beginning with 979.
-- **ctrl + Numpad 8 / F8**
+- **ctrl + Numpad 8 *or* F8**
   - _On a spredsheet_: Opens a menu to fix the ISBN columns in a spreadsheet when there are multiple ISBNs in a cell. Includes a contextual menu on how to use.
-- **ctrl + Numpad 9 / F9**
+- **ctrl + Numpad 9 *or* F9**
   - _On a spreadsheet_: Copies a cell and if it contains a misformatted Japanese publisher name, will try to fix it.
 - **Numpad Division (/)**
   - _On a spreadsheet_: For cells with multiple ISBNs: double click into a cell, place the cursor within an ISBN, then hit the hot key remove all other content.
