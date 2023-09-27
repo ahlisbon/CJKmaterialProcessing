@@ -75,7 +75,7 @@ If you are interested in tracking the general cost of the books you are selectin
   - You can use **ctrl + 0** to quickly cycle through tabs.
   - On Amazon.com or Amazon.jp, you need to highlight the price (including the currency symbol) with your mouse before pressing the next hotkey.
   - On Furuhonya and JPT, you need to make sure to open an individual record before pressing the next hotkey.
-- **press ctrl+ Numpad Enter** or **ctrl + Enter** to bring that price back to the spreadsheet.
+- **press ctrl + Numpad Enter** *or* **ctrl + Enter** to bring that price back to the spreadsheet.
    - The "URL for Price Check" column (H) will update with the relvant URL.
 
 ## -- 🍹 Quality of Life HotKeys
