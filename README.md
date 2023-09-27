@@ -20,8 +20,32 @@ This is a macro script for screen scraping data form OCLC's WorldCat.org or Firs
 This macro has been tested extensively in FireFox while using the spreadsheet as an Excel File. It has successfully worked in Google Chrome and Microsoft Edge, though has not undergone extensive testing in those browsers. Additionally, The Excel File may be used as a spreadsheet in Office 365 or Google Drive. Again, testing has been very limited in these alternative environments, but successful.
 
 # ⚠ Must Knows
-- The "kill switch" for the macro is the backslash ctrl + \\ (above the "enter" key on most keyboards). Unusual behavior is always possible and this hotkey will stop the script.
+- The "kill switch" for the macro is the backslash ctrl + forward slash (above the enter key on most keyboards). Unusual behavior is always possible and this hotkey will stop the script.
 - Slower internet connections may cause the macro to malfunction and stop.
+
+# 🖱 Understanding the GUI
+When you run the EXE file for the script, you have 6 data fields to fill out in the GUI that affect how the script will function.
+
+## -- 📁 File Name Prefixes
+You can rename your files to whatever you like. However for data to be pasted correctly, the script needs to know which type of spreadsheet you are using. If you are preparing different books for purchase, make sure all your spreadsheets start with the same prefix, such as:
+- Collection Development - 2022-23
+- Collection Development - Rare Korean Books
+
+Other things to be aware of regarding naming conventions:
+- Do not use the same prefix for different types of sheets.
+- Avoid having two sheets open at once. The script will not let you continue if you have more than one open.
+
+## -- 🌐 FirstSearch URL for Your Institution
+In order to pull data like an OCLC#, ISBN#, or Title from the spreadsheet to search FirstSearch, you need to provide the script with a URL that can load FirstSearch
+
+- Do NOT log into FirstSearch and copy that URL, it will not work.
+- Identify they URL your institution uses to access FirstSearch. Whatever link you are using to open FirstSearch, copy that link and paste it here.
+
+## -- ✅ Use Check Mode
+Before pasting data to your spreadhseet, a window will appear for you to review the bibliographic data.
+
+## -- 🕗 Wait longer for Websites to Load
+IF you are using a slower connection speed, you can increase the time the script will wait to load. The default is 1, which equals 3 seconds. 2 and 3 are multipliers, so the script will wait 6 or 9 seconds respectively.
 
 # 🔥 Hotkeys to Activate Macro
 Several keyboard keys are repurposed to start and stop the macro, referred to as "Hotkeys." F1 through F12 and the numpad keys are repuprosed for quick and easy use of the macro. It is *highly* recommended that you use a keyboard with a numpad as it is much each easier to use. In case you do not have a keyboard with a numpad, the function keys will suffice.
@@ -126,30 +150,6 @@ There are several additional worksheets besides the "Orders" or "Donations" shee
   - Data does not update automatically, you need to click the "Refresh Data" button on each sheet.
   - Do not try to move or rename tables, pivot tables, or charts.
   - Do not try to edit the data in a pivot table, if you see a mistake, you need to fix it at the source, which will be the "Orders" or "Donations" sheet depending on which Excel template you are using.
-
-# 🖱 Understanding the GUI
-When you run the EXE file for the script, you have 6 data fields to fill out in the GUI that affect how the script will function.
-
-## -- 📁 File Name Prefixes
-You can rename your files to whatever you like. However for data to be pasted correctly, the script needs to know which type of spreadsheet you are using. If you are preparing different books for purchase, make sure all your spreadsheets start with the same prefix, such as:
-- Collection Development - 2022-23
-- Collection Development - Rare Korean Books
-
-Other things to be aware of regarding naming conventions:
-- Do not use the same prefix for different types of sheets.
-- Avoid having two sheets open at once. The script will not let you continue if you have more than one open.
-
-## -- 🌐 FirstSearch URL for Your Institution
-In order to pull data like an OCLC#, ISBN#, or Title from the spreadsheet to search FirstSearch, you need to provide the script with a URL that can load FirstSearch
-
-- Do NOT log into FirstSearch and copy that URL, it will not work.
-- Identify they URL your institution uses to access FirstSearch. Whatever link you are using to open FirstSearch, copy that link and paste it here.
-
-## -- ✅ Use Check Mode
-Before pasting data to your spreadhseet, a window will appear for you to review the bibliographic data.
-
-## -- 🕗 Wait longer for Websites to Load
-IF you are using a slower connection speed, you can increase the time the script will wait to load. The default is 1, which equals 3 seconds. 2 and 3 are multipliers, so the script will wait 6 or 9 seconds respectively.
 
 # 📃 Using Slips
 
