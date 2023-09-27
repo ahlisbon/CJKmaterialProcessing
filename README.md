@@ -28,8 +28,8 @@ When you run the EXE file for the script, you have 6 data fields to fill out in 
 
 ## -- 📁 File Name Prefixes
 You can rename your files to whatever you like. However for data to be pasted correctly, the script needs to know which type of spreadsheet you are using. If you are preparing different books for purchase, make sure all your spreadsheets start with the same prefix, such as:
-- Collection Development - 2022-23
-- Collection Development - Rare Korean Books
+- Orders - 2022-23
+- Orders - Rare Korean Books
 
 Other things to be aware of regarding naming conventions:
 - Do not use the same prefix for different types of sheets.
