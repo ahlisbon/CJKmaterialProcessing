@@ -11,8 +11,12 @@ setTitleMatchMode 2
 #Include "%A_ScriptDir%\Diacritics And Nengo.ahk"
 #Include "%A_ScriptDir%\Fix Japanese Publisher Names.ahk"
 
+
+
 ;■■■■■■■■■■■■■ Global Variables
-	activeSearch:= 0
+	global bibArr:= []
+	global activeSearch:= 0
+	global tutorialMode:= 0
 
 ;■■■■■■■■■■■■■ Read values in .ini file
 	;Populate variables from INI file
@@ -26,9 +30,10 @@ setTitleMatchMode 2
 
 ;■■■■■■■■■■■■■ Run GUI
 	; GUI Interface
-		bib := Gui(, "Bibliographic Data To Spreadsheet - Options")
+		bib:= Gui(, "Bibliographic Data To Spreadsheet - Options")
 	;Question 1:
 		bib.Add("Text",		"					x180 y20",	"▼ File Name Prefixes of Your Spreadsheets (Case Sensitive)")
+		bib.Add("Link",		"					x192 y40",	"<a href=`"https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#----file-name-prefixes`">Read about file naming conventions</a>")
 		;Q1 answer 1
 			bib.Add("Text",	"					x10  y65",	"Collection Development:")
 			bib.Add("Edit",	"vCD		w300	x180 y60",	CD)
@@ -42,28 +47,35 @@ setTitleMatchMode 2
 		bib.Add("Text",		"					x10	 y170",	"FirstSearch URL for your institution:")
 		bib.Add("Edit",		"vfsURL		w300	x180 y165",	fsURL)
 	;Question 4:
-		bib.Add("Text", "						x10	 y200", "Use Check Mode:")
+		bib.Add("Text", "						x10	 y200", "Use &Check Mode:")
 		bib.Add("Checkbox",	"vcheckMode			x180 y200")
+		bib.Add("Text", "						x220 y200", "Review data before it's imported into your spreadsheet.")
 	;Question 5:
-		bib.Add("Text",		"					x10  y230", "Wait longer for websites to load:")
-		bib.Add("DDL", 		"vloadTime	w30		x180 y225 Choose1", ["1", "2", "3"])
-	;Process Answers into variables
-		bib.Add("Button",	"default			x180 y270", "&Save Settings").OnEvent("Click", settings)
-	;Help Text/Links
+		bib.Add("Text", "						x10	 y230", "Use &Tutorial Mode:")
+		bib.Add("Checkbox",	"vtutorialMode		x180 y230")
+		bib.Add("Text", "						x220 y230", "Get pop up instructions on using hotkeys.")
+	;Question 6:
+		bib.Add("Text",		"					x10  y260", "&Wait longer for websites to load:")
+		bib.Add("DDL", 		"vloadTime	w30		x180 y255 Choose1", ["1", "2", "3"])
+		bib.Add("Link",		"					x220 y260",	"<a href=`"https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#----wait-longer-for-websites-to-load`">What is this?</a>")
+	;Process answers into variables
+		bib.Add("Button",	"default			x180 y300", "&Save Settings").OnEvent("Click", settings)
+	;Help Text/Link
 		bib.Add("Link", 	"					x10  y310", "Read the <a href=`"https://github.com/ahlisbon/CJKmaterialProcessing#-hotkeys-to-activate-macro`">Hotkey Guide</a> on GitHub")
-		bib.Add("Link",		"					x192 y40",	"<a href=`"https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#----file-name-prefixes`">Read about file naming conventions</a>")
-		bib.Add("Link",		"					x220 y229",	"<a href=`"https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#----wait-longer-for-websites-to-load`">What is this?</a>")
 		bib.Show()
 	;Save and error check inputs
 		settings(*){
 			;Post that settings are updated
-				bib.Add("Text", 	"			x264 y275", "✔ Updated")
+				bib.Add("Text", 	"			x264 y305", "✔ Updated")
 				bib.Show()
 			;Set variables
 				saved:= bib.Submit(0)
 				;Check Mode
 					global checkMode
 					checkMode:= saved.checkMode
+				;Tutorial Mode
+					global tutorialMode
+					tutorialMode:= saved.tutorialMode
 				;Load Time
 					global loadTime
 					loadTime:= 3000*saved.loadtime
@@ -76,14 +88,25 @@ setTitleMatchMode 2
 				IniWrite(saved.CD,		"Bibdata to Spreadsheet.ini", "Sheet Names", "CD")
 				IniWrite(saved.DI,		"Bibdata to Spreadsheet.ini", "Sheet Names", "DI")
 				IniWrite(saved.US,		"Bibdata to Spreadsheet.ini", "Sheet Names", "US")
+			;Tutorial window
+				if(tutorialMode= 1){
+					tutorialGUI()
+					tutorialContent(1,	"",
+										"Your Spreadsheet",
+										"Numpad Plus   OR   F1",
+										"Select the row of the current active cell to look up your item on FirstSearch.")
+					tutorialShow()
+				}
 }
 			checkGUIinputs(CD, DI, US, fsURL){
 				;Blank value alert
 					if(CD= "") & (DI= "") & (US= ""){
+						active.Destroy()
 						MsgBox("At least one type of spreadsheet must have a name.")
 						exit
 						}
 					if(fsURL= ""){
+						active.Destroy()
 						MsgBox("The field for your institution's FirstSearch URL cannot be blank.")
 						exit
 					}
@@ -91,6 +114,7 @@ setTitleMatchMode 2
 					if((CD!="") & (DI="") & (US="")) | ((CD="") & (DI!="") & (US="")) | ((CD="") & (DI="") & (US!=""))
 						return
 					if(CD= DI) | (CD= US) | (DI= US){
+						active.Destroy()
 						MsgBox("You cannot have two file names that are identical.")
 						exit
 					}
@@ -99,9 +123,12 @@ setTitleMatchMode 2
 ;▼▲▼ Error checking to stop script if criteria aren't met. Declares what spreadsheet is actively being used.
 	sheetCheck(){
 			spreadsheet:= ""
-			if(CD= "") & (DI= "") & (US= "")
-				MsgBox("There is no spreadsheet open with a matching prefix.`n`nCheck if:`n your file name matches the names you submitted'nThe file is open.")
+			if(CD= "") & (DI= "") & (US= ""){
+				active.Destroy()
+				MsgBox("There is no spreadsheet open with a matching prefix.`n`nCheck if:`n`n  1) your file name matches the names you submitted`n  2) The file is open.")
+			}
 			if((WinExist(CD) & WinExist(DI)) | (WinExist(CD) & WinExist(US)) | (WinExist(DI) & WinExist(US))){
+				active.Destroy()
 				MsgBox("You have at least two different types of spreadsheets open. Please close all other spreadsheets except for the one you are actively working on.")
 				exit
 			}
@@ -136,6 +163,7 @@ setTitleMatchMode 2
 ;■■■■■■■■■■■■■ Search FirstSearch/Worldcat with data from spreadsheet.
 #HotIf WinActive(CD) | WinActive(DI)
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼ Functions
+;▼▲▼
 	getDataFromBibSpreadsheet(){
 			spreadsheet:= sheetCheck()
 		;Get data from spreadsheet
@@ -146,10 +174,12 @@ setTitleMatchMode 2
 			copy()
 			global bibArr:= strSplit(A_Clipboard, A_Tab)
 			if(bibArr[15]= "") & (bibArr[16]= "") & (bibArr[17]= "") & (bibArr[20]= "") & (bibArr[21]= ""){
+				active.Destroy()
 				MsgBox("The script stopped because there is no searchable data in your spreadsheet.", stopped)
 				exit
 			}
 }
+;▼▲▼
 	searchFS(){
 			activateBrowser()
 			newWin(fsURL)
@@ -160,35 +190,80 @@ setTitleMatchMode 2
 			Send searchText
 			Sleep nt
 			Send "{enter}"
+			Sleep wt
 }
-		searchWith(oclc, isbn13, isbn10, titleR, titleN){
-				if (oclc!= "") & (oclc!= "n/a")
-					return "no:" . oclc
-				if (isbn13!= "") & (isbn13!= "n/a")
-					return "bn:" . isbn13
-				if (isbn10!= "") & (isbn10!= "n/a")
-					return "bn:" . isbn10
-				if (titleN!= "") & (titleN!= "n/a")
-					return "ti:" . titleN
-				if (titleR!= "") & (titleR!= "n/a")
-					return "ti:" . titleR
+;▼▲▼
+			searchWith(oclc, isbn13, isbn10, titleR, titleN){		
+					if (oclc!= "") & (oclc!= "n/a")
+						return "no:" . oclc
+					if (isbn13!= "") & (isbn13!= "n/a")
+						return "bn:" . isbn13
+					if (isbn10!= "") & (isbn10!= "n/a")
+						return "bn:" . isbn10
+					if (titleN!= "") & (titleN!= "n/a")
+						return "ti:" . titleN
+					if (titleR!= "") & (titleR!= "n/a")
+						return "ti:" . titleR
+}
+;▼▲▼ Tutorial GUI
+	FSresultsTutorial(){
+		Sleep wt*2.5
+		if(tutorialMode= 1){
+			if WinExist("List"){
+				tutorialGUI()
+				tutorialContent(1,	"",
+									"FirstSearch: WorldCat List of Records",
+									"Numpad Plus   OR   F1",
+									"open each record from the search results in a new tab.`n● Occaisionally, an individual record will not open automatically, but you can open it manually.")
+				tutorialContent(0,	"=== OR =========",
+									"",
+									"Instead of using a hotkey, you can click on any result.",
+									"determine if you will import the data of that particular record.")
+				tutorialContent(0,	"=== AND IF YOU CLICK OPEN A RECORD WITH DATA YOU WANT TO IMPORT =========",
+									"",
+									"Numpad Enter   OR   Enter",
+									"import the data in detailed record into your spreadsheet.")
+				tutorialShow()
+			}
+			if WinExist("Detailed"){
+				tutorialGUI()
+				tutorialContent(1, 	"",
+									"FirstSearch: WorldCat Detailed Record",
+									"Numpad Enter   OR   Enter",
+									"Bring the data from this record back into the spreadsheet.")
+				tutorialContent(0, 	"=== OR =========",
+									"",
+									"Numpad Plus   OR   F1",
+									"activate the `" Search for versions with same title and author`" link. If there is no link then nothing will happen.")
+				tutorialShow()
+			}
 		}
+}
 ;■■■
 numpadAdd::{
-		activeSearch:= 1
+		global activeSearch:= 1	
+		tutorialOff()
+		activeGUI()
 		getDataFromBibSpreadsheet()
 		searchFS()
+		active.Destroy()
+		FSresultsTutorial()
 }
 F1::{
-		activeSearch:= 1
+		global activeSearch:= 1
+		tutorialOff()
+		activeGUI()
 		getDataFromBibSpreadsheet()
 		searchFS()
+		active.Destroy()
+		FSresultsTutorial()
 }
 
 
 
 ;■■■■■■■■■■■■■ Open other versions link in FirstSearch Detailed Record.
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼ Functions
+;▼▲▼ Tutorial GUI
 	showRecordsList(){
 			siteText:= copyAll()
 		;Open other versions link in FirstSearch Detailed Record.
@@ -196,8 +271,9 @@ F1::{
 				findTextOnSite("Search for versions with same title and author")
 				Send "{enter}"
 			}else
-				Send "{tab}"
+				Send "{tab}"	
 }
+;▼▲▼ Tutorial GUI
 	openRecordsList(){
 		;Determine how many tabs to open.
 			data:= copyAll()
@@ -218,416 +294,197 @@ F1::{
 				}	
 			}
 }
-;■■■ Open browser tab for each search result.
+
+
+
+;■■■■■■■■■■■■■ Open browser tab for each search result.
 #HotIf WinActive("WorldCat Detailed Record")
-numpadAdd::		showRecordsList()
-F2::			showRecordsList()
+numpadAdd::{
+		tutorialOff()
+		activeGUI()
+		showRecordsList()
+		active.Destroy()
+		FSresultsTutorial()
+}
+F1::{
+		tutorialOff()
+		activeGUI()
+		showRecordsList()
+		active.Destroy()
+		FSresultsTutorial()
+}
+
+
+
+
+;■■■■■■■■■■■■■ Open browser tab for each search result.
+;▼▲▼▲▼▲▼▲▼▲▼▲▼ Functions
+;▼▲▼ Tutorial GUI
+	FSlistTutorial(){
+		tutorialGUI()
+		tutorialContent(1,	"Browser window with many FirstSearch records loaded.",
+							"",
+							"Numpad 0   OR   Ctrl+Tab",
+							"quickly swap browser tabs and browse for a record with data you want to import to your spreadsheet.")
+		tutorialContent(0,	"=== OR =========",
+							"",
+							"Numpad Minus   OR   Ctrl+W",
+							"close browser tabs of records you are not interested in.")
+		tutorialContent(0,	"=== ON A RECORD YOU WANT TO IMPORT DATA FROM =========",
+							"",
+							"Numpad Enter   OR   Enter",
+							"import the data in detailed record into your spreadsheet.")
+		tutorialShow()
+}
+;■■■
 #HotIf WinActive("WorldCat List of Records")
-numpadAdd::		openRecordsList()
-F2::			openRecordsList()
+numpadAdd::{
+		tutorialOff()
+		activeGUI()
+		openRecordsList()
+		active.Destroy()
+		FSlistTutorial()
+}
+F1::{
+		tutorialOff()
+		activeGUI()
+		openRecordsList()
+		active.Destroy()
+		FSlistTutorial()
+}
 
 
 
 ;■■■■■■■■■■■■■ Put bibliographic data from a FirstSearch detailed record and put it in a spreadsheet.
 #HotIf WinActive("Detailed Record")
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼ Functions
-	normalize(data){
-		; Convert Japanese punctuation to American punctuation.
-		data:= RegExReplace(data, "  ", " ")
-		data:= RegExReplace(data, "：", ":")
-		data:= RegExReplace(data, "、", ".")
-		loop{
-				if InStr(data, "  ")
-					data:= RegExReplace(data, "  "," ")
-				else
-					Break
-			}
-		; Turn composed characters into decomposed characters.
-			data:= regExReplace(data, "ā", "ā")
-			data:= regExReplace(data, "ī", "ī")
-			data:= regExReplace(data, "ū", "ū")
-			data:= regExReplace(data, "ē", "ē")
-			data:= regExReplace(data, "ō", "ō")
-		return data
-}
-	getVolumes(data){
-			volumes:= RegExReplace(data, ".*<b>Description:|</font></td>.*")
-			if inStr(volumes, " volumes")
-				volumes:= RegExReplace(volumes, ".*serif`">| volumes.*")
-			else
-				volumes:= "n/a"
-			volumes:= Trim(volumes)
-			return volumes
-}
-	getISBN(data, needle){
-		;Contain beginning and end of ISBN data
-			isbn:= RegExReplace(data, ".*<b>ISBN:</b> ", "[")
-			isbn:= RegExReplace(isbn, "</font>.*|; <.*| <.*", "]")
-		;Fix double brackes: (( and ))
-			isbn:= RegExReplace(isbn, "\(\(", "(")
-			isbn:= RegExReplace(isbn, "\)\)", ")")
-		;▲
-			isbn:= RegExReplace(isbn, "; ", "][")
-			isbn:= RegExReplace(isbn, needle)
-			isbn:= regExReplace(isbn, "\]\[", " ^ ")
-			isbn:= regExReplace(isbn, "\]|\[")
-			isbn:= regExReplace(isbn, "i)dai |-kan")
-			isbn:= Trim(isbn)
-			return isbn
-}
-	getTitleR(data){
-			titleR:= RegExReplace(data, ".*<b>Title:.+?</td>|</td>.*")
-			titleR:= RegExReplace(titleR, ".* /<div><br>|.* /</div>| =<br>.*")		;Removes translated title in order to parse romanized title.
-			if InStr(titleR, "Translated Title:"){									;▲
-				titleR:= RegExReplace(titleR, " /<br><b>Translated Title:.*")		;▲
-				titleR:= RegExReplace(titleR, ".*<br>") 							;▲
-				titleR:= Trim(titleR)
-				return titleR
-			}
-			titleR:= RegExReplace(titleR, "( :| `;|:|;)<br>", ": ")	;Subtitle
-			titleR:= RegExReplace(titleR, ".*<br>| /.*")  	;▲
-		;Clean Up
-			titleR:= RegExReplace(titleR, ".</b>.*")
-			titleR:= RegExReplace(titleR, " : ", ": ")
-			titleR:= RegExReplace(titleR, ".*</div>")
-			titleR:= RegExReplace(titleR, "&lt;&gt;", "n/a")	
-			titleR:= Trim(titleR)
-			return titleR
-}	
-	getTitleN(data){
-			titleN:= RegExReplace(data, ".*<b>Title:.+?</td>|</td>.*")
-			if !InStr(titleN, "vernacular")
-				titleN:= "n/a"
-			if InStr(titleN, " = ")
-				titleN:= RegExReplace(titleN, " = .*")
-			titleN:= RegExReplace(titleN, ".*lang=`"..`">| /.*")
-			titleN:= RegExReplace(titleN, ".*lang=`"..`">|( |　|\.)/.*|(\.|,)</div>.*")
-		;Clean Up
-			titleN:= RegExReplace(titleN, " : ", ": ")
-			titleN:= Trim(titleN)
-			return titleN
-}
-	getTitleT(data){
-			titleT:= RegExReplace(data, ".*<b>Title:.+?</td>|</td>.*")
-			if InStr(titleT, "Translated Title:"){
-				titleT:= RegExReplace(titleT, ".*Translated Title:</b> |<.*|\. eng.*")
-				titleT:= Trim(titleT)
-				return titleT
-			}
-			
-			if !InStr(titleT, " = ")
-				titleT:= "n/a"
-			titleT:= RegExReplace(titleT, ".* = | /.*")
-			titleT:= Trim(titleT)
-			return titleT
-}
-	deDupe(txt){
-			str:= ""
-			loop Parse, txt, "`r"
-				if !InStr(str, A_LoopField "`n")
-					str .= A_LoopField "`n"
-			return str
-}
-	cleanCreator(creator){
-			creator:= RegExReplace(creator, ", `;|\. `;|,`;", ",")
-			creator:= RegExReplace(creator, "(,|;) [0-9].*|(,|-|\.) editor.*|, author.*")
-			creator:= RegExReplace(creator, "\.$")
-			loop{
-				if InStr(creator, "`n`n")
-					creator:= RegExReplace(creator, "`n`n","`n")
-				else
-					Break
-			}
-			creator:= deDupe(creator)
-			creator:= RegExReplace(creator, "`n", " ^ ")
-			creator:= RegExReplace(creator, "(\.|,) \^ ", " ^ ")
-			creator:= RegExReplace(creator, " \^ ,| \^ $| \^$|,$| $")
-			creator:= Trim(creator)
-			return creator
-	}
-	getCreatorR(data){
-			creatorR:= RegExReplace(data, ".*<b>Author\(s\):.+?</td>|</td>.*")
-			creatorR:= RegExReplace(creatorR, "<br>", "`n")
-			creatorR:= RegExReplace(creatorR, ".*html`" >|</a>.*")
-			creatorR:= cleanCreator(creatorR)
-			creatorR:= Trim(creatorR)
-			return creatorR
-}
-	getCreatorN(data){
-			creatorN:= RegExReplace(data, ".*<b>Author\(s\):.+?</td>|</td>.*")
-			if !InStr(creatorN, "vernacular")
-				creatorN:= "n/a"
-			creatorN:= RegExReplace(creatorN, "^.+?lang=`"..`">|</div>.*")
-			;Remove dates and put each other on new line:
-				creatorN:= RegExReplace(creatorN, "\([0-9]...-....\) ", "`n")
-				creatorN:= RegExReplace(creatorN, "\([0-9]...-\) |\([0-9]...-\)", "`n")
-				creatorN:= RegExReplace(creatorN, "(|, )[0-9]...-.... ", "`n")
-				creatorN:= RegExReplace(creatorN, "(|, )[0-9]...- ", "`n")
-				creatorN:= RegExReplace(creatorN, "(|, )[0-9]... ", "`n")
-				creatorN:= RegExReplace(creatorN, " [0-9]...-....", "`n")
-			;Remove description of authorship:
-				creatorN:= RegExReplace(creatorN, "(|, )editor(. |)|(|, )author(. |)|<span class=vernacular lang=`"..`">|\. ", "`n")
-			creatorN:= cleanCreator(creatorN)
-			creatorN:= RegExReplace(creatorN, " \^ $")
-			global language
-			if(language= "Japanese"){
-				creatorN:= RegExReplace(creatorN, ", ")
-				}
-			creatorN:= Trim(creatorN)
-			return creatorN
-}
-	getCorpR(data){
-			corpR:= RegExReplace(data, ".*<b>Corp Author\(s\):.+?</td>|</td>.*")
-			corpR:= RegExReplace(corpR, "<br>", "`n")
-			corpR:= RegExReplace(corpR, ".*html`" >|</a>.*")
-			corpR:= RegExReplace(corpR, ".*html`" >|</a>.*")
-			corpR:= RegExReplace(corpR, " \([0-9]...- \)", "`n")
-			corpR:= cleanCreator(corpR)
-			corpR:= Trim(corpR)
-			return corpR
-}
-	getCorpN(data){
-			corpN:= RegExReplace(data, ".*<b>Corp Author\(s\):.+?</td>|</td>.*")
-			if !InStr(corpN, "vernacular")
-				corpN:= "n/a"
-			corpN:= RegExReplace(corpN, "^.+?lang=`"..`">|</div>.*")
-			corpN:= RegExReplace(corpN, " <span class=vernacular lang=`"..`">| \([0-9]...- \)", "`n")
-			corpN:= cleanCreator(corpN)
-			corpN:= Trim(corpN)
-			return corpN
-}
-	getSeriesR(data){
-			seriesR:= RegExReplace(data, ".*<b>Series:.+?</td>|</td>.*")
-			seriesR:= RegExReplace(seriesR, ".*</div>|.*Variation:</b> |v. |\..*")
-		;Clean Up
-			seriesR:= RegExReplace(seriesR, "`; `;|`;`;", ";")
-			seriesR:= RegExReplace(seriesR, "; <.*|</font>.*")
-			seriesR:= Trim(seriesR)
-			return seriesR
-}
-	getSeriesN(data){
-			seriesN:= RegExReplace(data, ".*<b>Series:.+?</td>|</td>.*")
-			if !InStr(seriesN, "vernacular")
-				seriesN:= "n/a"
-			seriesN:= RegExReplace(seriesN, ".*lang=`"..`">|(\.|,|`; |)<.*")
-		;Clean Up
-			seriesN:= RegExReplace(seriesN, "`; `;|`;`;", " `; ")
-			seriesN:= RegExReplace(seriesN, "  ", " ")
-			seriesN:= Trim(seriesN)
-			return seriesN
-}
-	getPublisherR(data){
-			publisherR:= RegExReplace(data, ".*Publication.+?</td>|</td>.*")
-			publisherR:= regExReplace(publisherR, ".*</div>") ;Removes native publisher data to enable check Romanized publisher.
-			if !inStr(publisherR, " : ")
-				publisherR:= "n/a"
-			publisherR:= RegExReplace(publisherR, ".* : |,.*|\.$")
-			publisherR:= fixRomanizedPublisherNames(publisherR)
-			publisherR:= Trim(publisherR)
-			return publisherR
-}
-	getPublisherN(data){
-			publisherN:= RegExReplace(data, ".*Publication.+?</td>|</td>.*")
-			publisherN:= RegExReplace(publisherN, "<div><b>Edition:.*</div>") ;Removes native edition in order to parse native publisher name.
-			if !InStr(publisherN, "vernacular")
-				publisherN:= "n/a"
-			publisherN:= RegExReplace(publisherN, "<b>Edition:.*")
-			publisherN:= RegExReplace(publisherN, ".*lang=`"..`">|<.*")
-			publisherN:= RegExReplace(publisherN, ".* : |,.*|\.$")
-			publisherN:= publisherN
-			publisherN:= Trim(publisherN)
-			return publisherN
-}
-	getYearR(data){
-			yearR:= RegExReplace(data, ".*Year:</b>.+?serif`">")
-			yearR:= RegExReplace(yearR, "<nobr>|</nobr>")
-			yearR:= RegExReplace(yearR, "<.*|,.*")
-			yearR:= Trim(yearR)
-			return yearR
-}
-	getEditionR(data){
-			editionR:= RegExReplace(data, ".*<b>Publication:|(\.|)</font></td>.*")
-			editionR:= regExReplace(editionR, ".*\.</div>") ;Removes native publisher data to enable check Romanized publisher.
-			if !inStr(editionR, "Edition:")
-				editionR:= "n/a"
-			editionR:= RegExReplace(editionR, ".*Edition:</b> |(\.<|<).*")
-		;Clean Up
-				if(editionR= "")
-					editionR:= "n/a"
-			editionR:= Trim(editionR)
-			return editionR
-}
-	getEditionN(data){
-		editionN:= RegExReplace(data, ".*<b>Publication:|(|.)</font></td>.*")
-			if !inStr(editionN, "vernacular") AND (editionN, "Edition:"){
-				editionN:= "n/a"
-				return editionN
-			}
-		editionN:= RegExReplace(editionN, ".*<b>Edition:</b> <span.+?>|\.<.*|<.*")
-		editionN:= Trim(editionN)
-		return editionN
-}
-	getSubjects(data){
-		subjects:= RegExReplace(data, ".*SUBJECT\(S\).+?serif`">")
-		subjects:= RegExReplace(subjects, "<b>Class.*|<b>Note\(s\).*|<b>Responsibility.*|<b>Document.*|<b>Other Titles.*")
-		subjects:= regExReplace(subjects, "<br>|<div>|</a>|</div>", "`n") ;Removes content between multiple subject headings.		
-		subjects:= regExReplace(subjects, ".*>|&nbsp;")
-		subjects:= regExReplace(subjects, "m)^\(8.+?\) |\.$| \(Title\)")
-		subjects:= regExReplace(subjects, "B\.C\.|B\.C", "BC")
-		subjects:= regExReplace(subjects, "A\.D\.|A\.D", "AD")
-		;Remove French subjects.
-		subjects:= RegExReplace(subjects, "i).*chine$.*|.*chine .*|.*chinoise.*|.*corée.*|.*japon.*|.*japonais.*|.*bibliographie.*|.*bouddhique.*|.*bouddhisme.*|.*confucéenne.*|.*confucianisme.*|.*dictionnaires.*|.*économique.*|.*essais.*|.*histoire.*|.*littérature.*|.*mythologie.*|.*philosophie.*|.*pratique.*|.*poésie.*|.*ï.*")
-		loop{
-			if InStr(subjects, "`n`n")
-				subjects:= RegExReplace(subjects, "`n`n","`n")
-			else
-				Break
-		}
-		subjects:= deDupe(subjects)
-		subjects:= Trim(subjects)
-		return subjects
-}
+;▼▲▼
 	pullBibData(){
+				global bibArr
+				global activeSearch
 		;Error check that spreadsheet and fsURL variables are not blank.
-			checkGUIinputs(CD, DI, US, fsURL)
-			spreadsheet:= sheetCheck()
+				checkGUIinputs(CD, DI, US, fsURL)
+				spreadsheet:= sheetCheck()
 		;FirstSearch
-			if WinExist("Detailed Record"){
-				WinActivate
-				data:= loadSourceCode("pagename", "FirstSearch Detailed Record")
-				data:= RegExReplace(data, "`r`n")							;Makes parsing easier.
-				data:= RegExReplace(data, "<span class\=matchterm[0-9]>") 	;Removes code for yellow text highlighting.
-				data:= RegExReplace(data, "</span>") 						;Because of highlighting above, all "</span>" are removed.
-				data:= normalize(data)
-						
+				if WinExist("Detailed Record"){
+					WinActivate
+					data:= loadSourceCode("pagename", "FirstSearch Detailed Record")
+					data:= RegExReplace(data, "`r`n")							;Makes parsing easier.
+					data:= RegExReplace(data, "<span class\=matchterm[0-9]>") 	;Removes code for yellow text highlighting.
+					data:= RegExReplace(data, "</span>") 						;Because of highlighting above, all "</span>" are removed.
+					data:= normalize(data)	
 				;📚 Total volumes of multivolume sets
 						volumes:= getVolumes(data)
-				
 				;Determine if active search is happening
-					global activeSearch
-					if(activeSearch= 0){
-						bibArr:= []
-						Loop 7{
-							bibArr.InsertAt(1, "n/a")
-						}
-						Loop 28{
-							bibArr.InsertAt(1, "")
-						}
-					}
-					
+							if(activesearch= 0){
+								bibArr:= []
+								Loop 35{
+									bibArr.InsertAt(1, "n/a")
+								}
+							}
 				;🏛 Check against local holdings
-					if InStr(data, "FirstSearch indicates your institution owns the item.")
-						bibArr[14]:= "y"
-					else
-						bibArr[14]:= "n"
-						
+							if InStr(data, "FirstSearch indicates your institution owns the item.")
+								FSdupe:= "y"
+							else
+								FSdupe:= "n"	
 				;🔢 ISBN
-					if InStr(data, "<b>ISBN:"){
+							if InStr(data, "<b>ISBN:"){
 					;ISBN-13
-						isbn13:= getISBN(data, "\[..........\]|\[.......... .+?\]")
-						
+							isbn13:= getISBN(data, "\[..........\]|\[.......... .+?\]")
 					;ISBN-10
-						isbn10:= getISBN(data, "\[.............\]|\[............. .+?\]")
-					}else{
-						isbn13:= "n/a"
-						isbn10:= "n/a"
-					}
-
+							isbn10:= getISBN(data, "\[.............\]|\[............. .+?\]")
+							}else{
+								isbn13:= "n/a"
+								isbn10:= "n/a"
+							}
+							if inStr(isbn13, "979")
+								isbn10:= "n/a"
 				;🔢 OCLC#
-					oclc:= RegExReplace(data, ".*<b>OCLC:</b> |<.*")
-					
+							oclc:= RegExReplace(data, ".*<b>OCLC:</b> |<.*")
 				;🗣 Language
-					global language
-					language:= RegExReplace(data, ".*<b>Language:.+?serif`">|&.*|<.*")
-					
+							global language
+							language:= RegExReplace(data, ".*<b>Language:.+?serif`">|&.*|<.*")
 				;📔 Title
-					;Romanized
-						titleR:= getTitleR(data)
-					;Native
-						titleN:= getTitleN(data)
-					;Translated
-						titleT:= getTitleT(data)
-						
+						;Romanized
+							titleR:= getTitleR(data)
+						;Native
+							titleN:= getTitleN(data)
+						;Translated
+							titleT:= getTitleT(data)
 				;✒ Creators
-					;Creator
-						if InStr(data, "<b>Author(s):"){
-							;Romanized
-								creatorR:= getCreatorR(data)
-							;Native
-								creatorN:= getCreatorN(data)
-						}else{
-							creatorR:= "n/a"
-							creatorN:= "n/a"
-						}
-						
-					;Corporate Creator
-						if InStr(data, "<b>Corp Author(s):"){
-							;Romanized
-								corpR:= getCorpR(data)
-							;Native
-								corpN:= getCorpN(data)
-						}else{
-							corpR:= "n/a"
-							corpN:= "n/a"
-						}
-					;Merge individual and corporate creator values.
-						;Romanized
-							creatorsR:= creatorR . " ^ " . corpR
-							creatorsR:= RegExReplace(creatorsR, " \^ n/a|n/a \^ ")
-						;Native
-							creatorsN:= creatorN . " ^ " . corpN
-							creatorsN:= RegExReplace(creatorsN, " \^ n/a|n/a \^ ")
-						
+						;Creator
+								if InStr(data, "<b>Author(s):"){
+									;Romanized
+										creatorR:= getCreatorR(data)
+									;Native
+										creatorN:= getCreatorN(data)
+								}else{
+									creatorR:= "n/a"
+									creatorN:= "n/a"
+								}
+						;Corporate Creator
+								if InStr(data, "<b>Corp Author(s):"){
+									;Romanized
+										corpR:= getCorpR(data)
+									;Native
+										corpN:= getCorpN(data)
+								}else{
+									corpR:= "n/a"
+									corpN:= "n/a"
+								}
+						;Merge individual and corporate creator values.
+								;Romanized
+									creatorsR:= creatorR . " ^ " . corpR
+									creatorsR:= RegExReplace(creatorsR, " \^ n/a|n/a \^ ")
+								;Native
+									creatorsN:= creatorN . " ^ " . corpN
+									creatorsN:= RegExReplace(creatorsN, " \^ n/a|n/a \^ ")
 				;📚 Series	
-					if InStr(data, "<b>Series:"){
-						;Romanized
-							seriesR:= getSeriesR(data)
-						;Native
-							seriesN:= getSeriesN(data)
-					}else{
-						seriesR:= "n/a"
-						seriesN:= "n/a"
-					}
-					
+						if InStr(data, "<b>Series:"){
+							;Romanized
+								seriesR:= getSeriesR(data)
+							;Native
+								seriesN:= getSeriesN(data)
+						}else{
+							seriesR:= "n/a"
+							seriesN:= "n/a"
+						}
 				;🏢 Publisher
-					if InStr(data, "<b>Publication:"){
-						;Romanized
-							publisherR:= getPublisherR(data)
-						;Native
-							publisherN:= getPublisherN(data)
-					}else{
-						publisherR:= "n/a"
-						publisherN:= "n/a"
-					}
-					
+						if InStr(data, "<b>Publication:"){
+							;Romanized
+								publisherR:= getPublisherR(data)
+							;Native
+								publisherN:= getPublisherN(data)
+						}else{
+							publisherR:= "n/a"
+							publisherN:= "n/a"
+						}
 				;♎ Year of Publication
-					;Romanized
-						yearR:= getYearR(data)
-					;Native
-						if(language= "Japanese")
-							yearN:= convertNengo(yearR) ;Function is in "diacriticsNengo.ahk"
-						else
-							yearN:= "n/a"
-				
-				;📖 Edition
-					if InStr(data, "<b>Edition:"){
 						;Romanized
-							editionR:= getEditionR(data)
+							yearR:= getYearR(data)
 						;Native
-							editionN:= getEditionN(data)
-					}else{
-						editionR:= "n/a"
-						editionN:= "n/a"
-					}	
-
+							if(language= "Japanese")
+								yearN:= convertNengo(yearR) ;Function is in "diacriticsNengo.ahk"
+							else
+								yearN:= "n/a"
+				;📖 Edition
+						if InStr(data, "<b>Edition:"){
+							;Romanized
+								editionR:= getEditionR(data)
+							;Native
+								editionN:= getEditionN(data)
+						}else{
+							editionR:= "n/a"
+							editionN:= "n/a"
+						}	
 				;💡 Subjects
-					if InStr(data, "SUBJECT(S)")
-						subjects:= getSubjects(data)
-					else
-						subjects:= "n/a"
+						if InStr(data, "SUBJECT(S)")
+							subjects:= getSubjects(data)
+						else
+							subjects:= "n/a"
 			}
 		;Check Results
-			checkData:=   "ISBN-13#:`n"
+				checkData:=   "ISBN-13#:`n"
 							. isbn13				. "`n`n"
 						. "ISBN-10#:`n"
 							. isbn10				. "`n`n"
@@ -659,6 +516,7 @@ F2::			openRecordsList()
 						. "Subject(s):`n"
 							. subjects
 			if(checkMode= 1){
+				active.Destroy()
 				yesNo:= MsgBox(checkData, "Review Bibliographic Data", "YesNo")
 				if(yesNo= "No")
 					exit
@@ -666,61 +524,360 @@ F2::			openRecordsList()
 			subjects:= regExReplace(subjects, "`n", " ^ ") ;Each subject is on a serpate line for easy reading in the :Check Data message box." This puts them on one line to be pasted into a single cell on the spreadsheet.
 			subjects:= RegExReplace(subjects, " \^  \^ $| \^ $")
 		;Calculate other array fields based on pulled data.
-			;Series Number
-				if InStr(seriesR, " `; ")
-					vol:= RegExReplace(seriesR, ".* `; ")
-				else if InStr(seriesN, " `; ")
-					vol:= RegExReplace(seriesN, ".* `; ")
-				else
-					vol:= "n/a"
-				bibArr[10]:= vol
-			
-			;Generate URL for Purchase
-				if(language="Japanese") & (isbn10!= "") & (isbn10!= "n/a")
-						bibArr[8]:= "https://www.amazon.co.jp/dp/" . isbn10
-				else
-					bibArr[8]:= "n/a"
-				if inStr(isbn10, A_space)
-					bibArr[8]:= "n/a"
+				;Series Number
+						if InStr(seriesR, " `; ")
+							vol:= RegExReplace(seriesR, ".* `; ")
+						else if InStr(seriesN, " `; ")
+							vol:= RegExReplace(seriesN, ".* `; ")
+						else
+							vol:= "n/a"
+				;Generate URL for Purchase
+						if(language="Japanese") & (isbn10!= "") & (isbn10!= "n/a")
+								priceURL:= "https://www.amazon.co.jp/dp/" . isbn10
+						else
+							priceURL:= "n/a"
+						if inStr(isbn10, A_space)
+							priceURL:= "n/a"
 		
 		;Put parsed data into array.
-			bibArr[11]:= volumes
-			bibArr[15]:= isbn13
-			bibArr[16]:= isbn10
-			bibArr[17]:= oclc
-			bibArr[18]:= language
-			bibArr[19]:= titleT
-			bibArr[20]:= titleR
-			bibArr[21]:= titleN
-			bibArr[22]:= creatorsR
-			bibArr[23]:= creatorsN
-			bibArr[24]:= seriesR
-			bibArr[25]:= seriesN
-			bibArr[26]:= publisherR
-			bibArr[27]:= publisherN
-			bibArr[28]:= yearR
-			bibArr[29]:= yearN
-			bibArr[30]:= editionR
-			bibArr[31]:= editionN
-			bibArr[32]:= subjects
-			data:= bibArr[1] . "`t" . bibArr[2] . "`t" . bibArr[3] . "`t" . bibArr[4] . "`t" . bibArr[5] . "`t" . bibArr[6] . "`t" . bibArr[7] . "`t" . bibArr[8] . "`t" . bibArr[9] . "`t" . bibArr[10] . "`t" . bibArr[11] . "`t" . bibArr[12] . "`t" . bibArr[13] . "`t" . bibArr[14] . "`t" . bibArr[15] . "`t" . bibArr[16] . "`t" . bibArr[17] . "`t" . bibArr[18] . "`t" . bibArr[19] . "`t" . bibArr[20] . "`t" . bibArr[21] . "`t" . bibArr[22] . "`t" . bibArr[23] . "`t" . bibArr[24] . "`t" . bibArr[25] . "`t" . bibArr[26] . "`t" . bibArr[27] . "`t" . bibArr[28] . "`t" . bibArr[29] . "`t" . bibArr[30] . "`t" . bibArr[31] . "`t" . bibArr[32]
-			inClip(data)
+				bibArr[8]:= priceURL
+				bibArr[10]:= vol
+				bibArr[11]:= volumes
+				bibArr[14]:= FSdupe
+				bibArr[15]:= isbn13
+				bibArr[16]:= isbn10
+				bibArr[17]:= oclc
+				bibArr[18]:= language
+				bibArr[19]:= titleT
+				bibArr[20]:= titleR
+				bibArr[21]:= titleN
+				bibArr[22]:= creatorsR
+				bibArr[23]:= creatorsN
+				bibArr[24]:= seriesR
+				bibArr[25]:= seriesN
+				bibArr[26]:= publisherR
+				bibArr[27]:= publisherN
+				bibArr[28]:= yearR
+				bibArr[29]:= yearN
+				bibArr[30]:= editionR
+				bibArr[31]:= editionN
+				bibArr[32]:= subjects
+				inClip(bibArr[1] . "`t" . bibArr[2] . "`t" . bibArr[3] . "`t" . bibArr[4] . "`t" . bibArr[5] . "`t" . bibArr[6] . "`t" . bibArr[7] . "`t" . bibArr[8] . "`t" . bibArr[9] . "`t" . bibArr[10] . "`t" . bibArr[11] . "`t" . bibArr[12] . "`t" . bibArr[13] . "`t" . bibArr[14] . "`t" . bibArr[15] . "`t" . bibArr[16] . "`t" . bibArr[17] . "`t" . bibArr[18] . "`t" . bibArr[19] . "`t" . bibArr[20] . "`t" . bibArr[21] . "`t" . bibArr[22] . "`t" . bibArr[23] . "`t" . bibArr[24] . "`t" . bibArr[25] . "`t" . bibArr[26] . "`t" . bibArr[27] . "`t" . bibArr[28] . "`t" . bibArr[29] . "`t" . bibArr[30] . "`t" . bibArr[31] . "`t" . bibArr[32])
+				
 		;Close FirstSearch "Detailed Record" page.
-			if WinExist("Detailed Record") 
-				WinActivate
-			sleep wt
-			if(activeSearch= 1){
-				Send "!{F4}"
-				sleep 500
-			}
+				if WinExist("Detailed Record") 
+					WinActivate
+				sleep wt
+				if(activeSearch= 1){
+					Send "!{F4}"
+					sleep wt
+				}
 		;Populate spreadsheet with data.
-			activeSearch:= 0
-			pasteToBibSpreadsheet()
+				if(spreadsheet= US){
+					Loop 7{
+						bibArr.RemoveAt(1)
+					}
+				inClip(bibArr[1] . "`t" . bibArr[2] . "`t" . bibArr[3] . "`t" . bibArr[4] . "`t" . bibArr[5] . "`t" . bibArr[6] . "`t" . bibArr[7] . "`t" . bibArr[8] . "`t" . bibArr[9] . "`t" . bibArr[10] . "`t" . bibArr[11] . "`t" . bibArr[12] . "`t" . bibArr[13] . "`t" . bibArr[14] . "`t" . bibArr[15] . "`t" . bibArr[16] . "`t" . bibArr[17] . "`t" . bibArr[18] . "`t" . bibArr[19] . "`t" . bibArr[20] . "`t" . bibArr[21] . "`t" . bibArr[22] . "`t" . bibArr[23] . "`t" . bibArr[24] . "`t" . bibArr[25])
+				}
+				activeSearch:= 0
+				pasteToBibSpreadsheet()
 }
-;■■■ Pull data from FirstSearch record into spreadsheet.
-numpadEnter::pullBibData()
-F1::pullBibData()
+		;▼▲▼
+			normalize(data){
+				; Convert Japanese punctuation to English punctuation.
+				data:= RegExReplace(data, "  ", " ")
+				data:= RegExReplace(data, "：", ":")
+				data:= RegExReplace(data, "、", ".")
+				loop{
+						if InStr(data, "  ")
+							data:= RegExReplace(data, "  "," ")
+						else
+							Break
+}
+		;▼▲▼
+				; Turn composed characters into decomposed characters.
+					data:= regExReplace(data, "ā", "ā")
+					data:= regExReplace(data, "ī", "ī")
+					data:= regExReplace(data, "ū", "ū")
+					data:= regExReplace(data, "ē", "ē")
+					data:= regExReplace(data, "ō", "ō")
+				return data
+}
+		;▼▲▼
+			getVolumes(data){
+					volumes:= RegExReplace(data, ".*<b>Description:|</font></td>.*")
+					if inStr(volumes, " volumes")
+						volumes:= RegExReplace(volumes, ".*serif`">| volumes.*")
+					else
+						volumes:= "n/a"
+					volumes:= Trim(volumes)
+					return volumes
+}
+		;▼▲▼
+			getISBN(data, needle){
+				;Contain beginning and end of ISBN data
+					isbn:= RegExReplace(data, ".*<b>ISBN:</b> ", "[")
+					isbn:= RegExReplace(isbn, "</font>.*|; <.*| <.*", "]")
+				;Fix double brackes: (( and ))
+					isbn:= RegExReplace(isbn, "\(\(", "(")
+					isbn:= RegExReplace(isbn, "\)\)", ")")
+				;▲
+					isbn:= RegExReplace(isbn, "; ", "][")
+					isbn:= RegExReplace(isbn, needle)
+					isbn:= regExReplace(isbn, "\]\[", " ^ ")
+					isbn:= regExReplace(isbn, "\]|\[")
+					isbn:= regExReplace(isbn, "i)dai |-kan")
+					isbn:= Trim(isbn)
+					return isbn
+}
+		;▼▲▼
+			getTitleR(data){
+					titleR:= RegExReplace(data, ".*<b>Title:.+?</td>|</td>.*")
+					titleR:= RegExReplace(titleR, ".* /<div><br>|.* /</div>| =<br>.*")		;Removes translated title in order to parse romanized title.
+					if InStr(titleR, "Translated Title:"){									;▲
+						titleR:= RegExReplace(titleR, " /<br><b>Translated Title:.*")		;▲
+						titleR:= RegExReplace(titleR, ".*<br>") 							;▲
+						titleR:= Trim(titleR)
+						return titleR
+					}
+					titleR:= RegExReplace(titleR, "( :| `;|:|;)<br>", ": ")	;Subtitle
+					titleR:= RegExReplace(titleR, ".*<br>| /.*")  	;▲
+				;Clean Up
+					titleR:= RegExReplace(titleR, ".</b>.*")
+					titleR:= RegExReplace(titleR, " : ", ": ")
+					titleR:= RegExReplace(titleR, ".*</div>")
+					titleR:= RegExReplace(titleR, "&lt;&gt;", "n/a")	
+					titleR:= Trim(titleR)
+					return titleR
+}
+		;▼▲▼
+			getTitleN(data){
+					titleN:= RegExReplace(data, ".*<b>Title:.+?</td>|</td>.*")
+					if !InStr(titleN, "vernacular")
+						titleN:= "n/a"
+					if InStr(titleN, " = ")
+						titleN:= RegExReplace(titleN, " = .*")
+					titleN:= RegExReplace(titleN, ".*lang=`"..`">| /.*")
+					titleN:= RegExReplace(titleN, ".*lang=`"..`">|( |　|\.)/.*|(\.|,)</div>.*")
+				;Clean Up
+					titleN:= RegExReplace(titleN, " : ", ": ")
+					titleN:= Trim(titleN)
+					return titleN
+}
+		;▼▲▼
+			getTitleT(data){
+					titleT:= RegExReplace(data, ".*<b>Title:.+?</td>|</td>.*")
+					if InStr(titleT, "Translated Title:"){
+						titleT:= RegExReplace(titleT, ".*Translated Title:</b> |<.*|\. eng.*")
+						titleT:= Trim(titleT)
+						return titleT
+					}
+					
+					if !InStr(titleT, " = ")
+						titleT:= "n/a"
+					titleT:= RegExReplace(titleT, ".* = | /.*")
+					titleT:= Trim(titleT)
+					return titleT
+}
+		;▼▲▼
+			deDupe(txt){
+					str:= ""
+					loop Parse, txt, "`r"
+						if !InStr(str, A_LoopField "`n")
+							str .= A_LoopField "`n"
+					return str
+}
+		;▼▲▼
+			cleanCreator(creator){
+					creator:= RegExReplace(creator, ", `;|\. `;|,`;", ",")
+					creator:= RegExReplace(creator, "(,|;) [0-9].*|(,|-|\.) editor.*|, author.*")
+					creator:= RegExReplace(creator, "\.$")
+					loop{
+						if InStr(creator, "`n`n")
+							creator:= RegExReplace(creator, "`n`n","`n")
+						else
+							Break
+					}
+					creator:= deDupe(creator)
+					creator:= RegExReplace(creator, "`n", " ^ ")
+					creator:= RegExReplace(creator, "(\.|,) \^ ", " ^ ")
+					creator:= RegExReplace(creator, " \^ ,| \^ $| \^$|,$| $")
+					creator:= Trim(creator)
+					return creator
+}
+		;▼▲▼
+			getCreatorR(data){
+					creatorR:= RegExReplace(data, ".*<b>Author\(s\):.+?</td>|</td>.*")
+					creatorR:= RegExReplace(creatorR, "<br>", "`n")
+					creatorR:= RegExReplace(creatorR, ".*html`" >|</a>.*")
+					creatorR:= cleanCreator(creatorR)
+					creatorR:= Trim(creatorR)
+					return creatorR
+}
+		;▼▲▼
+			getCreatorN(data){
+					creatorN:= RegExReplace(data, ".*<b>Author\(s\):.+?</td>|</td>.*")
+					if !InStr(creatorN, "vernacular")
+						creatorN:= "n/a"
+					creatorN:= RegExReplace(creatorN, "^.+?lang=`"..`">|</div>.*")
+					;Remove dates and put each other on new line:
+						creatorN:= RegExReplace(creatorN, "\([0-9]...-....\) ", "`n")
+						creatorN:= RegExReplace(creatorN, "\([0-9]...-\) |\([0-9]...-\)", "`n")
+						creatorN:= RegExReplace(creatorN, "(|, )[0-9]...-.... ", "`n")
+						creatorN:= RegExReplace(creatorN, "(|, )[0-9]...- ", "`n")
+						creatorN:= RegExReplace(creatorN, "(|, )[0-9]... ", "`n")
+						creatorN:= RegExReplace(creatorN, " [0-9]...-....", "`n")
+					;Remove description of authorship:
+						creatorN:= RegExReplace(creatorN, "(|, )editor(. |)|(|, )author(. |)|<span class=vernacular lang=`"..`">|\. ", "`n")
+					creatorN:= cleanCreator(creatorN)
+					creatorN:= RegExReplace(creatorN, " \^ $| \^$")
+					global language
+					if(language= "Japanese"){
+						creatorN:= RegExReplace(creatorN, ", ")
+						}
+					creatorN:= Trim(creatorN)
+					return creatorN
+}
+		;▼▲▼
+			getCorpR(data){
+					corpR:= RegExReplace(data, ".*<b>Corp Author\(s\):.+?</td>|</td>.*")
+					corpR:= RegExReplace(corpR, "<br>", "`n")
+					corpR:= RegExReplace(corpR, ".*html`" >|</a>.*")
+					corpR:= RegExReplace(corpR, ".*html`" >|</a>.*")
+					corpR:= RegExReplace(corpR, " \([0-9]...- \)", "`n")
+					corpR:= cleanCreator(corpR)
+					corpR:= Trim(corpR)
+					return corpR
+}
+		;▼▲▼
+			getCorpN(data){
+					corpN:= RegExReplace(data, ".*<b>Corp Author\(s\):.+?</td>|</td>.*")
+					if !InStr(corpN, "vernacular")
+						corpN:= "n/a"
+					corpN:= RegExReplace(corpN, "^.+?lang=`"..`">|</div>.*")
+					corpN:= RegExReplace(corpN, " <span class=vernacular lang=`"..`">| \([0-9]...- \)", "`n")
+					corpN:= cleanCreator(corpN)
+					corpN:= Trim(corpN)
+					return corpN
+}
+		;▼▲▼
+			getSeriesR(data){
+					seriesR:= RegExReplace(data, ".*<b>Series:.+?</td>|</td>.*")
+					seriesR:= RegExReplace(seriesR, ".*</div>|.*Variation:</b> |v. |\..*")
+				;Clean Up
+					seriesR:= RegExReplace(seriesR, "`; `;|`;`;", ";")
+					seriesR:= RegExReplace(seriesR, "; <.*|</font>.*")
+					seriesR:= Trim(seriesR)
+					return seriesR
+}
+		;▼▲▼
+			getSeriesN(data){
+					seriesN:= RegExReplace(data, ".*<b>Series:.+?</td>|</td>.*")
+					if !InStr(seriesN, "vernacular")
+						seriesN:= "n/a"
+					seriesN:= RegExReplace(seriesN, ".*lang=`"..`">|(\.|,|`; |)<.*")
+				;Clean Up
+					seriesN:= RegExReplace(seriesN, "`; `;|`;`;", " `; ")
+					seriesN:= RegExReplace(seriesN, "  ", " ")
+					seriesN:= Trim(seriesN)
+					return seriesN
+}
+		;▼▲▼
+			getPublisherR(data){
+					publisherR:= RegExReplace(data, ".*Publication.+?</td>|</td>.*")
+					publisherR:= regExReplace(publisherR, ".*</div>") ;Removes native publisher data to enable check Romanized publisher.
+					if !inStr(publisherR, " : ")
+						publisherR:= "n/a"
+					publisherR:= RegExReplace(publisherR, ".* : |,.*|\.$")
+					publisherR:= fixRomanizedPublisherNames(publisherR)
+					publisherR:= Trim(publisherR)
+					return publisherR
+}
+		;▼▲▼
+			getPublisherN(data){
+					publisherN:= RegExReplace(data, ".*Publication.+?</td>|</td>.*")
+					publisherN:= RegExReplace(publisherN, "<div><b>Edition:.*</div>") ;Removes native edition in order to parse native publisher name.
+					if !InStr(publisherN, "vernacular")
+						publisherN:= "n/a"
+					publisherN:= RegExReplace(publisherN, "<b>Edition:.*")
+					publisherN:= RegExReplace(publisherN, ".*lang=`"..`">|<.*")
+					publisherN:= RegExReplace(publisherN, ".* : |,.*|\.$")
+					publisherN:= publisherN
+					publisherN:= Trim(publisherN)
+					return publisherN
+}
+		;▼▲▼
+			getYearR(data){
+					yearR:= RegExReplace(data, ".*Year:</b>.+?serif`">")
+					yearR:= RegExReplace(yearR, "<nobr>|</nobr>")
+					yearR:= RegExReplace(yearR, "<.*|,.*")
+					yearR:= Trim(yearR)
+					return yearR
+}
+		;▼▲▼
+			getEditionR(data){
+					editionR:= RegExReplace(data, ".*<b>Publication:|(\.|)</font></td>.*")
+					editionR:= regExReplace(editionR, ".*\.</div>") ;Removes native publisher data to enable check Romanized publisher.
+					if !inStr(editionR, "Edition:")
+						editionR:= "n/a"
+					editionR:= RegExReplace(editionR, ".*Edition:</b> |(\.<|<).*")
+				;Clean Up
+						if(editionR= "")
+							editionR:= "n/a"
+					editionR:= Trim(editionR)
+					return editionR
+}
+		;▼▲▼
+			getEditionN(data){
+				editionN:= RegExReplace(data, ".*<b>Publication:|(|.)</font></td>.*")
+					if !inStr(editionN, "vernacular") AND (editionN, "Edition:"){
+						editionN:= "n/a"
+						return editionN
+					}
+				editionN:= RegExReplace(editionN, ".*<b>Edition:</b> <span.+?>|\.<.*|<.*")
+				editionN:= Trim(editionN)
+				return editionN
+}
+		;▼▲▼
+			getSubjects(data){
+				subjects:= RegExReplace(data, ".*SUBJECT\(S\).+?serif`">")
+				subjects:= RegExReplace(subjects, "<b>Class.*|<b>Note\(s\).*|<b>Responsibility.*|<b>Document.*|<b>Other Titles.*")
+				subjects:= regExReplace(subjects, "<br>|<div>|</a>|</div>", "`n") ;Removes content between multiple subject headings.		
+				subjects:= regExReplace(subjects, ".*>|&nbsp;")
+				subjects:= regExReplace(subjects, "m)^\(8.+?\) |\.$| \(Title\)")
+				subjects:= regExReplace(subjects, "B\.C\.|B\.C", "BC")
+				subjects:= regExReplace(subjects, "A\.D\.|A\.D", "AD")
+				;Remove French subjects.
+				subjects:= RegExReplace(subjects, "i).*chine$.*|.*chine .*|.*chinoise.*|.*corée.*|.*japon.*|.*japonais.*|.*bibliographie.*|.*bouddhique.*|.*bouddhisme.*|.*confucéenne.*|.*confucianisme.*|.*dictionnaires.*|.*économique.*|.*essais.*|.*histoire.*|.*littérature.*|.*mythologie.*|.*philosophie.*|.*pratique.*|.*poésie.*|.*ï.*")
+				loop{
+					if InStr(subjects, "`n`n")
+						subjects:= RegExReplace(subjects, "`n`n","`n")
+					else
+						Break
+				}
+				subjects:= deDupe(subjects)
+				subjects:= Trim(subjects)
+				return subjects
+}
 
+
+
+;■■■ Pull data from FirstSearch record into spreadsheet.
+numpadEnter::{
+		tutorialOff()
+		activeGUI()
+		pullBibData()
+		active.Destroy()
+		FSresultsTutorial()
+		
+}
+F2::{
+		tutorialOff()
+		activeGUI()
+		pullBibData()
+		active.Destroy()
+		FSresultsTutorial()
+}
 
 
 ;■■■■■■■■■■■■■ When multiple ISBNs are pulled for a book, select which ISBN you want to keep/remove.
@@ -784,23 +941,36 @@ F1::pullBibData()
 						getRid:= "(hardcover|hbk\.)"
 					ISBN:= RegExReplace(ISBN, "i)^[0-9]." whichI "........ \(" getRid "\) \^ | \^ [0-9]." whichI "........ \(" getRid "\)$| \^ [0-9]." whichI "........ \(" getRid "\)")
 				}
+				active.Destroy()
 				yesNo:= MsgBox(ISBN, "Was the correct ISBN Parsed?", "yesNo")
-				if(yesNo= "Yes")
+				if(yesNo= "Yes"){
+					activeGUI()
 					return ISBN
+					}
 				else{
+					activeGUI()
 					dataHere(spreadsheet)
 					Send "{esc}"
 					Sleep nt
 					Send "{home}"
 					Sleep nt
 					Send "{right 14}"
+					active.Destroy()
 					exit
 				}		
 			}
 }
 ;■■
-^numpad8::removeISBN()
-F8::removeISBN()
+^numpad8::{
+		activeGUI()
+		removeISBN()
+		active.Destroy()
+}
+F8::{
+		activeGUI()
+		removeISBN()
+		active.Destroy()
+}
 
 
 
@@ -835,12 +1005,23 @@ F8::removeISBN()
 					Sleep nt
 					Send "{esc}"
 					Sleep nt
+					active.Destroy()
 					MsgBox("You tried to fix a cell in the ISBN13 or ISBN10 columns but weren't `"inside`" the cell. Double click a cell and have your cursor within the ISBN you want to keep in order to clean up your ISBNs.", stopped)
 					exit
 				}
+			
 }
 ;■■
-numpadDiv::fastISBNfix()
+numpadDiv::{
+		activeGUI()
+		fastISBNfix()
+		active.Destroy()
+}		
+^F8::{
+		activeGUI()
+		fastISBNfix()
+		active.Destroy()
+}
 
 
 
@@ -849,8 +1030,10 @@ numpadDiv::fastISBNfix()
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼
 ;▼▲▼
 	convertISBN13toISBN10(data){
-		if !inStr(data, "978")
+		if !inStr(data, "978"){
+			active.Destroy()
 			exit
+		}
 		isbn13:= data
 		cut:= RegExReplace(isbn13, "^978|.$")
 		s:= StrSplit(cut) ; s = split
@@ -875,10 +1058,11 @@ numpadDiv::fastISBNfix()
 		spreadsheet:= sheetCheck()
 		arr:= copyRowMakeArray()
 		if(arr[15]= "n/a") | (arr[15]= ""){
+			
 			MsgBox("There is no ISBN13 to convert into an ISBN10.", stopped)
 			return
 		}
-		if inStr(arr[15], " "){
+		if inStr(arr[15], " "){	
 			MsgBox("The ISBN13 appears to not be formatted correctly.", stopped)
 			return
 		}
@@ -893,15 +1077,22 @@ numpadDiv::fastISBNfix()
 		pasteToBibSpreadsheet()
 }
 ;■■■
-^numpad7::convertISBN()
-F7::convertISBN()
+^numpad7::{
+		activeGUI()
+		convertISBN()
+		active.Destroy()
+}
+F7::{
+		activeGUI()
+		convertISBN()
+		active.Destroy()
+}
 
 
 
 ;■■■■■■■■■■■■■ Translate title with ChatGPT.
-#HotIf WinActive(CD) | WinActive(DI)
-;■■
-numpadSub::{
+;▼▲▼
+translateWithChatGPT(){
 		spreadsheet:= sheetCheck()
 		global chatGPTmode
 		global gptPending
@@ -914,20 +1105,24 @@ numpadSub::{
 			global gptArr
 			gptArr:= copyRowMakeArray()
 			if(gptArr[18]= "n/a") | (gptArr[18]= ""){
+				active.Destroy()
 				MsgBox("The language of this item can't be identified:``n`nReview Column R: Language", stopped)
 				exit
 			}
 			if(gptArr[18]= "English"){
+				active.Destroy()
 				MsgBox("This item is already in English and doesn't need to be translated.")
 				exit
 			}
 			
 			if((gptArr[20]= "n/a") | (gptArr[20]="")) & ((gptArr[21]="n/a") | (gptArr[21]= "")){
+				active.Destroy()
 				MsgBox("There is no non-English title to translate.")
 				exit
 			}
 			title:= copy()
 			if(title= "n/a") | (title= ""){
+				active.Destroy()
 				MsgBox("There is no title to translate.`n`nReview Column 21", stopped)
 				exit
 				}
@@ -946,6 +1141,7 @@ numpadSub::{
 		if WinExist("Translate")
 			WinActivate
 		else{
+			active.Destroy()
 			msg:= "There is no browser window with an active tab open to Chat GPT.`n`n"
 				. "1) Check you have ChatGPT open in your browser.`n"
 				. "2) Make sure ChatGPT is your browser's the active tab.`n"
@@ -967,7 +1163,7 @@ numpadSub::{
 			gptPending:= 1
 		}
 		if(chatGPTmode= "bulk"){
-			prompt:= "Provide English translations of this list of titles:" . "`r`n" . titles
+			prompt:= "Provide English translations of this Korean title with no explanatory text. Do not put the translated title in quotations marks. Do not include the original title:" . "`r`n" . titles
 			inClip(prompt)
 			Send "^v"
 			Sleep nt
@@ -975,16 +1171,16 @@ numpadSub::{
 			gptPending:= 1
 		}
 }
-;■■
-#HotIf winActive("Translate")
-numpadSub::{
+;▼▲▼
+sendTraslationBackToSpreadsheet(){
 		spreadsheet:= sheetcheck()
 		global gptPending
+		global chatGPTmode
 		if(gptPending= 0){
+			active.Destroy()
 			MsgBox("An error has occured while using ChatGPT to translate a title.`n`nRestart the script and try again.", stopped)
 			exit
 		}	
-		global chatGPTmode
 		if(chatGPTmode= "oneTitle"){
 		;Copy response
 			Send "+{tab}"
@@ -1000,6 +1196,7 @@ numpadSub::{
 			title:= RegExReplace(title, ".*ChatGPT")
 			title:= title . " - ChatGPT translation"
 		;Determine if the translation is acceptable
+			active.Destroy()
 			yesNo:= MsgBox(title, "Is this translation acceptable?", "yesNo")
 			if(yesNo= "No"){
 				dataHere(spreadsheet)
@@ -1011,13 +1208,16 @@ numpadSub::{
 			}	
 			if(yesNo= "Yes"){				
 			;Paste translation request
+				activeGUI()
 				data:= gptArr[1] . "`t" . gptArr[2] . "`t" . gptArr[3] . "`t" . gptArr[4] . "`t" . gptArr[5] . "`t" . gptArr[6] . "`t" . gptArr[7] . "`t" . gptArr[8] . "`t" . gptArr[9] . "`t" . gptArr[10] . "`t" . gptArr[11] . "`t" . gptArr[12] . "`t" . gptArr[13] . "`t" . gptArr[14] . "`t" . gptArr[15] . "`t" . gptArr[16] . "`t" . gptArr[17] . "`t" . gptArr[18] . "`t" . title
 				inClip(data)
 				pasteToBibSpreadsheet()
 				gptPending:= 0
+				active.Destroy()
 				exit
 			}
 		}
+	;Bulk title list transtlation process	
 		if(chatGPTmode= "bulk"){
 		;Copy Response
 			Send "+{tab}"
@@ -1028,15 +1228,19 @@ numpadSub::{
 			Send "{tab}"
 			Sleep nt
 		;Isolate translated title
-			titles:= RegExReplace(titles, "`r`n")
+			titles:= RegExReplace(titles, "`r`n", "xtx")
+			titles:= RegExReplace(titles, ".*:xtx")
 			titles:= RegExReplace(titles, "Free Research Preview.*")
 			titles:= RegExReplace(titles, ".*ChatGPT")
-			titles:= RegExReplace(titles, "^.+?`"")
-			titles:= RegExReplace(titles, "`"$", " - ChatGPT translation")
-			titles:= RegExReplace(titles, "`"    `"", "`r`n")
-			titles:= RegExReplace(titles, "`r`n", " - ChatGPT translation`r`n")
+			titles:= RegExReplace(titles, "^    ")
+			titles:= RegExReplace(titles, "    ", " - ChatGPT translation`r`n")
+			titles:= RegExReplace(titles, "^xtx.*`r`n")
+			titles:= RegExReplace(titles, "xtx")
+			titles:= RegExReplace(titles, "m)^`"|`"$")
+			titles:= titles . " - ChatGPT translation`r`n"
 		;Determine if the translation is acceptable
 			titlesForMsg:= RegExReplace(titles, " - ChatGPT translation")
+			active.Destroy()
 			yesNo:= MsgBox(titlesForMsg, "Is this translation acceptable?", "yesNo")
 			if(yesNo= "No"){
 				dataHere(spreadsheet)
@@ -1044,9 +1248,11 @@ numpadSub::{
 				Sleep nt
 				Send "{home}"
 				gptPending:= 0
+				active.Destroy()
 				exit
 			}	
 			if(yesNo= "Yes"){				
+				activeGUI()
 			;Paste translation request
 				inClip(titles)
 				dataHere(spreadsheet)
@@ -1058,17 +1264,28 @@ numpadSub::{
 				Sleep nt
 				Send "{esc}"
 				gptPending:= 0
+				active.Destroy()
 				exit
 			}
 		}
 }
-
+;■■■
+#HotIf WinActive(CD) | WinActive(DI)
+numpadSub::{
+		activeGUI()
+		translateWithChatGPT()
+		active.Destroy()
+	}
+#HotIf winActive("Translate")
+numpadSub::{
+		activeGUI()
+		sendTraslationBackToSpreadsheet()
+		active.Destroy()
+	}
 
 
 ;■■■■■■■■■■■■■ Price Look up
 ;Applies hierarchy to seach with ISBN10 first, then ISBN13, then title in native script.
-;▼▲▼▲▼▲▼▲▼▲▼▲▼
-#HotIf WinActive(CD) | WinActive(DI)
 ;▼▲▼
 	priceSearch(isbn10, isbn13, titleN, urlPrefix:= "", urlSuffix:= "",AZisbn10prefix:= "", AZsearchPrefix:= "", isAmazon:= 0){
 		global bibArr
@@ -1097,7 +1314,7 @@ numpadSub::{
 				return searchURL
 			}
 }
-;■■■
+;▼▲▼
 	searchPrice(){
 		spreadsheet:= sheetCheck()
 		getDataFromBibSpreadsheet()
@@ -1118,12 +1335,23 @@ numpadSub::{
 				newTab(searchURL)
 		}
 		else{
-		MsgBox("At this time, price checking options are only available for Japanese materials.", stopped)
+			active.Destroy()
+			MsgBox("At this time, price checking options are only available for Japanese materials.", stopped)
 			exit
 		}
 }
-^numpadAdd::searchPrice()
-F4::searchPrice()
+;■■■
+#HotIf WinActive(CD) | WinActive(DI)
+^numpadAdd::{
+		activeGUI()
+		searchPrice()
+		active.Destroy()
+}
+F4::{
+		activeGUI()
+		searchPrice()
+		active.Destroy()
+}
 
 
 
@@ -1143,6 +1371,7 @@ F4::searchPrice()
 			data:= bibArr[1] . "`t" . bibArr[2] . "`t" . bibArr[3] . "`t" . bibArr[4] . "`t" . bibArr[5] . "`t" . bibArr[6] . "`t" . bibArr[7] . "`t" . bibArr[8] . "`t" . bibArr[9] . "`t" . bibArr[10] . "`t" . bibArr[11] . "`t" . bibArr[12] . "`t" . bibArr[13] . "`t" . bibArr[14] . "`t" . bibArr[15] . "`t" . bibArr[16] . "`t" . bibArr[17] . "`t" . bibArr[18] . "`t" . bibArr[19] . "`t" . bibArr[20] . "`t" . bibArr[21] . "`t" . bibArr[22] . "`t" . bibArr[23] . "`t" . bibArr[24] . "`t" . bibArr[25] . "`t" . bibArr[26] . "`t" . bibArr[27] . "`t" . bibArr[28] . "`t" . bibArr[29] . "`t" . bibArr[30] . "`t" . bibArr[31] . "`t" . bibArr[32] . "`t" . bibArr[33] . "`t" . bibArr[34] . "`t" . bibArr[35]
 			inClip(data)
 			pasteToBibSpreadsheet()
+			active.Destroy()
 			exit
 }
 ;▼▲▼ Furuhonya - kosho.or.jp
@@ -1150,11 +1379,13 @@ F4::searchPrice()
 			spreadsheet:= sheetCheck()
 			price:= copyAll()
 			if !InStr(price, "￥"){
+				active.Destroy()
 				MsgBox("There is no price to add from www.kohso.or.jp", stopped)
 				exit
 			}
 			price:= RegExReplace(price, "`r|`n|`t", "xtx")
 			if inStr(price, "の検索結果"){
+				active.Destroy()
 				MsgBox("You are on a list of search results for www.kosho.or.jp.`n`nPlease load one of the records from the results to import the price into the spreadsheet.", stopped)
 				exit
 			}
@@ -1170,11 +1401,13 @@ F4::searchPrice()
 			Send "^c"
 			Sleep nt
 			if !ClipWait(2){
+				active.Destroy()
 				MsgBox("Nothing on Amazon.com (US site) has been highlighted to copy.`n`nWhen highlighting a price to copy make sure all the numbers and dollar sign ($) are hihglighted to import the price into the spreadsheet.", stopped)
 				exit
 			}
 			price:= A_Clipboard
 			if !inStr(price, "$"){
+				active.Destroy()
 				MsgBox("You may have tried to highlight a price but there was no dollar sign ($) in the text you highlighted.", stopped)
 				exit
 			}
@@ -1190,11 +1423,13 @@ F4::searchPrice()
 			Send "^c"
 			Sleep nt
 			if !ClipWait(2){
+				active.Destroy()
 				MsgBox("Nothing on Amazon.co.jp (Japan site) has been highlighted to copy.`n`nWhen highlighting a price to copy make sure all the numbers and yen sign (¥) are hihglighted to import the price into the spreadsheet.", stopped)
 				exit
 			}
 			price:= A_Clipboard
 			if !inStr(price, "￥"){
+				active.Destroy()
 				MsgBox("You may have tried to highlight a price but there was no yen sign (¥) in the text you highlighted.", stopped)
 				exit
 			}
@@ -1206,6 +1441,7 @@ F4::searchPrice()
 			spreadsheet:= sheetCheck()
 			price:= copyall()
 			if !inStr(price, "Japan Publications Trading"){
+				active.Destroy()
 				Send "{tab}"
 				exit
 			}
@@ -1226,13 +1462,20 @@ getPrice(){
 		JPT()
 }
 ;■■■
-^numpadEnter::getPrice()
-^enter::getPrice()
+^+numpadEnter::{
+		activeGUI()
+		getPrice()
+		active.Destroy()
+}
+^+enter::{
+		activeGUI()
+		getPrice()
+		active.Destroy()
+}
 
 
 
 ;■■■■■■■■■■■■■ Conveniences
-#HotIf WinActive(CD) | WinActive(DI)
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼
 ;▼▲▼
 	moveToISBN(){
@@ -1243,6 +1486,7 @@ getPrice(){
 		Send "{right 14}"
 }
 ;■■■ Move active cell to ISBN column in a row
+#HotIf WinActive(CD) | WinActive(DI)
 ^numpadEnter::moveToISBN()
 ^enter::moveToISBN()
 
@@ -1254,3 +1498,4 @@ getPrice(){
 ;■■■ Speed up browsing through tabs to look at First Search results
 #HotIf WinActive("ahk_exe firefox.exe") | WinActive("ahk_exe msedge.exe") | WinActive("ahk_exe chrome.exe")
 		^numpad0::Send "^{tab}"	;go to next tab
+#Hotif
