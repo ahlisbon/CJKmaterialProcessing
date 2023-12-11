@@ -142,20 +142,20 @@ setTitleMatchMode 2
 }
 ;▼▲▼ 
 	pasteToBibSpreadsheet(){
-		spreadsheet:= sheetcheck()
-		dataHere(spreadsheet)
-		Send "{esc}"
-		Sleep nt
-		Send "{home}"
-		Sleep nt
-		if InStr(spreadsheet, US){
-			Send "{right 3}"
+				spreadsheet:= sheetCheck()
+				dataHere(spreadsheet)			
+				Send "{esc}"
+				Sleep nt
+				Send "{home}"
+				Sleep nt
+			if InStr(spreadsheet, US){
+				Send "{right 3}"
+				Sleep nt
+			}
+			Send "^v"
 			Sleep nt
-		}
-		Send "^v"
-		Sleep nt
-		Send "{down}"
-		sleep wt
+			Send "{down}"
+			sleep wt
 }
 
 
@@ -169,8 +169,11 @@ setTitleMatchMode 2
 		;Get data from spreadsheet
 			dataHere(spreadsheet)
 			Send "{esc}"
+			Sleep nt
 			Send "{home}"
+			Sleep nt
 			Send "+{space}"
+			Sleep nt
 			copy()
 			global bibArr:= strSplit(A_Clipboard, A_Tab)
 			if(bibArr[15]= "") & (bibArr[16]= "") & (bibArr[17]= "") & (bibArr[20]= "") & (bibArr[21]= ""){
@@ -279,19 +282,36 @@ F1::{
 			data:= copyAll()
 			data:= RegExReplace(data, "`r|`n|`t")
 			if inStr(data, "Records Found: "){
-				results:= RegExReplace(data, ".*Records found: | .*")
-				if(results > 10)
-					results:= 10
-		;Loop through results and open tabs
-				entry:= 1
-				Loop results{
-					findTextOnSite(entry . ".")
-					Send "{tab}"
-					Sleep nt
-					Send "^{enter}"
-					Sleep nt
-					entry++
-				}	
+					results:= RegExReplace(data, ".*Records found: | .*")
+					if(results > 10)
+						results:= 10
+				;▼ Loop through results and open tabs
+					entry:= 1
+					Loop results{
+						findTextOnSite(entry . ".")
+						Send "+{right}"
+						Sleep nt
+						tabTest:= copy()
+					;▼ Loop to get past random strings with a number + period, e.g.: "1."
+						Loop{
+							if !InStr(tabtest, "`t"){
+								Send "{tab}"
+								findTextOnSite(entry . ".")
+								Send "+{right}"
+								Sleep nt
+								tabTest:= copy()
+								if InStr(tabTest, "`t")
+									break
+							}
+							else
+								break
+						}
+						Send "{tab}"
+						Sleep nt
+						Send "^{enter}"
+						Sleep nt
+						entry++
+					}
 			}
 }
 
@@ -321,20 +341,22 @@ F1::{
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼ Functions
 ;▼▲▼ Tutorial GUI
 	FSlistTutorial(){
-		tutorialGUI()
-		tutorialContent(1,	"Browser window with many FirstSearch records loaded.",
-							"",
-							"Numpad 0   OR   Ctrl+Tab",
-							"quickly swap browser tabs and browse for a record with data you want to import to your spreadsheet.")
-		tutorialContent(0,	"=== OR =========",
-							"",
-							"Numpad Minus   OR   Ctrl+W",
-							"close browser tabs of records you are not interested in.")
-		tutorialContent(0,	"=== ON A RECORD YOU WANT TO IMPORT DATA FROM =========",
-							"",
-							"Numpad Enter   OR   Enter",
-							"import the data in detailed record into your spreadsheet.")
-		tutorialShow()
+		if(tutorialMode= 1){
+			tutorialGUI()
+			tutorialContent(1,	"Browser window with many FirstSearch records loaded.",
+								"",
+								"Numpad 0   OR   Ctrl+Tab",
+								"quickly swap browser tabs and browse for a record with data you want to import to your spreadsheet.")
+			tutorialContent(0,	"=== OR =========",
+								"",
+								"Numpad Minus   OR   Ctrl+W",
+								"close browser tabs of records you are not interested in.")
+			tutorialContent(0,	"=== ON A RECORD YOU WANT TO IMPORT DATA FROM =========",
+								"",
+								"Numpad Enter   OR   Enter",
+								"import the data in detailed record into your spreadsheet.")
+			tutorialShow()
+		}
 }
 ;■■■
 #HotIf WinActive("WorldCat List of Records")
@@ -356,7 +378,7 @@ F1::{
 
 
 ;■■■■■■■■■■■■■ Put bibliographic data from a FirstSearch detailed record and put it in a spreadsheet.
-#HotIf WinActive("Detailed Record")
+#HotIf WinActive("Detailed Record") | WinActive("Libraries that Own Item")
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼ Functions
 ;▼▲▼
 	pullBibData(){
@@ -376,7 +398,7 @@ F1::{
 				;📚 Total volumes of multivolume sets
 						volumes:= getVolumes(data)
 				;Determine if active search is happening
-							if(activesearch= 0){
+							if(activeSearch= 0){
 								bibArr:= []
 								Loop 35{
 									bibArr.InsertAt(1, "n/a")
@@ -572,12 +594,15 @@ F1::{
 					Send "!{F4}"
 					sleep wt
 				}
+		
+		
+		
 		;Populate spreadsheet with data.
 				if(spreadsheet= US){
 					Loop 7{
 						bibArr.RemoveAt(1)
 					}
-				inClip(bibArr[1] . "`t" . bibArr[2] . "`t" . bibArr[3] . "`t" . bibArr[4] . "`t" . bibArr[5] . "`t" . bibArr[6] . "`t" . bibArr[7] . "`t" . bibArr[8] . "`t" . bibArr[9] . "`t" . bibArr[10] . "`t" . bibArr[11] . "`t" . bibArr[12] . "`t" . bibArr[13] . "`t" . bibArr[14] . "`t" . bibArr[15] . "`t" . bibArr[16] . "`t" . bibArr[17] . "`t" . bibArr[18] . "`t" . bibArr[19] . "`t" . bibArr[20] . "`t" . bibArr[21] . "`t" . bibArr[22] . "`t" . bibArr[23] . "`t" . bibArr[24] . "`t" . bibArr[25])
+					inClip(bibArr[1] . "`t" . bibArr[2] . "`t" . bibArr[3] . "`t" . bibArr[4] . "`t" . bibArr[5] . "`t" . bibArr[6] . "`t" . bibArr[7] . "`t" . bibArr[8] . "`t" . bibArr[9] . "`t" . bibArr[10] . "`t" . bibArr[11] . "`t" . bibArr[12] . "`t" . bibArr[13] . "`t" . bibArr[14] . "`t" . bibArr[15] . "`t" . bibArr[16] . "`t" . bibArr[17] . "`t" . bibArr[18] . "`t" . bibArr[19] . "`t" . bibArr[20] . "`t" . bibArr[21] . "`t" . bibArr[22] . "`t" . bibArr[23] . "`t" . bibArr[24] . "`t" . bibArr[25])
 				}
 				activeSearch:= 0
 				pasteToBibSpreadsheet()
@@ -859,16 +884,29 @@ F1::{
 				subjects:= Trim(subjects)
 				return subjects
 }
-
-
-
+;▼▲▼
+importDataFinishedTutorial(){
+		if(tutorialMode= 1){
+			spreadsheet:= sheetCheck()
+			tutorialGUI()
+			tutorialContent(1,	"",
+								"Your Spreadsheet",
+								"Numpad Plus   OR   F1",
+								"select the row of the current active cell to look up your item on FirstSearch.")
+			tutorialContent(2,	"=== STOP USING TUTORIAL MODE? =========",
+								"Bibliograpic Data to Spreadsheet - Options Interface",
+								"Uncheck tutorial mode when you feel comfortable with the hotkeys.",
+								"Look like a wizard to you colleagues 🧙‍")
+			tutorialShow()
+		}
+}
 ;■■■ Pull data from FirstSearch record into spreadsheet.
 numpadEnter::{
 		tutorialOff()
 		activeGUI()
 		pullBibData()
 		active.Destroy()
-		FSresultsTutorial()
+		importDataFinishedTutorial()
 		
 }
 F2::{
@@ -876,8 +914,9 @@ F2::{
 		activeGUI()
 		pullBibData()
 		active.Destroy()
-		FSresultsTutorial()
+		importDataFinishedTutorial()
 }
+
 
 
 ;■■■■■■■■■■■■■ When multiple ISBNs are pulled for a book, select which ISBN you want to keep/remove.
@@ -900,76 +939,119 @@ F2::{
 		fix.Show()
 ;▼▲▼ Isolate desired ISBN / Remove undesired data
 	processISBN(*){
-		keep:= fix.Submit()
-		keep:= keep.v
-		fixIarr:= copyRowMakeArray()
-		i13:= fixIarr[15]
-		i10:= fixIarr[16]
-		i13:= isolateISBN("...", i13, keep, 13)
-		i10:= isolateISBN("", i10, keep, 10)
-		data:= fixIarr[1] . "`t" . fixIarr [2] . "`t" . fixIarr [3] . "`t" . fixIarr [4] . "`t" . fixIarr [5] . "`t" . fixIarr [6] . "`t" . fixIarr [7] . "`t" . fixIarr [8] . "`t" . fixIarr [9] . "`t" . fixIarr [10] . "`t" . fixIarr [11] . "`t" . fixIarr [12] . "`t" . fixIarr [13] . "`t" . fixIarr [14] . "`t" . i13 . "`t" . i10
-		inClip(data)
-		pasteToBibSpreadsheet()
-	}
-	;▼▲▼ Find and Replace ISBN
-			isolateISBN(whichI, ISBN, keep, logic){
-				if(RegExMatch(keep, "[0-9].......[0-9]")){
-					if(logic= 10) & inStr(ISBN, keep)
-						return keep
-					if(logic= 10) & !inStr(ISBN, keep)
-						return ISBN	
-					if(logic= 13) & inStr(ISBN, keep)
-						return keep
-					if(logic= 13) & !inStr(ISBN, keep)
-						return ISBN 
-				}
-				if isInteger(keep){
-					ISBN:= RegExReplace(ISBN, "\(v. ", "(")
-					ISBN:= RegExReplace(ISBN, " \(" keep "\).*")
-					ISBN:= RegExReplace(ISBN, ".* ")
-				}
-				if(keep= "s") | (keep= "p") | (keep= "h"){
-					ISBN:= RegExReplace(ISBN, " \(" keep "\).*")
-					ISBN:= RegExReplace(ISBN, ".* ")
-				}
-				if(keep= "ns") | (keep="np") | (keep= "nh"){
-					if(keep="ns")
-						getRid:= "set"
-					if(keep="np")
-						getRid:= "(paperback|pbk\.)"
-					if(keep="nh")
-						getRid:= "(hardcover|hbk\.)"
-					ISBN:= RegExReplace(ISBN, "i)^[0-9]." whichI "........ \(" getRid "\) \^ | \^ [0-9]." whichI "........ \(" getRid "\)$| \^ [0-9]." whichI "........ \(" getRid "\)")
-				}
-				active.Destroy()
-				yesNo:= MsgBox(ISBN, "Was the correct ISBN Parsed?", "yesNo")
-				if(yesNo= "Yes"){
-					activeGUI()
-					return ISBN
+			activeGUI()
+			keep:= fix.Submit()
+			keep:= keep.v
+			fixIarr:= copyRowMakeArray()
+			i13:= fixIarr[15]
+			i10:= fixIarr[16]
+		;▼ Normalize text (remove space between v. and number)
+			i13:= RegExReplace(i13, "\(v\. ", "(v.")
+			i10:= RegExReplace(i10, "\(v\. ", "(v.")
+		;▼ Isolate ISBN13 based on input
+			if (fixIarr[15], "............. (v."){
+					hold:= i13
+					i13:= RegExReplace(i13, "i) \(v\." keep "\).*")
+					i13:= RegExReplace(i13, ".* ")
+					;▼ removes "(v.x)" text string to do proper RegExMatch
+					i13:= RegExReplace(i13, "i)\(v\..\)| ")
+					if(i13= "")
+						fixIarr[15]:= hold
+					if(i13!= ""){
+						if(RegExMatch(hold, i13))
+							fixIarr[15]:= i13
+						else
+							fixIarr[15]:= hold
+						fixIarr[10]:= keep
 					}
-				else{
-					activeGUI()
-					dataHere(spreadsheet)
-					Send "{esc}"
-					Sleep nt
-					Send "{home}"
-					Sleep nt
-					Send "{right 14}"
-					active.Destroy()
-					exit
-				}		
 			}
+		;▼ Isolate ISBN10 based on input
+			if (fixIarr[16], ".......... (v."){
+					hold:= i10
+					i10:= RegExReplace(i10, "i) \(v\." keep "\).*")
+					i10:= RegExReplace(i10, ".* ")
+					;▼ removes "(v.x)" text string to do proper RegExMatch
+					i10:= RegExReplace(i10, "i)\(v\..\)| ")
+					if(i10= "")
+						fixIarr[16]:= hold
+					if(i10!= ""){
+						if(RegExMatch(hold, i10))
+							fixIarr[16]:= i10
+						else
+							fixIarr[16]:= hold
+						fixIarr[10]:= keep
+					}
+			}
+		;▼ Paste to spreadsheet
+			inClip(fixIarr[1] . "`t" . fixIarr[2] . "`t" . fixIarr[3] . "`t" . fixIarr[4] . "`t" . fixIarr[5] . "`t" . fixIarr[6] . "`t" . fixIarr[7] . "`t" . fixIarr[8] . "`t" . fixIarr[9] . "`t" . fixIarr[10] . "`t" . fixIarr[11] . "`t" . fixIarr[12] . "`t" . fixIarr[13] . "`t" . fixIarr[14] . "`t" . fixIarr[15] . "`t" . fixIarr[16])
+			pasteToBibSpreadsheet()
+			active.Destroy()
+	}
 }
-;■■
+;■■■
 ^numpad8::{
-		activeGUI()
 		removeISBN()
-		active.Destroy()
 }
 F8::{
 		activeGUI()
 		removeISBN()
 		active.Destroy()
+}
+
+
+
+;■■■■■■■■■■■■■ When multiple ISBNs are pulled for a book, select which ISBN you want to keep/remove.
+#HotIf WinActive(CD) | WinActive(DI)
+;▼▲▼▲▼▲▼▲▼▲▼▲▼
+;▼▲▼
+		splitISBNprep(){
+				Send "{esc}"
+				Sleep nt
+				Send "{home}"
+				Sleep nt
+				Send "{right 14}"
+				Sleep nt
+}
+		splitISBNdown(){
+				isbn:= copy()
+				isbn:= RegExReplace(isbn, " \^ ", "`r`n")
+				isbn:= RegExReplace(isbn, ".*set.*")
+				volumes:= isbn
+				isbn:= RegExReplace(isbn, " \(v.*")
+				isbn:= RegExReplace(isbn, " \(.*")
+				isbn:= RegExReplace(isbn, "`r`n`r`n*")
+				inClip(isbn)
+				Send "^v"
+				Sleep nt
+				return volumes
+}
+		splitVolumesDown(volumes){
+				Send "{left 7}"
+				Sleep nt
+				volumes:= RegExReplace(volumes, ".*\(v\.|.*\(")
+				volumes:= RegExReplace(volumes, "\).*")
+				volumes:= RegExReplace(volumes, "`r`n`r`n*")
+				volumes:= RegExReplace(volumes, " ")
+				inClip(volumes)
+				Send "^v"
+				Sleep nt
+}
+;■■■
+^numpad9::{
+		splitISBNprep()
+		volumes:= splitISBNdown()
+		Send "{right}"
+		splitISBNdown()
+		splitVolumesDown(volumes)
+		
+}
+;■■■
+F9::{
+		splitISBNprep()
+		volumes:= splitISBNdown()
+		Send "{right}"
+		splitISBNdown()
+		splitVolumesDown(volumes)
 }
 
 
@@ -1029,12 +1111,13 @@ numpadDiv::{
 #HotIf WinActive(CD) | WinActive(DI)
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼
 ;▼▲▼
-	convertISBN13toISBN10(data){
-		if !inStr(data, "978"){
+	convertISBN13toISBN10(isbn13){
+		if !inStr(isbn13, "978"){
 			active.Destroy()
-			exit
+			return "n/a"
 		}
-		isbn13:= data
+		isbn13:= RegExReplace(isbn13, "-")
+		cut:= RegExReplace(isbn13, "^978|.$")
 		cut:= RegExReplace(isbn13, "^978|.$")
 		s:= StrSplit(cut) ; s = split
 		a:= s[1]*10
@@ -1093,167 +1176,128 @@ F7::{
 ;■■■■■■■■■■■■■ Translate title with ChatGPT.
 ;▼▲▼
 translateWithChatGPT(){
-		spreadsheet:= sheetCheck()
-		global chatGPTmode
-		global gptPending
-		gptPending:= 0
-		copy()
-		A_clipboard:= RegExReplace(A_clipboard, "`r`n$")
-		if !InStr(A_Clipboard, "`r`n"){
-			chatGPTmode:= "oneTitle"
-		;Copy native language and native title and verify enough information is available for translation.
-			global gptArr
-			gptArr:= copyRowMakeArray()
-			if(gptArr[18]= "n/a") | (gptArr[18]= ""){
-				active.Destroy()
-				MsgBox("The language of this item can't be identified:``n`nReview Column R: Language", stopped)
-				exit
-			}
-			if(gptArr[18]= "English"){
-				active.Destroy()
-				MsgBox("This item is already in English and doesn't need to be translated.")
-				exit
-			}
-			
-			if((gptArr[20]= "n/a") | (gptArr[20]="")) & ((gptArr[21]="n/a") | (gptArr[21]= "")){
-				active.Destroy()
-				MsgBox("There is no non-English title to translate.")
-				exit
-			}
-			title:= copy()
-			if(title= "n/a") | (title= ""){
-				active.Destroy()
-				MsgBox("There is no title to translate.`n`nReview Column 21", stopped)
-				exit
-				}
-		;Determine which title data to use
-			if(gptArr[21]= "n/a") | (gptArr[21]="")
-				title:= gptArr[20]
-			else
-				title:= gptArr[21]
-			A_clipboard:= ""
-		}
-		if InStr(A_Clipboard, "`r`n"){
-			chatGPTmode:= "bulk"
-			titles:= A_Clipboard
-			}
-	;Go to ChatGPT window
-		if WinExist("Translate")
-			WinActivate
-		else{
-			active.Destroy()
-			msg:= "There is no browser window with an active tab open to Chat GPT.`n`n"
-				. "1) Check you have ChatGPT open in your browser.`n"
-				. "2) Make sure ChatGPT is your browser's the active tab.`n"
-				. "3) You need to save and keep active a chat called `"Translate`" (case sensitive)."
-			MsgBox(msg, stopped)
-			return
-		}
-		Sleep wt
-		findTextOnSite("ChatGPT may produce inaccurate information")
-		Send "+{tab}"
-		Sleep nt
-	;Paste translation request
-		if(chatGPTmode= "oneTitle"){
-			prompt:= "Provide English translations of this " . gptArr[18] . " title. Do not include the original "	. gptArr[18] . " title:" . title
-			inClip(prompt)
-			Send "^v"
+	spreadsheet:= sheetCheck()
+			global chatGPTmode
+			global gptPending
+			gptPending:= 0
+			Send "{esc}"
 			Sleep nt
-			Send "{enter}"
-			gptPending:= 1
-		}
-		if(chatGPTmode= "bulk"){
-			prompt:= "Provide English translations of this Korean title with no explanatory text. Do not put the translated title in quotations marks. Do not include the original title:" . "`r`n" . titles
-			inClip(prompt)
-			Send "^v"
+			copy()
+			A_clipboard:= RegExReplace(A_clipboard, "`r`n$")
+			if !InStr(A_Clipboard, "`r`n"){
+					chatGPTmode:= "oneTitle"
+				;▼ Copy native language and native title and verify enough information is available for translation.
+					global gptArr
+					gptArr:= copyRowMakeArray()
+					if(gptArr[18]= "English"){
+						active.Destroy()
+						MsgBox("This item is already in English and doesn't need to be translated.")
+						exit
+					}
+					
+					if((gptArr[20]= "n/a") | (gptArr[20]="")) & ((gptArr[21]="n/a") | (gptArr[21]= "")){
+						active.Destroy()
+						MsgBox("There is no non-English title to translate.")
+						exit
+					}
+					title:= copy()
+					if(title= "n/a") | (title= ""){
+						active.Destroy()
+						MsgBox("There is no title to translate.`n`nReview Column 21", stopped)
+						exit
+						}
+				;▼ Determine which title data to use
+					if(gptArr[21]= "n/a") | (gptArr[21]="")
+						title:= gptArr[20]
+					else
+						title:= gptArr[21]
+					A_clipboard:= ""
+			}
+			if InStr(A_Clipboard, "`r`n"){
+					chatGPTmode:= "bulk"
+					titles:= A_Clipboard
+			}
+		;▼ Go to ChatGPT window
+			if WinExist("Translate")
+					WinActivate
+			else{
+					active.Destroy()
+					msg:= "There is no browser window with an active tab open to Chat GPT.`n`n"
+						. "1) Check you have ChatGPT open in your browser.`n"
+						. "2) Make sure ChatGPT is your browser's the active tab.`n"
+						. "3) You need to save and keep active a chat called `"Translate`" (case sensitive)."
+					MsgBox(msg, stopped)
+					return
+			}
+			Sleep wt
+			findTextOnSite("ChatGPT can make mistakes")
+			Send "+{tab}"
 			Sleep nt
-			Send "{enter}"
-			gptPending:= 1
-		}
+		;▼ Paste translation request
+			if(chatGPTmode= "oneTitle"){
+					prompt:= "Provide an English translation of this title:" . gptArr[21] . ". The response should only include the translated title and no other text. Do not put quotation marks around the title."
+					inClip(prompt)
+					Send "^v"
+					Sleep nt
+					Send "{enter}"
+					Sleep nt
+					gptPending:= 1
+			}
+			if(chatGPTmode= "bulk"){
+					prompt:= "Provide English translations of these titles:`r`n" . titles . "`r`n`r`nThe response should only include the translated titles and no other text. Do not put quotation marks around the titles."
+					inClip(prompt)
+					Send "^v"
+					Sleep nt
+					Send "{enter}"
+					Sleep nt
+					gptPending:= 1
+			}
 }
 ;▼▲▼
 sendTraslationBackToSpreadsheet(){
-		spreadsheet:= sheetcheck()
+		spreadsheet:= sheetCheck()
 		global gptPending
 		global chatGPTmode
 		if(gptPending= 0){
-			active.Destroy()
-			MsgBox("An error has occured while using ChatGPT to translate a title.`n`nRestart the script and try again.", stopped)
-			exit
-		}	
-		if(chatGPTmode= "oneTitle"){
-		;Copy response
-			Send "+{tab}"
-			Sleep nt
-			Send "^a"
-			Sleep nt
-			title:= copyAll()
-			Send "{tab}"
-			Sleep nt
-		;Isolate translated title
-			title:= RegExReplace(title, "`r`n")
-			title:= RegExReplace(title, "Free Research Preview.*")
-			title:= RegExReplace(title, ".*ChatGPT")
-			title:= title . " - ChatGPT translation"
-		;Determine if the translation is acceptable
-			active.Destroy()
-			yesNo:= MsgBox(title, "Is this translation acceptable?", "yesNo")
-			if(yesNo= "No"){
-				dataHere(spreadsheet)
-				Send "{esc}"
-				Sleep nt
-				Send "{home}"
-				gptPending:= 0
-				exit
-			}	
-			if(yesNo= "Yes"){				
-			;Paste translation request
-				activeGUI()
-				data:= gptArr[1] . "`t" . gptArr[2] . "`t" . gptArr[3] . "`t" . gptArr[4] . "`t" . gptArr[5] . "`t" . gptArr[6] . "`t" . gptArr[7] . "`t" . gptArr[8] . "`t" . gptArr[9] . "`t" . gptArr[10] . "`t" . gptArr[11] . "`t" . gptArr[12] . "`t" . gptArr[13] . "`t" . gptArr[14] . "`t" . gptArr[15] . "`t" . gptArr[16] . "`t" . gptArr[17] . "`t" . gptArr[18] . "`t" . title
-				inClip(data)
-				pasteToBibSpreadsheet()
-				gptPending:= 0
 				active.Destroy()
+				MsgBox("An error has occured while using ChatGPT to translate a title.`n`nRestart the script and try again.", stopped)
 				exit
-			}
 		}
-	;Bulk title list transtlation process	
-		if(chatGPTmode= "bulk"){
-		;Copy Response
-			Send "+{tab}"
-			Sleep nt
-			Send "^a"
-			Sleep nt
-			titles:= copyAll()
-			Send "{tab}"
-			Sleep nt
-		;Isolate translated title
-			titles:= RegExReplace(titles, "`r`n", "xtx")
-			titles:= RegExReplace(titles, ".*:xtx")
-			titles:= RegExReplace(titles, "Free Research Preview.*")
-			titles:= RegExReplace(titles, ".*ChatGPT")
-			titles:= RegExReplace(titles, "^    ")
-			titles:= RegExReplace(titles, "    ", " - ChatGPT translation`r`n")
-			titles:= RegExReplace(titles, "^xtx.*`r`n")
-			titles:= RegExReplace(titles, "xtx")
-			titles:= RegExReplace(titles, "m)^`"|`"$")
-			titles:= titles . " - ChatGPT translation`r`n"
-		;Determine if the translation is acceptable
-			titlesForMsg:= RegExReplace(titles, " - ChatGPT translation")
-			active.Destroy()
-			yesNo:= MsgBox(titlesForMsg, "Is this translation acceptable?", "yesNo")
-			if(yesNo= "No"){
-				dataHere(spreadsheet)
-				Send "{esc}"
+	;▼ Single title translation process
+		if(chatGPTmode= "oneTitle"){
+			;▼ Copy response
+				Send "+{tab}"
 				Sleep nt
-				Send "{home}"
-				gptPending:= 0
-				active.Destroy()
-				exit
-			}	
-			if(yesNo= "Yes"){				
-				activeGUI()
-			;Paste translation request
+				Send "^a"
+				Sleep nt
+				title:= copyAll()
+				Send "{tab}"
+				Sleep nt
+			;▼ Isolate translated title
+				title:= RegExReplace(title, "`r`n")
+				title:= RegExReplace(title, "ChatGPT can make mistakes.*")
+				title:= RegExReplace(title, ".*ChatGPT")
+				title:= title . " - ChatGPT translation"
+			;▼ Paste translation request
+				inClip( gptArr[1] . "`t" . gptArr[2] . "`t" . gptArr[3] . "`t" . gptArr[4] . "`t" . gptArr[5] . "`t" . gptArr[6] . "`t" . gptArr[7] . "`t" . gptArr[8] . "`t" . gptArr[9] . "`t" . gptArr[10] . "`t" . gptArr[11] . "`t" . gptArr[12] . "`t" . gptArr[13] . "`t" . gptArr[14] . "`t" . gptArr[15] . "`t" . gptArr[16] . "`t" . gptArr[17] . "`t" . gptArr[18] . "`t" . title)
+				pasteToBibSpreadsheet()
+		}
+	;▼ Bulk title list transtlation process	
+		if(chatGPTmode= "bulk"){
+			;▼ Copy Response
+				Send "+{tab}"
+				Sleep nt
+				Send "^a"
+				Sleep nt
+				titles:= copyAll()
+				Send "{tab}"
+				Sleep nt
+			;▼ Isolate translated titles
+				titles:= RegExReplace(titles, "`r`n", "xtx")
+				titles:= RegExReplace(titles, ".*xtxChatGPTxtxxtx|xtxChatGPT can make mistakes.*")
+				titles:= RegExReplace(titles, "xtx", "xtx`r`n")
+				titles:= RegExReplace(titles, "xtx", " - ChatGPT translation")
+			;▼ Paste translation request
 				inClip(titles)
 				dataHere(spreadsheet)
 				Send "{esc}"
@@ -1264,10 +1308,8 @@ sendTraslationBackToSpreadsheet(){
 				Sleep nt
 				Send "{esc}"
 				gptPending:= 0
-				active.Destroy()
-				exit
-			}
 		}
+		active.Destroy()
 }
 ;■■■
 #HotIf WinActive(CD) | WinActive(DI)
@@ -1276,8 +1318,19 @@ numpadSub::{
 		translateWithChatGPT()
 		active.Destroy()
 	}
+^-::{
+		activeGUI()
+		translateWithChatGPT()
+		active.Destroy()
+	}
+
 #HotIf winActive("Translate")
 numpadSub::{
+		activeGUI()
+		sendTraslationBackToSpreadsheet()
+		active.Destroy()
+	}
+^-::{
 		activeGUI()
 		sendTraslationBackToSpreadsheet()
 		active.Destroy()
@@ -1395,7 +1448,7 @@ F4::{
 }
 ;▼▲▼
 	amazonUS(){
-			spreadsheet:= sheetcheck()
+			spreadsheet:= sheetCheck()
 			A_Clipboard:= ""
 			Sleep nt
 			Send "^c"
@@ -1417,7 +1470,7 @@ F4::{
 
 ;▼▲▼
 	amazonJP(){
-			spreadsheet:= sheetcheck()
+			spreadsheet:= sheetCheck()
 			A_Clipboard:= ""
 			Sleep nt
 			Send "^c"
