@@ -1,8 +1,6 @@
 # CJK Material Processing
 This is a macro script for screen scraping data form OCLC's WorldCat.org or FirstSearch database. It's primary purpose is to quickly get bibliographic data into a spreadsheet ot help with processing library material requests and orders. It works for materials in any language with a special emphasis on Japanese in particular. The macro is written in [AutoHotkey](https://www.autohotkey.com/) (AHK) and is designed to work in tandem with custom designed spreadsheets.
 
-Test
-
 # 🔰 Basic Requirements for Use
 1. PC with Windows OS.
    - This macro has only been tested in Windows 10. It should work with previous versions as far back as Windows 8.
