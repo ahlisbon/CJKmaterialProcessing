@@ -15,6 +15,7 @@ setTitleMatchMode 2
 
 ;■■■■■■■■■■■■■ Global Variables
 	global bibArr:= []
+	global active
 	global activeSearch:= 0
 	global tutorialMode:= 0
 
@@ -244,6 +245,7 @@ setTitleMatchMode 2
 }
 ;■■■
 numpadAdd::{
+		confirmBrowserOpen()
 		global activeSearch:= 1	
 		tutorialOff()
 		activeGUI()
@@ -253,6 +255,7 @@ numpadAdd::{
 		FSresultsTutorial()
 }
 F1::{
+		confirmBrowserOpen()
 		global activeSearch:= 1
 		tutorialOff()
 		activeGUI()
@@ -538,8 +541,7 @@ F1::{
 						. "Subject(s):`n"
 							. subjects
 			if(checkMode= 1){
-				active.Destroy()
-				yesNo:= MsgBox(checkData, "Review Bibliographic Data", "YesNo")
+				yesNo:= MsgBox(checkData, "Review Bibliographic Data", 4100)
 				if(yesNo= "No")
 					exit
 			}
@@ -945,6 +947,15 @@ F2::{
 			fixIarr:= copyRowMakeArray()
 			i13:= fixIarr[15]
 			i10:= fixIarr[16]
+		;▼ Keep an ISBN with a label like "paperback", "hardcover" etc. while removing the label.
+			if(keep= "p"){
+				i13:= RegExReplace(i13, " \(paperback\)| \(pbk.\)")
+				i10:= RegExReplace(i10, " \(paperback\)| \(pbk.\)")
+			}
+			if(keep= "h"){
+				i13:= RegExReplace(i13, " \(hardcover\)")
+				i10:= RegExReplace(i10, " \(hardcover\)")
+			}
 		;▼ Normalize text (remove space between v. and number)
 			i13:= RegExReplace(i13, "\(v\. ", "(v.")
 			i10:= RegExReplace(i10, "\(v\. ", "(v.")
@@ -1063,18 +1074,18 @@ F9::{
 ;▼▲▼ Copies text in active cell.
 	fastISBNfix(){
 			Send "^+{right}"
-			Sleep nt
+			Sleep 25
 			inCellCheck()
 			rightP:= copy()
 			rightP:= Trim(rightP)
 			Send "^+{left}"
-			Sleep nt
+			Sleep 25
 			inCellCheck()
 			leftP:= copy()
 			Send "{esc}"
-			Sleep nt
+			Sleep 25
 			Send leftP . rightP
-			Sleep nt
+			Sleep 25
 			Send "{enter}"
 }
 	;▼▲▼ Stops script if it was run outside of an active cell.
