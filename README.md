@@ -33,6 +33,7 @@ When you run the EXE file for the script, you have 6 data fields to fill out in 
 You can rename your files to whatever you like. However for data to be pasted correctly, the script needs to know which type of spreadsheet you are using. If you are preparing different books for purchase, make sure all your spreadsheets start with the same prefix, such as:
 - Orders - 2022-23
 - Orders - Rare Korean Books
+- If you have multiple spreadsheets with the same prefix open at the same time, you will be required to close all but the one you are actively using.
 
 Other things to be aware of regarding naming conventions:
 - Do not use the same prefix for different types of sheets.
@@ -144,6 +145,7 @@ These spreadsheets work in tandem with the the CJK Processing Script to bring da
   - If a title or series title appears twice, it turns yellow.
 - Incorect formatting for an ISBN
   - If there is a space in the ISBN, the cell will turn yellow and should be addressed.
+  - There are some scripts you can run to assist with cleaning up ISBN data, seem more below.
 - Preferred Vendor and Collection Columns (F and I)
   - These colums will stay red until they are filled out.
 - Note for Acquistions Column (G)
