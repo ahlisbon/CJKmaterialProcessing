@@ -51,10 +51,15 @@ Before pasting data to your spreadhseet, a window will appear for you to review 
 Tutorial mode pops up windows to tell you what to do next and what hotkeys to push in order to start the process.
 
 ## -- 🕗 Wait longer for Websites to Load
-IF you are using a slower connection speed, you can increase the time the script will wait to load. The default is 1, which equals 3 seconds. 2 and 3 are multipliers, so the script will wait 6 or 9 seconds respectively.
+- If your internet connection is slow, you can increase the time the script will wait for a webpage to to load.
+- The default is 1, which equals 3 seconds. 2 and 3 are multipliers, so the script will wait 6 or 9 seconds respectively.
 
 # 🔥 Hotkeys to Activate Macro
-Several keyboard keys are repurposed to start and stop the macro, referred to as "Hotkeys." F1 through F12 and the numpad keys are repuprosed for quick and easy use of the macro. It is *highly* recommended that you use a keyboard with a numpad as it is much each easier to use. In case you do not have a keyboard with a numpad, the function keys will suffice.
+Several keyboard keys are repurposed to start and stop the macro, referred to as "Hotkeys."
+- F1 through F12 and the numpad keys are repuprosed for quick and easy use of the macro.
+  - On the numpad, the minu key, plus key and enter key are repurposed. 
+- It is *highly* recommended that you use a keyboard with a numpad as it is much each easier to use.
+- In case you do not have a keyboard with a numpad, the function keys will suffice.
 
 ## -- ⌨ Essential Hotkeys
 - **ctrl + backslash (above the enter key)**
