@@ -3,7 +3,7 @@ This is a macro script for screen scraping data form OCLC's WorldCat.org or Firs
 
 # 🔰 Basic Requirements for Use
 1. PC with Windows OS.
-   - This macro has only been tested in Windows 10. It should work with previous versions as far back as Windows 8.
+   - This macro has only been tested in Windows 10. It should work with previous versions as far back as Windows 8, and work in Windows 11.
 2. Files to download:
    - **Note**: after clicking these links, look for a down arrow on the right side of the GitHub page to download the files. When you hover over the icon is should say "Download raw file"
    - The AHK executible file: [BibData to Spreadsheet.exe](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/BibData%20to%20Spreadsheet.exe)
