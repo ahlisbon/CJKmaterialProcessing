@@ -107,7 +107,7 @@ If you are interested in tracking the general cost of the books you are selectin
 **Only available for Japanese at the moment**
 - **ctrl + Numpad Plus or F4**
   - On a spreadsheet: Looks up the item across several websites to compare prices.
-  - Once the web pages have all loaded, you will can browse for an appropriate price and select highlight it.
+  - Once the web pages have all loaded, you can browse for an appropriate price and select highlight it.
   - You can use **ctrl + 0** to quickly cycle through tabs.
   - On Amazon.com or Amazon.jp, you need to highlight the price (including the currency symbol) with your mouse before pressing the next hotkey.
   - On Furuhonya and JPT, you need to make sure to open an individual record before pressing the next hotkey.
@@ -192,5 +192,3 @@ Regardless of what method you will use. You need to do some basic preperation be
 
 ## -- ⬜ Semi Automatic Slips
 Content Pending.
-
-Test text
