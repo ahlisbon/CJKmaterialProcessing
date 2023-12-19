@@ -42,7 +42,7 @@ Other things to be aware of regarding naming conventions:
 In order to pull data like an OCLC#, ISBN#, or Title from the spreadsheet to search FirstSearch, you need to provide the script with a URL that can load FirstSearch
 
 - Do NOT log into FirstSearch and copy that URL, it will not work.
-- Identify they URL your institution uses to access FirstSearch. Whatever link you are using to open FirstSearch, copy that link and paste it here.
+- Identify the URL your institution uses to access FirstSearch. Whatever link you are using to open FirstSearch, copy that link and paste it here.
 
 ## -- ✅ Use Check Mode
 Before pasting data to your spreadhseet, a window will appear for you to review the bibliographic data.
