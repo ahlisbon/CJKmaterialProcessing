@@ -102,7 +102,6 @@ setTitleMatchMode 2
 			checkGUIinputs(CD, DI, US, fsURL){
 				;Blank value alert
 					if(CD= "") & (DI= "") & (US= ""){
-						MsgBox("At least one type of spreadsheet must have a name.")
 						MsgBox("At least one type of spreadsheet must have a name.", stopped, 4096)
 						exit
 						}
