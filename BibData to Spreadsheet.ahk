@@ -102,21 +102,19 @@ setTitleMatchMode 2
 			checkGUIinputs(CD, DI, US, fsURL){
 				;Blank value alert
 					if(CD= "") & (DI= "") & (US= ""){
-						active.Destroy()
 						MsgBox("At least one type of spreadsheet must have a name.")
+						MsgBox("At least one type of spreadsheet must have a name.", stopped, 4096)
 						exit
 						}
 					if(fsURL= ""){
-						active.Destroy()
-						MsgBox("The field for your institution's FirstSearch URL cannot be blank.")
+						MsgBox("The field for your institution's FirstSearch URL cannot be blank.", stopped, 4096)
 						exit
 					}
 				;Duplicate value alert
 					if((CD!="") & (DI="") & (US="")) | ((CD="") & (DI!="") & (US="")) | ((CD="") & (DI="") & (US!=""))
 						return
 					if(CD= DI) | (CD= US) | (DI= US){
-						active.Destroy()
-						MsgBox("You cannot have two file names that are identical.")
+						MsgBox("You cannot have two file names that are identical.", stopped, 4096)
 						exit
 					}
 }
@@ -126,11 +124,11 @@ setTitleMatchMode 2
 			spreadsheet:= ""
 			if(CD= "") & (DI= "") & (US= ""){
 				active.Destroy()
-				MsgBox("There is no spreadsheet open with a matching prefix.`n`nCheck if:`n`n  1) your file name matches the names you submitted`n  2) The file is open.")
+				MsgBox("There is no spreadsheet open with a matching prefix.`n`nCheck if:`n`n  1) your file name matches the names you submitted`n  2) The file is open.", stopped, 4096)
 			}
 			if((WinExist(CD) & WinExist(DI)) | (WinExist(CD) & WinExist(US)) | (WinExist(DI) & WinExist(US))){
 				active.Destroy()
-				MsgBox("You have at least two different types of spreadsheets open. Please close all other spreadsheets except for the one you are actively working on.")
+				MsgBox("You have at least two different types of spreadsheets open. Please close all other spreadsheets except for the one you are actively working on.", stopped, 4096)
 				exit
 			}
 			if WinExist(CD)
@@ -156,12 +154,12 @@ setTitleMatchMode 2
 			Send "^v"
 			Sleep nt
 			Send "{down}"
-			sleep wt
+			Sleep wt
 }
 
 
 
-;■■■■■■■■■■■■■ Search FirstSearch/Worldcat with data from spreadsheet.
+;■■■■■■■■■■■■■ Search FirstSearch with data from spreadsheet.
 #HotIf WinActive(CD) | WinActive(DI)
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼ Functions
 ;▼▲▼
@@ -177,24 +175,54 @@ setTitleMatchMode 2
 			Sleep nt
 			copy()
 			global bibArr:= strSplit(A_Clipboard, A_Tab)
-			if(bibArr[15]= "") & (bibArr[16]= "") & (bibArr[17]= "") & (bibArr[20]= "") & (bibArr[21]= ""){
+			for index, value in bibArr
+				bibArr[index]:= StrReplace(value, "`r`n", "")
+			if(bibArr[18]= "") & (bibArr[19]= "") & (bibArr[20]= "") & (bibArr[23]= "") & (bibArr[24]= ""){
 				active.Destroy()
-				MsgBox("The script stopped because there is no searchable data in your spreadsheet.", stopped)
+				MsgBox("There is no searchable data in your spreadsheet.", stopped, 4096)
 				exit
 			}
 }
 ;▼▲▼
-	searchFS(){
+	searchFS(searchParameter){
+			spreadsheet:= sheetCheck()
 			activateBrowser()
 			newWin(fsURL)
 			Sleep lt
 		;▼ Search priority= oclc, isbn13, isbn10, native tile, romanized title
-			bibArr[21]:= RegExReplace(bibArr[21], " : ", ": ")
-			searchText:= searchWith(bibArr[17], bibArr[15], bibArr[16], bibArr[21], bibArr[20])
+			searchText:= searchWith(bibArr[20], bibArr[18], bibArr[19], bibArr[24], bibArr[23])
 			Send searchText
 			Sleep nt
+		;▼ Use year of publication in FirstSearch search	
+			if(searchParameter= 1) & (bibArr[25]!= "n/a") & (bibArr[25]!= ""){
+					findTextOnSite("Limit to:")
+					Send "{tab}"
+					Sleep wt
+					Send bibArr[25]
+					Sleep wt
+			}
 			Send "{enter}"
-			Sleep wt
+			Sleep lt/2
+		;▼ Get count for how many other libraries in FirstSearch that own item
+			if(bibArr[17]= "") | (bibArr[17]= "n/a"){
+				;▼ Get count from FirstSearch list of results
+					if winActive("FirstSearch: WorldCat List of Records"){
+					;▼ Isolate numbers for "Libraries Worldwide:" that own item, first 10 results only.	
+						libCount:= copyAll()
+						Sleep wt
+						libCount:= RegExReplace(libCount, "`r|`n|`t")
+						libCount:= RegExReplace(libCount, ".*^.+?Libraries Worldwide: ")
+						libCount:= RegExReplace(libCount, "Libraries Worldwide: ", "`n")
+						libCount:= RegExReplace(libCount, " .*|<.*")
+					;▼ Sum of libraries holding item
+						libCount := StrSplit(libCount, "`n")
+						libTotal:= 0
+						for index, line in libCount
+							libTotal += line  ; Add the number on this line to the total
+						bibArr[17]:= libTotal
+						Send "{tab}"
+					}
+			}
 }
 ;▼▲▼
 			searchWith(oclc, isbn13, isbn10, titleR, titleN){		
@@ -246,11 +274,11 @@ setTitleMatchMode 2
 ;■■■
 numpadAdd::{
 		confirmBrowserOpen()
-		global activeSearch:= 1	
+		global activeSearch:= 1
 		tutorialOff()
 		activeGUI()
 		getDataFromBibSpreadsheet()
-		searchFS()
+		searchFS(searchParameter:= 0)
 		active.Destroy()
 		FSresultsTutorial()
 }
@@ -260,7 +288,28 @@ F1::{
 		tutorialOff()
 		activeGUI()
 		getDataFromBibSpreadsheet()
-		searchFS()
+		searchFS(searchParameter:= 0)
+		active.Destroy()
+		FSresultsTutorial()
+}
+;■■■ Include year in search
+>^numpadAdd::{
+		confirmBrowserOpen()
+		global activeSearch:= 1
+		tutorialOff()
+		activeGUI()
+		getDataFromBibSpreadsheet()
+		searchFS(searchParameter:= 1)
+		active.Destroy()
+		FSresultsTutorial()
+}
+>^F1::{
+		confirmBrowserOpen()
+		global activeSearch:= 1
+		tutorialOff()
+		activeGUI()
+		getDataFromBibSpreadsheet()
+		searchFS(searchParameter:= 1)
 		active.Destroy()
 		FSresultsTutorial()
 }
@@ -385,33 +434,41 @@ F1::{
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼ Functions
 ;▼▲▼
 	pullBibData(){
-				global bibArr
-				global activeSearch
-		;Error check that spreadsheet and fsURL variables are not blank.
-				checkGUIinputs(CD, DI, US, fsURL)
-				spreadsheet:= sheetCheck()
-		;FirstSearch
-				if WinExist("Detailed Record"){
-					WinActivate
-					data:= loadSourceCode("pagename", "FirstSearch Detailed Record")
-					data:= RegExReplace(data, "`r`n")							;Makes parsing easier.
-					data:= RegExReplace(data, "<span class\=matchterm[0-9]>") 	;Removes code for yellow text highlighting.
-					data:= RegExReplace(data, "</span>") 						;Because of highlighting above, all "</span>" are removed.
-					data:= normalize(data)	
-				;📚 Total volumes of multivolume sets
-						volumes:= getVolumes(data)
-				;Determine if active search is happening
-							if(activeSearch= 0){
-								bibArr:= []
-								Loop 35{
-									bibArr.InsertAt(1, "n/a")
-								}
+			global bibArr
+			global activeSearch
+		;▼ Error check that spreadsheet and fsURL variables are not blank.
+			checkGUIinputs(CD, DI, US, fsURL)
+			spreadsheet:= sheetCheck()
+		;▼ FirstSearch
+			if WinExist("Detailed Record"){
+				WinActivate
+				data:= loadSourceCode("pagename", "FirstSearch Detailed Record")
+				data:= RegExReplace(data, "`r`n")							;Makes parsing easier.
+				data:= RegExReplace(data, "<span class\=matchterm[0-9]>") 	;Removes code for yellow text highlighting.
+				data:= RegExReplace(data, "</span>") 						;Because of highlighting above, all "</span>" are removed.
+				data:= normalize(data)	
+			;📚 Total volumes of multivolume sets
+					volumes:= getVolumes(data)
+			;Determine if active search is happening
+				if(activeSearch= 0){
+						bibArr:= []
+						Loop 35{
+							bibArr.InsertAt(1, "")
 							}
+						bibArr[1]:= ""
+						bibArr[9]:= ""
+				}
 				;🏛 Check against local holdings
 							if InStr(data, "FirstSearch indicates your institution owns the item.")
 								FSdupe:= "y"
 							else
 								FSdupe:= "n"	
+				;👬 Get count of libraries that also have this item
+						if (bibArr[17]= "") | (bibArr[17]= "n/a"){
+							;▼ Isolate number for "Libraries Worldwide that own item"
+								bibArr[17]:= RegExReplace(data, ".*Libraries worldwide that own item.+? |&.*|<.*")
+						}
+								
 				;🔢 ISBN
 							if InStr(data, "<b>ISBN:"){
 					;ISBN-13
@@ -508,7 +565,7 @@ F1::{
 						else
 							subjects:= "n/a"
 			}
-		;Check Results
+		;▼ Check Results
 				checkData:=   "ISBN-13#:`n"
 							. isbn13				. "`n`n"
 						. "ISBN-10#:`n"
@@ -547,15 +604,15 @@ F1::{
 			}
 			subjects:= regExReplace(subjects, "`n", " ^ ") ;Each subject is on a serpate line for easy reading in the :Check Data message box." This puts them on one line to be pasted into a single cell on the spreadsheet.
 			subjects:= RegExReplace(subjects, " \^  \^ $| \^ $")
-		;Calculate other array fields based on pulled data.
-				;Series Number
+		;▼ Calculate other array fields based on pulled data.
+				;▼ Series Number
 						if InStr(seriesR, " `; ")
 							vol:= RegExReplace(seriesR, ".* `; ")
 						else if InStr(seriesN, " `; ")
 							vol:= RegExReplace(seriesN, ".* `; ")
 						else
 							vol:= "n/a"
-				;Generate URL for Purchase
+				;▼ Generate URL for Purchase
 						if(language="Japanese") & (isbn10!= "") & (isbn10!= "n/a")
 								priceURL:= "https://www.amazon.co.jp/dp/" . isbn10
 						else
@@ -563,32 +620,32 @@ F1::{
 						if inStr(isbn10, A_space)
 							priceURL:= "n/a"
 		
-		;Put parsed data into array.
+		;▼ Put parsed data into array.
 				bibArr[8]:= priceURL
 				bibArr[10]:= vol
-				bibArr[11]:= volumes
-				bibArr[14]:= FSdupe
-				bibArr[15]:= isbn13
-				bibArr[16]:= isbn10
-				bibArr[17]:= oclc
-				bibArr[18]:= language
-				bibArr[19]:= titleT
-				bibArr[20]:= titleR
-				bibArr[21]:= titleN
-				bibArr[22]:= creatorsR
-				bibArr[23]:= creatorsN
-				bibArr[24]:= seriesR
-				bibArr[25]:= seriesN
-				bibArr[26]:= publisherR
-				bibArr[27]:= publisherN
-				bibArr[28]:= yearR
-				bibArr[29]:= yearN
-				bibArr[30]:= editionR
-				bibArr[31]:= editionN
-				bibArr[32]:= subjects
-				inClip(bibArr[1] . "`t" . bibArr[2] . "`t" . bibArr[3] . "`t" . bibArr[4] . "`t" . bibArr[5] . "`t" . bibArr[6] . "`t" . bibArr[7] . "`t" . bibArr[8] . "`t" . bibArr[9] . "`t" . bibArr[10] . "`t" . bibArr[11] . "`t" . bibArr[12] . "`t" . bibArr[13] . "`t" . bibArr[14] . "`t" . bibArr[15] . "`t" . bibArr[16] . "`t" . bibArr[17] . "`t" . bibArr[18] . "`t" . bibArr[19] . "`t" . bibArr[20] . "`t" . bibArr[21] . "`t" . bibArr[22] . "`t" . bibArr[23] . "`t" . bibArr[24] . "`t" . bibArr[25] . "`t" . bibArr[26] . "`t" . bibArr[27] . "`t" . bibArr[28] . "`t" . bibArr[29] . "`t" . bibArr[30] . "`t" . bibArr[31] . "`t" . bibArr[32])
+				bibArr[13]:= volumes
+				bibArr[16]:= FSdupe
+				bibArr[18]:= isbn13
+				bibArr[19]:= isbn10
+				bibArr[20]:= oclc
+				bibArr[21]:= language
+				bibArr[22]:= titleT
+				bibArr[23]:= titleR
+				bibArr[24]:= titleN
+				bibArr[25]:= yearR
+				bibArr[26]:= yearN
+				bibArr[27]:= creatorsR
+				bibArr[28]:= creatorsN
+				bibArr[29]:= seriesR
+				bibArr[30]:= seriesN
+				bibArr[31]:= publisherR
+				bibArr[32]:= publisherN
+				bibArr[33]:= editionR
+				bibArr[34]:= editionN
+				bibArr[35]:= subjects
+				inClip(bibArr[1] . "`t" . bibArr[2] . "`t" . bibArr[3] . "`t" . bibArr[4] . "`t" . bibArr[5] . "`t" . bibArr[6] . "`t" . bibArr[7] . "`t" . bibArr[8] . "`t" . bibArr[9] . "`t" . bibArr[10] . "`t" . bibArr[11] . "`t" . bibArr[12] . "`t" . bibArr[13] . "`t" . bibArr[14] . "`t" . bibArr[15] . "`t" . bibArr[16] . "`t" . bibArr[17] . "`t" . bibArr[18] . "`t" . bibArr[19] . "`t" . bibArr[20] . "`t" . bibArr[21] . "`t" . bibArr[22] . "`t" . bibArr[23] . "`t" . bibArr[24] . "`t" . bibArr[25] . "`t" . bibArr[26] . "`t" . bibArr[27] . "`t" . bibArr[28] . "`t" . bibArr[29] . "`t" . bibArr[30] . "`t" . bibArr[31] . "`t" . bibArr[32] . "`t" . bibArr[33] . "`t" . bibArr[34] . "`t" . bibArr[35])
 				
-		;Close FirstSearch "Detailed Record" page.
+		;▼ Close FirstSearch "Detailed Record" page.
 				if WinExist("Detailed Record") 
 					WinActivate
 				sleep wt
@@ -596,18 +653,17 @@ F1::{
 					Send "!{F4}"
 					sleep wt
 				}
-		
-		
-		
-		;Populate spreadsheet with data.
+		;▼ Populate spreadsheet with data.
 				if(spreadsheet= US){
 					Loop 7{
 						bibArr.RemoveAt(1)
 					}
-					inClip(bibArr[1] . "`t" . bibArr[2] . "`t" . bibArr[3] . "`t" . bibArr[4] . "`t" . bibArr[5] . "`t" . bibArr[6] . "`t" . bibArr[7] . "`t" . bibArr[8] . "`t" . bibArr[9] . "`t" . bibArr[10] . "`t" . bibArr[11] . "`t" . bibArr[12] . "`t" . bibArr[13] . "`t" . bibArr[14] . "`t" . bibArr[15] . "`t" . bibArr[16] . "`t" . bibArr[17] . "`t" . bibArr[18] . "`t" . bibArr[19] . "`t" . bibArr[20] . "`t" . bibArr[21] . "`t" . bibArr[22] . "`t" . bibArr[23] . "`t" . bibArr[24] . "`t" . bibArr[25])
+					inClip(bibArr[1] . "`t" . bibArr[2] . "`t" . bibArr[3] . "`t" . bibArr[4] . "`t" . bibArr[5] . "`t" . bibArr[6] . "`t" . bibArr[7] . "`t" . bibArr[8] . "`t" . bibArr[9] . "`t" . bibArr[10] . "`t" . bibArr[11] . "`t" . bibArr[12] . "`t" . bibArr[13] . "`t" . bibArr[14] . "`t" . bibArr[15] . "`t" . bibArr[16] . "`t" . bibArr[17] . "`t" . bibArr[18] . "`t" . bibArr[19] . "`t" . bibArr[20] . "`t" . bibArr[21] . "`t" . bibArr[22] . "`t" . bibArr[23] . "`t" . bibArr[24] . "`t" . bibArr[25] . "`t" . bibArr[26] . "`t" . bibArr[27] . "`t" . bibArr[28])
 				}
 				activeSearch:= 0
 				pasteToBibSpreadsheet()
+		;▼ Clear Variables
+				
 }
 		;▼▲▼
 			normalize(data){
@@ -792,8 +848,7 @@ F1::{
 					seriesR:= RegExReplace(data, ".*<b>Series:.+?</td>|</td>.*")
 					seriesR:= RegExReplace(seriesR, ".*</div>|.*Variation:</b> |v. |\..*")
 				;Clean Up
-					seriesR:= RegExReplace(seriesR, "`; `;|`;`;", ";")
-					seriesR:= RegExReplace(seriesR, "; <.*|</font>.*")
+					seriesR:= RegExReplace(seriesR, " (`;`;|`;) .*")
 					seriesR:= Trim(seriesR)
 					return seriesR
 }
@@ -804,8 +859,7 @@ F1::{
 						seriesN:= "n/a"
 					seriesN:= RegExReplace(seriesN, ".*lang=`"..`">|(\.|,|`; |)<.*")
 				;Clean Up
-					seriesN:= RegExReplace(seriesN, "`; `;|`;`;", " `; ")
-					seriesN:= RegExReplace(seriesN, "  ", " ")
+					seriesN:= RegExReplace(seriesN, " (`;`;|`;) .*")
 					seriesN:= Trim(seriesN)
 					return seriesN
 }
@@ -874,8 +928,6 @@ F1::{
 				subjects:= regExReplace(subjects, "m)^\(8.+?\) |\.$| \(Title\)")
 				subjects:= regExReplace(subjects, "B\.C\.|B\.C", "BC")
 				subjects:= regExReplace(subjects, "A\.D\.|A\.D", "AD")
-				;Remove French subjects.
-				subjects:= RegExReplace(subjects, "i).*chine$.*|.*chine .*|.*chinoise.*|.*corée.*|.*japon.*|.*japonais.*|.*bibliographie.*|.*bouddhique.*|.*bouddhisme.*|.*confucéenne.*|.*confucianisme.*|.*dictionnaires.*|.*économique.*|.*essais.*|.*histoire.*|.*littérature.*|.*mythologie.*|.*philosophie.*|.*pratique.*|.*poésie.*|.*ï.*")
 				loop{
 					if InStr(subjects, "`n`n")
 						subjects:= RegExReplace(subjects, "`n`n","`n")
@@ -903,6 +955,7 @@ importDataFinishedTutorial(){
 		}
 }
 ;■■■ Pull data from FirstSearch record into spreadsheet.
+
 numpadEnter::{
 		tutorialOff()
 		activeGUI()
@@ -949,12 +1002,16 @@ F2::{
 			i10:= fixIarr[16]
 		;▼ Keep an ISBN with a label like "paperback", "hardcover" etc. while removing the label.
 			if(keep= "p"){
-				i13:= RegExReplace(i13, " \(paperback\)| \(pbk.\)")
-				i10:= RegExReplace(i10, " \(paperback\)| \(pbk.\)")
+				i13:= RegExReplace(i13, " \(paperback\).*| \(pbk.\).*")
+				i10:= RegExReplace(i10, " \(paperback\).*| \(pbk.\).*")
 			}
 			if(keep= "h"){
-				i13:= RegExReplace(i13, " \(hardcover\)")
-				i10:= RegExReplace(i10, " \(hardcover\)")
+				i13:= RegExReplace(i13, " \(hardcover\).*")
+				i10:= RegExReplace(i10, " \(hardcover\).*")
+			}
+			if(keep= "ns"){
+				i13:= RegExReplace(i13, " \^ ............. \(set\).*")
+				i10:= RegExReplace(i10, " \^ .......... \(set\).*")
 			}
 		;▼ Normalize text (remove space between v. and number)
 			i13:= RegExReplace(i13, "\(v\. ", "(v.")
@@ -994,7 +1051,7 @@ F2::{
 					}
 			}
 		;▼ Paste to spreadsheet
-			inClip(fixIarr[1] . "`t" . fixIarr[2] . "`t" . fixIarr[3] . "`t" . fixIarr[4] . "`t" . fixIarr[5] . "`t" . fixIarr[6] . "`t" . fixIarr[7] . "`t" . fixIarr[8] . "`t" . fixIarr[9] . "`t" . fixIarr[10] . "`t" . fixIarr[11] . "`t" . fixIarr[12] . "`t" . fixIarr[13] . "`t" . fixIarr[14] . "`t" . fixIarr[15] . "`t" . fixIarr[16])
+				inClip(fixIarr[1] . "`t" . fixIarr[2] . "`t" . fixIarr[3] . "`t" . fixIarr[4] . "`t" . fixIarr[5] . "`t" . fixIarr[6] . "`t" . fixIarr[7] . "`t" . fixIarr[8] . "`t" . fixIarr[9] . "`t" . fixIarr[10] . "`t" . fixIarr[11] . "`t" . fixIarr[12] . "`t" . fixIarr[13] . "`t" . fixIarr[14] . "`t" . fixIarr[15] . "`t" . fixIarr[16])
 			pasteToBibSpreadsheet()
 			active.Destroy()
 	}
@@ -1037,7 +1094,7 @@ F8::{
 				return volumes
 }
 		splitVolumesDown(volumes){
-				Send "{left 7}"
+				Send "{left 6}"
 				Sleep nt
 				volumes:= RegExReplace(volumes, ".*\(v\.|.*\(")
 				volumes:= RegExReplace(volumes, "\).*")
@@ -1099,7 +1156,7 @@ F9::{
 					Send "{esc}"
 					Sleep nt
 					active.Destroy()
-					MsgBox("You tried to fix a cell in the ISBN13 or ISBN10 columns but weren't `"inside`" the cell. Double click a cell and have your cursor within the ISBN you want to keep in order to clean up your ISBNs.", stopped)
+					MsgBox("You tried to fix a cell in the ISBN13 or ISBN10 columns but weren't `"inside`" the cell. Double click a cell and have your cursor within the ISBN you want to keep in order to clean up your ISBNs.", stopped, 4096)
 					exit
 				}
 			
@@ -1153,11 +1210,11 @@ numpadDiv::{
 		arr:= copyRowMakeArray()
 		if(arr[15]= "n/a") | (arr[15]= ""){
 			
-			MsgBox("There is no ISBN13 to convert into an ISBN10.", stopped)
+			MsgBox("There is no ISBN13 to convert into an ISBN10.", stopped, 4096)
 			return
 		}
 		if inStr(arr[15], " "){	
-			MsgBox("The ISBN13 appears to not be formatted correctly.", stopped)
+			MsgBox("The ISBN13 appears to not be formatted correctly.", stopped, 4096)
 			return
 		}
 		isbn13:= arr[15] 
@@ -1202,19 +1259,19 @@ translateWithChatGPT(){
 					gptArr:= copyRowMakeArray()
 					if(gptArr[18]= "English"){
 						active.Destroy()
-						MsgBox("This item is already in English and doesn't need to be translated.")
+						MsgBox("This item is already in English and doesn't need to be translated.", stopped, 4096)
 						exit
 					}
 					
 					if((gptArr[20]= "n/a") | (gptArr[20]="")) & ((gptArr[21]="n/a") | (gptArr[21]= "")){
 						active.Destroy()
-						MsgBox("There is no non-English title to translate.")
+						MsgBox("There is no non-English title to translate.", stopped, 4096)
 						exit
 					}
 					title:= copy()
 					if(title= "n/a") | (title= ""){
 						active.Destroy()
-						MsgBox("There is no title to translate.`n`nReview Column 21", stopped)
+						MsgBox("There is no title to translate.`n`nReview Column U", stopped, 4096)
 						exit
 						}
 				;▼ Determine which title data to use
@@ -1237,7 +1294,7 @@ translateWithChatGPT(){
 						. "1) Check you have ChatGPT open in your browser.`n"
 						. "2) Make sure ChatGPT is your browser's the active tab.`n"
 						. "3) You need to save and keep active a chat called `"Translate`" (case sensitive)."
-					MsgBox(msg, stopped)
+					MsgBox(msg, stopped, 4096)
 					return
 			}
 			Sleep wt
@@ -1271,7 +1328,7 @@ sendTraslationBackToSpreadsheet(){
 		global chatGPTmode
 		if(gptPending= 0){
 				active.Destroy()
-				MsgBox("An error has occured while using ChatGPT to translate a title.`n`nRestart the script and try again.", stopped)
+				MsgBox("An error has occured while using ChatGPT to translate a title.`n`nRestart the script and try again.", stopped, 4096)
 				exit
 		}
 	;▼ Single title translation process
@@ -1400,7 +1457,7 @@ numpadSub::{
 		}
 		else{
 			active.Destroy()
-			MsgBox("At this time, price checking options are only available for Japanese materials.", stopped)
+			MsgBox("At this time, price checking options are only available for Japanese materials.", stopped, 4096)
 			exit
 		}
 }
@@ -1444,13 +1501,13 @@ F4::{
 			price:= copyAll()
 			if !InStr(price, "￥"){
 				active.Destroy()
-				MsgBox("There is no price to add from www.kohso.or.jp", stopped)
+				MsgBox("There is no price to add from www.kohso.or.jp", stopped, 4096)
 				exit
 			}
 			price:= RegExReplace(price, "`r|`n|`t", "xtx")
 			if inStr(price, "の検索結果"){
 				active.Destroy()
-				MsgBox("You are on a list of search results for www.kosho.or.jp.`n`nPlease load one of the records from the results to import the price into the spreadsheet.", stopped)
+				MsgBox("You are on a list of search results for www.kosho.or.jp.`n`nPlease load one of the records from the results to import the price into the spreadsheet.", stopped, 4096)
 				exit
 			}
 			price:= RegExReplace(price, "^.+?￥|xtx.*")
@@ -1466,13 +1523,13 @@ F4::{
 			Sleep nt
 			if !ClipWait(2){
 				active.Destroy()
-				MsgBox("Nothing on Amazon.com (US site) has been highlighted to copy.`n`nWhen highlighting a price to copy make sure all the numbers and dollar sign ($) are hihglighted to import the price into the spreadsheet.", stopped)
+				MsgBox("Nothing on Amazon.com (US site) has been highlighted to copy.`n`nWhen highlighting a price to copy make sure all the numbers and dollar sign ($) are hihglighted to import the price into the spreadsheet.", stopped, 4096)
 				exit
 			}
 			price:= A_Clipboard
 			if !inStr(price, "$"){
 				active.Destroy()
-				MsgBox("You may have tried to highlight a price but there was no dollar sign ($) in the text you highlighted.", stopped)
+				MsgBox("You may have tried to highlight a price but there was no dollar sign ($) in the text you highlighted.", stopped, 4096)
 				exit
 			}
 			price:= RegExReplace(price, "\$")
@@ -1488,13 +1545,13 @@ F4::{
 			Sleep nt
 			if !ClipWait(2){
 				active.Destroy()
-				MsgBox("Nothing on Amazon.co.jp (Japan site) has been highlighted to copy.`n`nWhen highlighting a price to copy make sure all the numbers and yen sign (¥) are hihglighted to import the price into the spreadsheet.", stopped)
+				MsgBox("Nothing on Amazon.co.jp (Japan site) has been highlighted to copy.`n`nWhen highlighting a price to copy make sure all the numbers and yen sign (¥) are hihglighted to import the price into the spreadsheet.", stopped, 4096)
 				exit
 			}
 			price:= A_Clipboard
 			if !inStr(price, "￥"){
 				active.Destroy()
-				MsgBox("You may have tried to highlight a price but there was no yen sign (¥) in the text you highlighted.", stopped)
+				MsgBox("You may have tried to highlight a price but there was no yen sign (¥) in the text you highlighted.", stopped, 4096)
 				exit
 			}
 			price:= RegExReplace(price, "￥")
@@ -1563,3 +1620,5 @@ getPrice(){
 #HotIf WinActive("ahk_exe firefox.exe") | WinActive("ahk_exe msedge.exe") | WinActive("ahk_exe chrome.exe")
 		^numpad0::Send "^{tab}"	;go to next tab
 #Hotif
+
+
