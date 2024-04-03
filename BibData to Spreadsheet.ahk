@@ -141,8 +141,8 @@ setTitleMatchMode 2
 ;▼▲▼ 
 	pasteToBibSpreadsheet(){
 				spreadsheet:= sheetCheck()
-				dataHere(spreadsheet)			
-				Send "{esc}"
+				dataHere(spreadsheet)
+;				Send "{esc}"
 				Sleep nt
 				Send "{home}"
 				Sleep nt
@@ -190,7 +190,8 @@ setTitleMatchMode 2
 			Sleep lt
 		;▼ Search priority= oclc, isbn13, isbn10, native tile, romanized title
 			searchText:= searchWith(bibArr[20], bibArr[18], bibArr[19], bibArr[24], bibArr[23])
-			Send searchText
+			inClip(searchText)
+			Send "^v"
 			Sleep nt
 		;▼ Use year of publication in FirstSearch search	
 			if(searchParameter= 1) & (bibArr[25]!= "n/a") & (bibArr[25]!= ""){
@@ -485,6 +486,7 @@ F1::{
 				;🗣 Language
 							global language
 							language:= RegExReplace(data, ".*<b>Language:.+?serif`">|&.*|<.*")
+							language:= RegExReplace(language, "`; .*")
 				;📔 Title
 						;Romanized
 							titleR:= getTitleR(data)
@@ -604,6 +606,8 @@ F1::{
 			subjects:= regExReplace(subjects, "`n", " ^ ") ;Each subject is on a serpate line for easy reading in the :Check Data message box." This puts them on one line to be pasted into a single cell on the spreadsheet.
 			subjects:= RegExReplace(subjects, " \^  \^ $| \^ $")
 		;▼ Calculate other array fields based on pulled data.
+				;▼ URL for Purchase
+						priceURL:= getPriceURL(isbn10, language)
 				;▼ Series Number
 						if InStr(seriesR, " `; ")
 							vol:= RegExReplace(seriesR, ".* `; ")
@@ -611,14 +615,6 @@ F1::{
 							vol:= RegExReplace(seriesN, ".* `; ")
 						else
 							vol:= "n/a"
-				;▼ Generate URL for Purchase
-						if(language="Japanese") & (isbn10!= "") & (isbn10!= "n/a")
-								priceURL:= "https://www.amazon.co.jp/dp/" . isbn10
-						else
-							priceURL:= "n/a"
-						if inStr(isbn10, A_space)
-							priceURL:= "n/a"
-		
 		;▼ Put parsed data into array.
 				bibArr[8]:= priceURL
 				bibArr[10]:= vol
@@ -643,7 +639,6 @@ F1::{
 				bibArr[34]:= editionN
 				bibArr[35]:= subjects
 				inClip(bibArr[1] . "`t" . bibArr[2] . "`t" . bibArr[3] . "`t" . bibArr[4] . "`t" . bibArr[5] . "`t" . bibArr[6] . "`t" . bibArr[7] . "`t" . bibArr[8] . "`t" . bibArr[9] . "`t" . bibArr[10] . "`t" . bibArr[11] . "`t" . bibArr[12] . "`t" . bibArr[13] . "`t" . bibArr[14] . "`t" . bibArr[15] . "`t" . bibArr[16] . "`t" . bibArr[17] . "`t" . bibArr[18] . "`t" . bibArr[19] . "`t" . bibArr[20] . "`t" . bibArr[21] . "`t" . bibArr[22] . "`t" . bibArr[23] . "`t" . bibArr[24] . "`t" . bibArr[25] . "`t" . bibArr[26] . "`t" . bibArr[27] . "`t" . bibArr[28] . "`t" . bibArr[29] . "`t" . bibArr[30] . "`t" . bibArr[31] . "`t" . bibArr[32] . "`t" . bibArr[33] . "`t" . bibArr[34] . "`t" . bibArr[35])
-				
 		;▼ Close FirstSearch "Detailed Record" page.
 				if WinExist("Detailed Record") 
 					WinActivate
@@ -700,7 +695,7 @@ F1::{
 				;Contain beginning and end of ISBN data
 					isbn:= RegExReplace(data, ".*<b>ISBN:</b> ", "[")
 					isbn:= RegExReplace(isbn, "</font>.*|; <.*| <.*", "]")
-				;Fix double brackes: (( and ))
+				;Fix double brackets: (( and ))
 					isbn:= RegExReplace(isbn, "\(\(", "(")
 					isbn:= RegExReplace(isbn, "\)\)", ")")
 				;▲
@@ -937,6 +932,19 @@ F1::{
 				subjects:= Trim(subjects)
 				return subjects
 }
+		;▼▲▼
+			getPriceURL(isbn10, language){
+					if(language= "Japanese") & (isbn10!= "") & (isbn10!= "n/a")
+						priceURL:= "https://www.amazon.co.jp/dp/" . isbn10
+					else if(language="English") & (isbn10!= "") & (isbn10!= "n/a")
+						priceURL:= "http://www.amazon.com/dp/" . isbn10
+					else
+						priceURL:= "n/a"
+					trim(priceURL)
+					if inStr(isbn10, A_space)
+						priceURL:= "n/a"
+					return priceURL
+}
 ;▼▲▼
 importDataFinishedTutorial(){
 		if(tutorialMode= 1){
@@ -1051,15 +1059,15 @@ F2::{
 			}
 		;▼ Paste to spreadsheet
 				inClip(fixIarr[1] . "`t" . fixIarr[2] . "`t" . fixIarr[3] . "`t" . fixIarr[4] . "`t" . fixIarr[5] . "`t" . fixIarr[6] . "`t" . fixIarr[7] . "`t" . fixIarr[8] . "`t" . fixIarr[9] . "`t" . fixIarr[10] . "`t" . fixIarr[11] . "`t" . fixIarr[12] . "`t" . fixIarr[13] . "`t" . fixIarr[14] . "`t" . fixIarr[15] . "`t" . fixIarr[16])
-			pasteToBibSpreadsheet()
-			active.Destroy()
+				pasteToBibSpreadsheet()
+				active.Destroy()
 	}
 }
 ;■■■
 ^numpad8::{
 		removeISBN()
 }
-F8::{
+^F8::{
 		activeGUI()
 		removeISBN()
 		active.Destroy()
@@ -1138,11 +1146,23 @@ F9::{
 			Sleep 25
 			inCellCheck()
 			leftP:= copy()
+			leftP:= Trim(leftP)
+			isbn:= leftP . rightP
 			Send "{esc}"
-			Sleep 25
-			Send leftP . rightP
-			Sleep 25
-			Send "{enter}"
+			Sleep wt
+			if(strLen(isbn)= 10){
+					arr:= copyRowMakeArray()
+					arr[19]:= isbn
+					arr[8]:= getPriceURL(isbn, arr[21])
+					inClip(arr[1] . "`t" . arr[2] . "`t" . arr[3] . "`t" . arr[4] . "`t" . arr[5] . "`t" . arr[6] . "`t" . arr[7] . "`t" . arr[8] . "`t" . arr[9] . "`t" . arr[10] . "`t" . arr[11] . "`t" . arr[12] . "`t" . arr[13] . "`t" . arr[14] . "`t" . arr[15] . "`t" . arr[16] . "`t" . arr[17] . "`t" . arr[18] . "`t" . arr[19])
+					pasteToBibSpreadsheet()
+			}
+			else{
+					Send isbn
+					Sleep 25
+					Send "{enter}"
+			}
+			
 }
 	;▼▲▼ Stops script if it was run outside of an active cell.
 			inCellCheck(){
@@ -1166,7 +1186,7 @@ numpadDiv::{
 		fastISBNfix()
 		active.Destroy()
 }		
-^F8::{
+F12::{
 		activeGUI()
 		fastISBNfix()
 		active.Destroy()
@@ -1207,23 +1227,22 @@ numpadDiv::{
 	convertISBN(){
 		spreadsheet:= sheetCheck()
 		arr:= copyRowMakeArray()
-		if(arr[15]= "n/a") | (arr[15]= ""){
-			
+		if(arr[18]= "n/a") | (arr[18]= ""){
 			MsgBox("There is no ISBN13 to convert into an ISBN10.", stopped, 4096)
 			return
 		}
-		if inStr(arr[15], " "){	
+		if inStr(arr[18], " "){	
 			MsgBox("The ISBN13 appears to not be formatted correctly.", stopped, 4096)
 			return
 		}
-		isbn13:= arr[15] 
-		arr[16]:= convertISBN13toISBN10(isbn13)
-		if(arr[18]= "Japanese")
-			arr[8]:= "https://www.amazon.co.jp/dp/" . arr[16]
+		isbn13:= arr[18] 
+		arr[19]:= convertISBN13toISBN10(isbn13)
+		if(arr[21]= "Japanese"){
+			arr[8]:= "https://www.amazon.co.jp/dp/" . arr[19]
+			}
 		else
-			arr[8]:= "https://www.amazon.com/dp/" . arr[16]
-		data:= arr[1] . "`t" . arr[2] . "`t" .  arr[3] . "`t" .  arr[4] . "`t" .  arr[5] . "`t" .  arr[6] . "`t" .  arr[7] . "`t" .  arr[8] . "`t" .  arr[9] . "`t" .  arr[10] . "`t" .  arr[11] . "`t" .  arr[12] . "`t" .  arr[13] . "`t" .  arr[14] . "`t" .  arr[15] . "`t" .  arr[16]
-		inClip(data)	
+			arr[8]:= "https://www.amazon.com/dp/" . arr[19]
+		inClip(arr[1] . "`t" . arr[2] . "`t" .  arr[3] . "`t" .  arr[4] . "`t" .  arr[5] . "`t" .  arr[6] . "`t" .  arr[7] . "`t" .  arr[8] . "`t" .  arr[9] . "`t" .  arr[10] . "`t" .  arr[11] . "`t" .  arr[12] . "`t" .  arr[13] . "`t" .  arr[14] . "`t" .  arr[15] . "`t" .  arr[16] . "`t" .  arr[17] . "`t" .  arr[18] . "`t" .  arr[19])	
 		pasteToBibSpreadsheet()
 }
 ;■■■
@@ -1346,7 +1365,7 @@ sendTraslationBackToSpreadsheet(){
 				title:= RegExReplace(title, ".*ChatGPT")
 				title:= title . " - ChatGPT translation"
 			;▼ Paste translation request
-				inClip( gptArr[1] . "`t" . gptArr[2] . "`t" . gptArr[3] . "`t" . gptArr[4] . "`t" . gptArr[5] . "`t" . gptArr[6] . "`t" . gptArr[7] . "`t" . gptArr[8] . "`t" . gptArr[9] . "`t" . gptArr[10] . "`t" . gptArr[11] . "`t" . gptArr[12] . "`t" . gptArr[13] . "`t" . gptArr[14] . "`t" . gptArr[15] . "`t" . gptArr[16] . "`t" . gptArr[17] . "`t" . gptArr[18] . "`t" . title)
+				inClip(gptArr[1] . "`t" . gptArr[2] . "`t" . gptArr[3] . "`t" . gptArr[4] . "`t" . gptArr[5] . "`t" . gptArr[6] . "`t" . gptArr[7] . "`t" . gptArr[8] . "`t" . gptArr[9] . "`t" . gptArr[10] . "`t" . gptArr[11] . "`t" . gptArr[12] . "`t" . gptArr[13] . "`t" . gptArr[14] . "`t" . gptArr[15] . "`t" . gptArr[16] . "`t" . gptArr[17] . "`t" . gptArr[18] . "`t" . title)
 				pasteToBibSpreadsheet()
 		}
 	;▼ Bulk title list transtlation process	
@@ -1364,6 +1383,7 @@ sendTraslationBackToSpreadsheet(){
 				titles:= RegExReplace(titles, ".*xtxChatGPTxtxxtx|xtxChatGPT can make mistakes.*")
 				titles:= RegExReplace(titles, "xtx", "xtx`r`n")
 				titles:= RegExReplace(titles, "xtx", " - ChatGPT translation")
+				titles:= RegExReplace(titles, "    ")
 			;▼ Paste translation request
 				inClip(titles)
 				dataHere(spreadsheet)
@@ -1488,8 +1508,7 @@ F4::{
 			bibArr[8]:= url
 			bibArr[34]:= currency
 			bibArr[35]:= price
-			data:= bibArr[1] . "`t" . bibArr[2] . "`t" . bibArr[3] . "`t" . bibArr[4] . "`t" . bibArr[5] . "`t" . bibArr[6] . "`t" . bibArr[7] . "`t" . bibArr[8] . "`t" . bibArr[9] . "`t" . bibArr[10] . "`t" . bibArr[11] . "`t" . bibArr[12] . "`t" . bibArr[13] . "`t" . bibArr[14] . "`t" . bibArr[15] . "`t" . bibArr[16] . "`t" . bibArr[17] . "`t" . bibArr[18] . "`t" . bibArr[19] . "`t" . bibArr[20] . "`t" . bibArr[21] . "`t" . bibArr[22] . "`t" . bibArr[23] . "`t" . bibArr[24] . "`t" . bibArr[25] . "`t" . bibArr[26] . "`t" . bibArr[27] . "`t" . bibArr[28] . "`t" . bibArr[29] . "`t" . bibArr[30] . "`t" . bibArr[31] . "`t" . bibArr[32] . "`t" . bibArr[33] . "`t" . bibArr[34] . "`t" . bibArr[35]
-			inClip(data)
+			inClip(bibArr[1] . "`t" . bibArr[2] . "`t" . bibArr[3] . "`t" . bibArr[4] . "`t" . bibArr[5] . "`t" . bibArr[6] . "`t" . bibArr[7] . "`t" . bibArr[8] . "`t" . bibArr[9] . "`t" . bibArr[10] . "`t" . bibArr[11] . "`t" . bibArr[12] . "`t" . bibArr[13] . "`t" . bibArr[14] . "`t" . bibArr[15] . "`t" . bibArr[16] . "`t" . bibArr[17] . "`t" . bibArr[18] . "`t" . bibArr[19] . "`t" . bibArr[20] . "`t" . bibArr[21] . "`t" . bibArr[22] . "`t" . bibArr[23] . "`t" . bibArr[24] . "`t" . bibArr[25] . "`t" . bibArr[26] . "`t" . bibArr[27] . "`t" . bibArr[28] . "`t" . bibArr[29] . "`t" . bibArr[30] . "`t" . bibArr[31] . "`t" . bibArr[32] . "`t" . bibArr[33] . "`t" . bibArr[34] . "`t" . bibArr[35])
 			pasteToBibSpreadsheet()
 			active.Destroy()
 			exit
@@ -1603,7 +1622,7 @@ getPrice(){
 		Sleep nt
 		Send "{home}"
 		Sleep nt
-		Send "{right 14}"
+		Send "{right 17}"
 }
 ;■■■ Move active cell to ISBN column in a row
 #HotIf WinActive(CD) | WinActive(DI)
