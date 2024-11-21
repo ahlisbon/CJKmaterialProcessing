@@ -1,9 +1,8 @@
-﻿#Requires AutoHotkey v2.0
-SetTitleMatchMode 2
+﻿#requires AutoHotkey v2.0
+setTitleMatchMode 2
 
 ;global variables 
-	;browserName:= ""
-	;inTabName:= ""
+	tutorialMode:= "0"
 
 ;global variables for sleep time
 	nt:= 250	;normal time
@@ -13,6 +12,14 @@ SetTitleMatchMode 2
 
 ;variables just for function library
 	stopped:= "Why did the script stop?"
+
+
+
+;▼▲▼▲▼▲▼▲▼▲▼▲▼ Error Message
+	;▼▲▼ Error message.
+		errorMsg(stopped){
+			MsgBox stopped, "Why did the script stop?", 4096
+}
 
 
 
@@ -29,19 +36,20 @@ SetTitleMatchMode 2
 				}
 				sleep nt
 				return A_Clipboard
-}
+		}
 	;▼▲▼
 		copy(){
 				A_Clipboard:= ""
 				Send "^c"
 				ClipWait(2)
 				if !clipWait(2){
+					active.Destroy()
 					MsgBox "Copying failed", stopped, 4096
 					Exit
 				}
 				sleep nt
 				return A_Clipboard
-}
+		}
 	;▼▲▼
 		copyAll(){
 				A_Clipboard:= ""
@@ -54,14 +62,14 @@ SetTitleMatchMode 2
 					Exit
 				}
 				return A_Clipboard
-}
+		}
 	;▼▲▼
 		copyURL(){
 				Send "!d"
 				Sleep nt
 				copyAll()
 				return A_Clipboard
-}
+		}
 	;▼▲▼ Copies a row from a spredsheet and puts each cell in the row in an array.
 		copyRowMakeArray(){
 				Send "{esc}"
@@ -77,35 +85,73 @@ SetTitleMatchMode 2
 				Send "{home}"
 				Sleep nt
 				return arr:= strSplit(A_Clipboard, A_tab)
-}
+		}
 
 
 
-;▼▲▼▲▼▲▼▲▼▲▼▲▼ Error Message
-	;▼▲▼ Error message.
-		errorMsg(stopped){
-			MsgBox "Why did the script stop?", stopped, 4096
-}
+;▼▲▼▲▼▲▼▲▼▲▼▲▼ Text Normalizing
+	;▼▲▼ Normalize text for parsing: removes \r, \n, \t, double spaces, and certain CJK punctuation
+			normalizeText(txt, removeRNT:= 0){
+				;▼ Remove \r \n \t
+					if(removeRNT= 1)
+						txt:= RegExReplace(txt, "`r|`n|`t")
+					if(removeRNT= 2){
+						txt:= RegExReplace(txt, "`r|`n|`t", "xtx")
+						loop{
+							txt:= strReplace(txt, "xtxxtx", "xtx")
+							if !inStr(txt, "xtxxtx")
+								break
+						}
+					}
+				;▼ Remove double (or more) spaces, i.e. "  "
+					loop{
+						txt := strReplace(txt, "  ", " ")
+						if !inStr(txt, "  ")
+							break
+					}
+				;▼ Replace composed chatacers with decomposed ones
+					txt:= RegExReplace(txt, "ā", "ā")
+					txt:= RegExReplace(txt, "ī", "ī")
+					txt:= RegExReplace(txt, "ū", "ū")
+					txt:= RegExReplace(txt, "ē", "ē")
+					txt:= RegExReplace(txt, "ō", "ō")
+				;▼ Replace CJK Punctuation
+					txt:= StrReplace(txt, "、", ",")
+					txt:= StrReplace(txt, "：", ":")
+					txt:= StrReplace(txt, "；", ";")
+					return txt
+			}
+	;▼▲▼ DeDuping
+		deDupe(txt){
+			txt := StrReplace(txt, "`r")
+			str := ''
+			loop parse, txt, '`n'					;Parse by LF
+				if !InStr(str, A_LoopField '`n')	;If str does not contain a matching line
+					str .= A_LoopField '`n'			;Add line and LF
+			str:= RTrim(str, '`n')					;Snip off extra LF and return
+			return str:= LTrim(str, '`n')			;Snip off extra LF and return
+		}
+
 
 
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼ GUI Management
 	;▼▲▼ GUI alerting that script is active.
 		activeGUI(){
-				global active
-				active:= Gui("alwaysOnTop +ToolWindow", "Script is Active")
-				active.SetFont("s16")
-				active.Add("Text", "x35 y85", "❌")
-				active.Add("Text", "x55 y85", "⌨")
-				active.SetFont("s9")
-				active.Add("Text", "x85 y93", "Do not use your keyboard")
-				active.SetFont("s16")
-				active.Add("Text", "x35 y110", "❌")
-				active.Add("Text", "x58 y110", "🖱")
-				active.SetFont("s9")
-				active.Add("Text", "x85 y118", "Do not use your mouse")
-				active.Show("w250 h250 NoActivate")
-				sleep wt
-}
+			global active
+			active:= Gui("alwaysOnTop +ToolWindow", "Script is Active")
+			active.SetFont("s16")
+			active.Add("Text", "x35 y85", "❌")
+			active.Add("Text", "x55 y85", "⌨")
+			active.SetFont("s9")
+			active.Add("Text", "x85 y93", "Do not use your keyboard")
+			active.SetFont("s16")
+			active.Add("Text", "x35 y110", "❌")
+			active.Add("Text", "x58 y110", "🖱")
+			active.SetFont("s9")
+			active.Add("Text", "x85 y118", "Do not use your mouse")
+			active.Show("w250 h250 NoActivate")
+			sleep wt
+		}
 
 
 
@@ -117,7 +163,7 @@ SetTitleMatchMode 2
 					global tutorial
 					tutorial:= GUI("alwaysOnTop +ToolWindow", "Tutorial Mode")
 				}
-}
+		}
 		;▼▲▼ Create GUI Content, Repeatable
 			tutorialContent(firstS, option, onWindow, keys, action){
 				global tutorial
@@ -143,14 +189,14 @@ SetTitleMatchMode 2
 					tutorial.Add("text",	"ys",				keys)
 					tutorial.Add("text",,						action)
 				}
-}
+		}
 		;▼▲▼ Render GUI
 			tutorialShow(){
 				global tutorial
 				tutorial.Show()
 				Send "!{esc}"
 				Sleep wt
-}	
+		}	
 		;▼▲▼ Turn off tutorial GUI if present.
 			tutorialOff(){
 				global tutorialMode
@@ -158,14 +204,45 @@ SetTitleMatchMode 2
 				if(tutorialMode= 1)
 					tutorial.Destroy
 				
-}
+		}
 
 
 
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼ Websites / Browsers / Programs existing or not.
-	confirmBrowserOpen(){
-		if !winExist("ahk_exe firefox.exe") & !winExist("ahk_exe chrome.exe") & !winExist("ahk_exe msedge.exe"){
+	;▼▲▼
+		confirmBrowserOpen(){
+			if !winExist("ahk_exe firefox.exe") & !winExist("ahk_exe chrome.exe") & !winExist("ahk_exe msedge.exe"){
+				msg:= "You have no browser open on your computer. Please open one of the following:`n"
+					. "`n▶ FireFox"
+					. "`n▶ Edge"
+					. "`n▶ Chrome"
+					. "`n`nRun the macro again after you`'ve opened a browser."
+				MsgBox(msg,, 4096)
+				Exit
+			}
+		}
+	;▼▲▼
+		activateBrowser(browserName:= ""){
+			if winExist("ahk_exe firefox.exe"){
+				browserName:= "FireFox"
+				WinActivate
+				Sleep wt
+				return browserName
+			}
+			if winExist("ahk_exe chrome.exe"){
+				browserName:= "Chrome"
+				WinActivate
+				Sleep wt
+				return browserName
+			}
+			if winExist("ahk_exe msedge.exe"){
+				browserName:= "Edge"
+				WinActivate
+				Sleep wt
+				return browserName
+			}
 			msg:= "You have no browser open on your computer. Please open one of the following:`n"
+			active.Destroy()
 				. "`n▶ FireFox"
 				. "`n▶ Edge"
 				. "`n▶ Chrome"
@@ -173,161 +250,217 @@ SetTitleMatchMode 2
 			MsgBox(msg,, 4096)
 			Exit
 		}
-}
 	;▼▲▼
-	activateBrowser(browserName:= ""){
-		if winExist("ahk_exe firefox.exe"){
-			browserName:= "FireFox"
-			WinActivate
-			Sleep wt
-			return browserName
-}
-		if winExist("ahk_exe chrome.exe"){
-			browserName:= "Chrome"
-			WinActivate
-			Sleep wt
-			return browserName
-}
-		if winExist("ahk_exe msedge.exe"){
-			browserName:= "Edge"
-			WinActivate
-			Sleep wt
-			return browserName
-}
-		msg:= "You have no browser open on your computer. Please open one of the following:`n"
-		active.Destroy()
-			. "`n▶ FireFox"
-			. "`n▶ Edge"
-			. "`n▶ Chrome"
-			. "`n`nRun the macro again after you`'ve opened a browser."
-		MsgBox(msg,, 4096)
-		Exit
-}
-
-	;▼▲▼
-	doesTabExist(inTabName){
-		if WinExist(inTabName){
-			WinActivate
-			Sleep 500
-		}
-		else{
-			msg:= "The active tab in your broswer does not have `"" . inTabName . "`" in the title.`n"
-			. "`nYou may have a different tab in your browser active. If so, activate that tab and run the script again.`n"
-			. "`nIf you only have one tab open, then you do not have the correct website open to run this script."
-			active.Destroy()
-			MsgBox msg, stopped, 4096
-		Exit
-		}
-	}
-
-	;▼▲▼
-	dataHere(title){
-		if WinExist(title){
-			WinActivate
-			Sleep wt
-		}
-		else{
-			msg:= "There is no program or active browser tab with `"" . title . "`" in the title.`n"
-				. "`nOpen the program with the file where you are storing this data."
-				. "`n***OR***"
-				. "`nOpen the web based app where you are storing this data in a *NEW* browser window and make sure that it is the active tab in the browser."
-			MsgBox msg, stopped, 4096
-		}
-	}
-
-	;▼▲▼
-	loadSiteWithSearch(searchPrefix, searchContent){
-		Send "!d"
-		Sleep nt
-		Send searchPrefix
-		Sleep nt
-		Send searchContent
-		Sleep nt
-		Send "{enter}"
-		Sleep 4000
-	}
-
-	;▼▲▼
-	loadCheck(text, pageName){
-		Sleep lt
-		Loop 3{
-			copyAll()
-			if InStr(A_Clipboard, "text")
-				break
-			Sleep nt*2
-		}
-		if !InStr(A_Clipboard, text, false){
-			msg:= "It appears the web page " . pageName . " didn't load, or loaded too slowly.`n`nYou can try running the script again."
-			MsgBox msg, stopped, 4096
+		doesTabExist(inTabName){
+			if WinExist(inTabName){
+				WinActivate
+				Sleep 500
+			}
+			else{
+				msg:= "The active tab in your broswer does not have `"" . inTabName . "`" in the title.`n"
+				. "`nYou may have a different tab in your browser active. If so, activate that tab and run the script again.`n"
+				. "`nIf you only have one tab open, then you do not have the correct website open to run this script."
+				active.Destroy()
+				MsgBox msg, stopped, 4096
 			Exit
-		}
-	}
-
-	;▼▲▼
-	findTextOnSite(text){
-		Send "^f"
-		Sleep ft
-		Send text
-		sleep ft
-		Send "{esc}"
-		Sleep ft
-	}
-
-	;▼▲▼
-	loadSourceCode(text, pageName:= ""){
-		Send "^u"
-		Sleep lt*.5
-		Loop {
-			A_Clipboard:= ""
-			Sleep 250
-			Send "^a"
-			Sleep 100
-			Send "^c"
-			Sleep 100
-			if InStr(A_Clipboard, text)
-				break
-			if A_Index= 3{
-				MsgBox("It appears the source code for `"" . pageName . "`" didn't load, or loaded too slowly.`n`nYou can try running the script again.", stopped, 4096)
-				A_Clipboard:= ""
-				exit
-			sleep 1000
 			}
 		}
-		Send "^w"
-		return A_Clipboard
-	}
-
 	;▼▲▼
-	newTab(url){
-		Send "^t"
-		Sleep nt
-		Send "!d"
-		Sleep nt*2
-		Send "{delete}"
-		Sleep nt
-		inClip(url)
-		Send "^v"
-		Sleep nt
-		Send "{enter}"
-		Sleep wt
-	}
-
+		dataHere(title){
+			if WinExist(title){
+				WinActivate
+				Sleep wt
+			}
+			else{
+				msg:= "There is no program or active browser tab with `"" . title . "`" in the title.`n"
+					. "`nOpen the program with the file where you are storing this data."
+					. "`n***OR***"
+					. "`nOpen the web based app where you are storing this data in a *NEW* browser window and make sure that it is the active tab in the browser."
+				MsgBox msg, stopped, 4096
+			}
+		}
 	;▼▲▼
-	newWin(url){
-		inClip(url)
-		Send "^n"
-		Sleep wt
-		Send "!d"
-		Sleep nt
-		Send "^a"
-		Sleep nt
-		Send "{delete}"
-		Sleep nt
-		Send "^v"
-		Sleep nt
-		Send "{enter}"
-		Sleep nt
-	}
+		loadSiteWithSearch(searchPrefix, searchContent){
+			Send "!d"
+			Sleep nt
+			Send searchPrefix
+			Sleep nt
+			Send searchContent
+			Sleep nt
+			Send "{enter}"
+			Sleep 4000
+		}
+	;▼▲▼
+		loadCheck(text, pageName){
+			Sleep lt
+			Loop 3{
+				copyAll()
+				if InStr(A_Clipboard, "text")
+					break
+				Sleep nt*2
+			}
+			if !InStr(A_Clipboard, text, false){
+				msg:= "It appears the web page " . pageName . " didn't load, or loaded too slowly.`n`nYou can try running the script again."
+				active.Destroy()
+				MsgBox msg, stopped, 4096
+				Exit
+			}
+		}
+	;▼▲▼
+		findTextOnSite(text){
+			Send "^f"
+			Sleep ft
+			Send text
+			sleep ft
+			Send "{esc}"
+			Sleep ft
+		}
+	;▼▲▼
+		loadSourceCode(text, pageName:= ""){
+			Send "^u"
+			Sleep lt*.6
+			Loop {
+				A_Clipboard:= ""
+				Sleep 250
+				Send "^a"
+				Sleep 100
+				Send "^c"
+				Sleep 100
+				if InStr(A_Clipboard, text)
+					break
+				if A_Index= 3{
+					MsgBox("It appears the source code for `"" . pageName . "`" didn't load, or loaded too slowly.`n`nYou can try running the script again.", stopped, 4096)
+					A_Clipboard:= ""
+					exit
+				sleep 1000
+				}
+			}
+			Send "^w"
+			return A_Clipboard
+		}
+	;▼▲▼
+		newTab(url){
+			Send "^t"
+			Sleep nt
+			Send "!d"
+			Sleep nt*2
+			Send "{delete}"
+			Sleep nt
+			inClip(url)
+			Send "^v"
+			Sleep nt
+			Send "{enter}"
+			Sleep wt
+		}
+	;▼▲▼
+		newWin(url){
+			inClip(url)
+			Send "^n"
+			Sleep wt
+			Send "!d"
+			Sleep nt
+			Send "^a"
+			Sleep nt
+			Send "{delete}"
+			Sleep nt
+			Send "^v"
+			Sleep nt
+			Send "{enter}"
+			Sleep nt
+		}
+
+
+
+;▼▲▼▲▼▲▼▲▼▲▼▲▼ Convert ISBNs
+	;▼▲▼ Convert ISBN13 to ISBN10
+		convert13to10(isbn){
+			;▼ Normalize ISBN13
+				isbn:= RegExReplace(isbn, "-|`r|`n| ")	;remove hypens and spaces to make sure string is 13 long
+			;▼ Verify string is ISBN13
+				;▼ Length
+					len:= strLen(isbn)
+					if(len!= 13){
+						errorMsg("This is not a string of 13 digits.")
+						exit
+					}
+				;▼ All digits
+					digitCount:= RegExMatch(isbn, "\d{13}")
+					if(digitCount= 0){
+						errorMsg("This is not a string of 13 digits.")
+						exit
+					}
+				;▼ No 979. ISBN13s starting with 979 have no ISBN10
+					if inStr(isbn, "979"){
+						return "n/a"
+					}
+			;▼ Calculate ISBN10
+				isbn:= RegExReplace(isbn, "^978")
+				s:= StrSplit(isbn) ;s = split
+				a:= s[1]*10
+				b:= s[2]*9
+				c:= s[3]*8
+				d:= s[4]*7
+				e:= s[5]*6
+				f:= s[6]*5
+				g:= s[7]*4
+				h:= s[8]*3
+				i:= s[9]*2
+				sum:= a+b+c+d+e+f+g+h+i
+				remainder:= mod(sum, 11)
+				checkNo:= 11-remainder
+				if(checkNo= 11)
+					checkNo:= "0"
+				if(checkNo= 10)
+					checkNo:= "X"
+				isbn10:= s[1] . s[2] . s[3] . s[4] . s[5] . s[6] . s[7] . s[8] . s[9] . checkNo
+				return isbn10
+		}
+
+	;▼▲▼ Convert ISBN10 to ISBN13
+		convert10to13(isbn){
+			;▼ Normalize ISBN10
+				isbn:= RegExReplace(isbn, "-| ")	;remove hypens and spaces to make sure string is 13 long
+			;▼ Verify string is ISBN10
+				;▼ Length
+					len:= strLen(isbn)				
+					if(len!= 10){
+						errorMsg("This is not a string of 10 digits.")
+						exit
+					}
+				;▼ All digits
+					digitCount:= RegExMatch(isbn, "\d{10}")
+					if(digitCount= 0){
+						digitCount:= RegExMatch(isbn, "i)\d{9}X")
+						if(digitCount:= 0){
+							errorMsg("This is not a string of 10 digits.")
+							exit
+						}
+					}
+			;▼ Calculate ISBN13
+				isbn:= RegExReplace(isbn, ".$")
+				isbn:= "978" . isbn
+				s:= StrSplit(isbn) ;s = split
+				a:= s[1]*1
+				b:= s[2]*3
+				c:= s[3]*1
+				d:= s[4]*3
+				e:= s[5]*1
+				f:= s[6]*3
+				g:= s[7]*1
+				h:= s[8]*3
+				i:= s[9]*1
+				j:= s[10]*3
+				k:= s[11]*1
+				l:= s[12]*3
+				sum:= a+b+c+d+e+f+g+h+i+j+k+l
+				remainder:= mod(sum, 10)
+				if(remainder= 0)
+					checkNo:= "0"
+				else
+					checkNo:= 10-remainder
+				isbn13:= s[1] . s[2] . s[3] . s[4] . s[5] . s[6] . s[7] . s[8] . s[9] . s[10] . s[11] . s[12] . checkNo
+				return isbn13
+		}
 
 
 
