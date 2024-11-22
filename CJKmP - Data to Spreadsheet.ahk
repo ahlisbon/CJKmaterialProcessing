@@ -30,7 +30,7 @@ setTitleMatchMode 2
 
 ;■■■■■■■■■■■■■ Run GUI
 	; GUI Interface
-		bib:= Gui(, "Bibliographic Data To Spreadsheet - Options")
+		bib:= Gui(, "CJK Material Processing - v 1.02")
 	;Question 1:
 		bib.Add("Text",		"					x180 y20",	"▼ File Name Prefixes of Your Spreadsheets (Case Sensitive)")
 		bib.Add("Link",		"					x192 y40",	"<a href=`"https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#----file-name-prefixes`">Read about file naming conventions</a>")
@@ -190,8 +190,6 @@ setTitleMatchMode 2
 		;▼ Search priority= oclc, isbn13, isbn10, native tile, romanized title
 			searchText:= searchWith(bibArr[20], bibArr[18], bibArr[19], bibArr[24], bibArr[23])
 			inClip(searchText)
-			
-			
 			Send "^v"
 			Sleep nt
 		;▼ Use year of publication in FirstSearch search	
@@ -234,17 +232,26 @@ setTitleMatchMode 2
 						return "bn:" . isbn13
 				;▼ Allows ISBN10 column to be used to serach titles or ISBNs. Will not work if a book title is only numbers.
 					if((isbn10!= "") & (isbn10!= "n/a")){
-						isText:= RegExMatch(isbn10, "\d{9}")
-						if(isText= 1)
-							return "bn:" . isbn10
-						else
-							return "ti:" . isbn10
+						if(isText:= RegExMatch(isbn10, "\d{9}")){
+							if(isText= 1)
+								return "bn:" . isbn10
+							else
+								return "ti:" . isbn10
+						}
+						if(isText:= RegExMatch(isbn10, "\d{4}-\d{4}")){
+							if(isText:= 1)
+								return "in:" . isbn10
+							else
+								return "ti:" . isbn10
+						}
+						return "ti:" . isbn10
 					}
+				;▼ Search with title
 					if((titleN!= "") & (titleN!= "n/a"))
 						return "ti:" . titleN
 					if((titleR!= "") & (titleR!= "n/a"))
 						return "ti:" . titleR
-}
+			}
 ;▼▲▼ Tutorial GUI
 	FSresultsTutorial(){
 		Sleep wt*2.5
@@ -841,7 +848,7 @@ sendTraslationBackToSpreadsheet(){
 }
 ;■■■
 #HotIf WinActive(CD) | WinActive(DI)
-numpadSub::{
+^numpadSub::{
 		activeGUI()
 		translateWithChatGPT()
 		active.Destroy()

@@ -17,7 +17,6 @@
 			data:= normalizeText(data, 1)
 			data:= RegExReplace(data, "<span class\=matchterm[0-9]>") 	;Removes code for yellow text highlighting.
 			data:= RegExReplace(data, "</span>") 						;Because of highlighting above, all "</span>" are removed.
-			data:= RegExReplace(data, " :", ": ")
 		;Determine if active search is happening
 			if(activeSearch= 0){
 					bibArr:= []
@@ -34,17 +33,19 @@
 			volumes:= RegExReplace(data, ".*<b>Description:|</font></td>.*")
 			if !inStr(volumes, "volumes")
 				volumes:= "n/a"
-			else{
+			else
 				volumes:= RegExReplace(volumes, ".*>| volumes.*")
-			}
 			
 			
 		;🏛 Check against local holdings
-					if InStr(data, "FirstSearch indicates your institution owns the item.")
-						FSdupe:= "y"
+					if InStr(data, "FirstSearch indicates your institution"){
+						FSdupe:= RegExReplace(data, ".*</b><LI class=OPAC>|</tr>.*")
+						FSdupe:= RegExReplace(FSdupe, ".*href=`"|`".*")
+						FSdupe:= "=hyperlink(`"" . FSdupe . "`",`"yes`")"
+					}
 					else
 						FSdupe:= "n"
-
+						
 						
 		;👬 Get count of libraries that also have this item
 				if (bibArr[17]= "") | (bibArr[17]= "n/a")
@@ -124,7 +125,20 @@
 									if !InStr(isbn10, " ^ ")
 										isbn10:= RegExReplace(isbn10, " ")
 						}
-				}	
+				}
+				
+				
+		;🔢ISSN
+				if inStr(data, "<b>ISSN:"){
+					isbn13:= "n/a"
+					issnL:= strLen(bibArr[19])
+					if((issnL= 9) | (issnL= 8))
+						isbn10:= bibArr[19]
+					else{
+						isbn10:= RegExReplace(data, ".*<b>ISSN:</b> |`; <b>.*")
+					}
+					volumes:= "n/a"
+				}
 					
 					
 		;🔢 OCLC#
