@@ -721,14 +721,12 @@ translateWithChatGPT(){
 				MsgBox(msg, stopped, 4096)
 				return
 			}
-			
-			
 			Send "{esc}"
 			Sleep nt
 			copy()
 			A_clipboard:= RegExReplace(A_clipboard, "`r`n$")
 			if !InStr(A_Clipboard, "`r`n"){
-					chatGPTmode:= "oneTitle"
+					chatGPTmode:= 1
 				;▼ Copy native language and native title and verify enough information is available for translation.
 					global gptArr
 					gptArr:= copyRowMakeArray()
@@ -745,7 +743,7 @@ translateWithChatGPT(){
 					title:= copy()
 					if(title= "n/a") | (title= ""){
 						active.Destroy()
-						MsgBox("There is no title to translate.`n`nReview Column U", stopped, 4096)
+						MsgBox("There is no title to translate.`n`nReview Column X", stopped, 4096)
 						exit
 						}
 				;▼ Determine which title data to use
@@ -756,28 +754,26 @@ translateWithChatGPT(){
 					A_clipboard:= ""
 			}
 			if InStr(A_Clipboard, "`r`n"){
-					chatGPTmode:= "bulk"
-					titles:= A_Clipboard
+					chatGPTmode:= 2
+					title:= A_Clipboard
 			}
 		;▼ Go to ChatGPT window
 			if WinExist("Translate")
 					WinActivate
 			Sleep wt
-			findTextOnSite("ChatGPT can make mistakes")
-			Send "+{tab}"
-			Sleep nt
+			findTextOnSite("Message ChatGPT")
 		;▼ Paste translation request
-			if(chatGPTmode= "oneTitle"){
-					prompt:= "Provide an English translation of this title:" . gptArr[24] . ". The response should only include the translated title and no other text. Do not put quotation marks around the title."
+			if(chatGPTmode= 1){
+					prompt:= "Provide an English translation of this title:" . title . "`r`n`r`nThe response should only include the translated title and no other text. Do not put quotation marks around the title."
 					inClip(prompt)
 					Send "^v"
-					Sleep nt
-					Send "{enter}"
+					Sleep nt*3
+					Send "{enter}" ; Does not appear to be working.
 					Sleep nt
 					gptPending:= 1
 			}
-			if(chatGPTmode= "bulk"){
-					prompt:= "Provide English translations of these titles:`r`n" . titles . "`r`n`r`nThe response should only include the translated titles and no other text. Do not put quotation marks around the titles."
+			if(chatGPTmode= 2){
+					prompt:= "Provide English translations of these titles:`r`n" . title . "`r`n`r`nThe response should only include the translated titles and no other text. Do not put quotation marks around the titles."
 					inClip(prompt)
 					Send "^v"
 					Sleep nt
@@ -797,43 +793,30 @@ sendTraslationBackToSpreadsheet(){
 				exit
 		}
 	;▼ Single title translation process
-		if(chatGPTmode= "oneTitle"){
+		if(chatGPTmode= 1){
 			;▼ Copy response
-				findTextOnSite("ChatGPT can make mistakes")
-				Send "^a"
-	msgbox "hello"
+				Send "+{tab 4}"
 				Sleep nt
-				title:= copyAll()
-				Send "{tab}"
+				Send "{space}"
 				Sleep nt
-			;▼ Isolate translated title
-				title:= RegExReplace(title, "`r`n")
-				title:= RegExReplace(title, "ChatGPT can make mistakes.*")
-				title:= RegExReplace(title, ".*ChatGPT")
-				title:= title . " - ChatGPT translation"
 			;▼ Paste translation request
-				inClip(gptArr[1] . "`t" . gptArr[2] . "`t" . gptArr[3] . "`t" . gptArr[4] . "`t" . gptArr[5] . "`t" . gptArr[6] . "`t" . gptArr[7] . "`t" . gptArr[8] . "`t" . gptArr[9] . "`t" . gptArr[10] . "`t" . gptArr[11] . "`t" . gptArr[12] . "`t" . gptArr[13] . "`t" . gptArr[14] . "`t" . gptArr[15] . "`t" . gptArr[16] . "`t" . gptArr[17] . "`t" . gptArr[18] . "`t" . gptArr[19] . "`t" . gptArr[20] . "`t" . gptArr[20] . "`t" . gptArr[21] . "`t" . title)
+				title:= A_Clipboard
+				title:= title . " - ChatGPT translation"
+				inClip(gptArr[1] . "`t" . gptArr[2] . "`t" . gptArr[3] . "`t" . gptArr[4] . "`t" . gptArr[5] . "`t" . gptArr[6] . "`t" . gptArr[7] . "`t" . gptArr[8] . "`t" . gptArr[9] . "`t" . gptArr[10] . "`t" . gptArr[11] . "`t" . gptArr[12] . "`t" . gptArr[13] . "`t" . gptArr[14] . "`t" . gptArr[15] . "`t" . gptArr[16] . "`t" . gptArr[17] . "`t" . gptArr[18] . "`t" . gptArr[19] . "`t" . gptArr[20] . "`t" . gptArr[21] . "`t" . title)
 				pasteToBibSpreadsheet()
 		}
 	;▼ Bulk title list transtlation process	
-		if(chatGPTmode= "bulk"){
-		msgbox "bulk"
+		if(chatGPTmode= 2){
 			;▼ Copy Response
-				Send "+{tab}"
+				Send "+{tab 4}"
 				Sleep nt
-				Send "^a"
+				Send "{space}"
 				Sleep nt
-				titles:= copyAll()
-				Send "{tab}"
-				Sleep nt
-			;▼ Isolate translated titles
-				titles:= RegExReplace(titles, "`r`n", "xtx")
-				titles:= RegExReplace(titles, ".*xtxChatGPTxtxxtx|xtxChatGPT can make mistakes.*")
-				titles:= RegExReplace(titles, "xtx", "xtx`r`n")
-				titles:= RegExReplace(titles, "xtx", " - ChatGPT translation")
-				titles:= RegExReplace(titles, "    ")
 			;▼ Paste translation request
-				inClip(titles)
+				title:= A_Clipboard
+				title:= title . " - ChatGPT Translation"
+				title:= RegExReplace(title, "  ", " - ChatGPT Translation")
+				inClip(title)
 				dataHere(spreadsheet)
 				Send "{esc}"
 				Sleep nt
@@ -860,7 +843,7 @@ sendTraslationBackToSpreadsheet(){
 	}
 
 #HotIf winActive("Translate")
-numpadSub::{
+^numpadSub::{
 		activeGUI()
 		sendTraslationBackToSpreadsheet()
 		active.Destroy()
