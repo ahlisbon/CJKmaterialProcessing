@@ -126,7 +126,7 @@ There are three spreadsheet templates to choose from:
 - [Donations - Donations - Template.xslx](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Donation%20-%20Template.xlsm)
 - [Select Monograph - User Name - Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Select%20Monographs%20-%20User%20Name%20-%20Template.xlsm)
 
-### ▶👨‍🏫 Spreadsheet Fundamentals
+### -- 👨‍🏫 Spreadsheet Fundamentals
 - *Do NOT*
   - hide columns
   - change the order of columns
