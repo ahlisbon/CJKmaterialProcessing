@@ -1,26 +1,29 @@
 # Chinese Japanese Korean Material Processing (CJKmP)
 This is a macro script for screen scraping data form OCLC's WorldCat.org or FirstSearch database. It's primary purpose is to quickly get bibliographic data into a spreadsheet ot help with processing library material requests and orders. It works for materials in any language with a special emphasis on Japanese in particular. The macro is written in [AutoHotkey](https://www.autohotkey.com/) (AHK) and is designed to work in tandem with custom designed spreadsheets.
 
+This macro has been tested extensively in FireFox while using the spreadsheet as an Excel File. It has successfully worked in Google Chrome and Microsoft Edge, though has not undergone extensive testing in those browsers.
+
 # 🔰 Basic Requirements for Use
 1. PC with Windows OS.
    - This macro has only been tested in Windows 10. It should work with previous versions as far back as Windows 8, and work in Windows 11.
-3. Excel for Desktop
-   - At this time, the script has not been tested thoroughly in the web/browser based version of Excel.
+3. Excel for Desktop or Office365
    - There are macros built into the Excel file that only work in the desktop version.
+
+# 🔽 Download
+
 2. Files to download:
-   - **Note**: after clicking these links, look for a down arrow on the right side of the GitHub page to download the files. When you hover over the icon is should say "Download raw file"
-   - The AHK executable file: [BibData to Spreadsheet.exe](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/BibData%20to%20Spreadsheet.exe)
-   - The INI file: [Bibdata to Spreadsheet.ini](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/BibData%20to%20Spreadsheet.ini) (this is for saving your settings and preferences)
+   - The AHK executable file: [BibData to Spreadsheet.exe](https://github.com/ahlisbon/CJKmaterialProcessing/raw/refs/heads/master/CJK%20Material%20Processing.exe)
+   - The INI file: [Bibdata to Spreadsheet.ini](https://github.com/ahlisbon/CJKmaterialProcessing/raw/refs/heads/master/BibData%20to%20Spreadsheet.ini) (this is for saving your settings and preferences)
      - ⚠ Always keep the two files above together in the same folder.
    - One of three compatible Excel spreadsheets:
-     - [Ordering Materials Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Orders%20-%2020xx-xx%20-%20Template.xlsm)
+     - [Ordering Materials Template](https://github.com/ahlisbon/CJKmaterialProcessing/raw/refs/heads/master/Orders%20-%2020xx-xx%20-%20Template.xlsm)
        - Optimized for general collection development.
-     - [Donation Intake Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Donation%20-%20Template.xlsm)
+     - [Donation Intake Template](https://github.com/ahlisbon/CJKmaterialProcessing/raw/refs/heads/master/Donation%20-%20Donation%20Name%20-%20Template.xlsm)
        - Optimized for processing donations of received materials.
-     - [Users Select Materials Template](https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/Select%20Monographs%20-%20User%20Name%20-%20Template.xlsm)
+     - [Users Select Materials Template](https://github.com/ahlisbon/CJKmaterialProcessing/raw/refs/heads/master/Select%20-%20User%20Name%20-%20Template.xlsm)
        - Optimized for letting a Librarian share lists of items for their users to select.
 
-This macro has been tested extensively in FireFox while using the spreadsheet as an Excel File. It has successfully worked in Google Chrome and Microsoft Edge, though has not undergone extensive testing in those browsers. Additionally, The Excel File may be used as a spreadsheet in Office 365 or Google Drive. Again, testing has been very limited in these alternative environments, but successful.
+
 
 # ⚠ Must Knows
 - The "kill switch" for the macro is the the key combo **ctrl + forward slash** (above the enter key on most keyboards). Unusual behavior is always possible and this hotkey will stop the script.
