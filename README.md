@@ -12,9 +12,12 @@ This macro has been tested extensively in FireFox while using the spreadsheet as
 ## 🔽 Download
 
 2. Files to download:
-   - The AHK executable file: [BibData to Spreadsheet.exe](https://github.com/ahlisbon/CJKmaterialProcessing/raw/refs/heads/master/CJK%20Material%20Processing.exe)
-   - The INI file, Please right click this link and choose "Save As": [Bibdata to Spreadsheet.ini](https://github.com/ahlisbon/CJKmaterialProcessing/raw/refs/heads/master/BibData%20to%20Spreadsheet.ini) (this is for saving your settings and preferences)
-     - ⚠ Always keep the two files above together in the same folder.
+   - The AHK executable file:
+     - [BibData to Spreadsheet.exe](https://github.com/ahlisbon/CJKmaterialProcessing/raw/refs/heads/master/CJK%20Material%20Processing.exe)
+   - The save file, Please right click this link and choose "Save As":
+     - [Bibdata to Spreadsheet.ini](https://github.com/ahlisbon/CJKmaterialProcessing/raw/refs/heads/master/BibData%20to%20Spreadsheet.ini)
+     - This is for saving your settings and preferences
+   - ⚠ Always keep these two files above together in the same folder.
    - One of three compatible Excel spreadsheets:
      - [Ordering Materials Template](https://github.com/ahlisbon/CJKmaterialProcessing/raw/refs/heads/master/Orders%20-%2020xx-xx%20-%20Template.xlsm) - for general collection development.
      - [Donation Intake Template](https://github.com/ahlisbon/CJKmaterialProcessing/raw/refs/heads/master/Donation%20-%20Donation%20Name%20-%20Template.xlsm) - for processing donations of received materials.
