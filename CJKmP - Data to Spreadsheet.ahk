@@ -30,7 +30,7 @@ setTitleMatchMode 2
 
 ;■■■■■■■■■■■■■ Run GUI
 	; GUI Interface
-		bib:= Gui(, "CJK Material Processing - v 1.02")
+		bib:= Gui(, "CJK Material Processing - v 1.03")
 	;Question 1:
 		bib.Add("Text",		"					x180 y20",	"▼ File Name Prefixes of Your Spreadsheets (Case Sensitive)")
 		bib.Add("Link",		"					x192 y40",	"<a href=`"https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#----file-name-prefixes`">Read about file naming conventions</a>")
@@ -190,10 +190,21 @@ setTitleMatchMode 2
 		;▼ Search priority= oclc, isbn13, isbn10, native tile, romanized title
 			searchText:= searchWith(bibArr[20], bibArr[18], bibArr[19], bibArr[24], bibArr[23])
 			inClip(searchText)
+		;▼ Search on "FirstSearch: Home"
+			if WinExist("FirstSearch: Home"){
+				WinActivate
+				Send "{tab 5}"
+				Sleep nt
+				Send "w"
+				Sleep nt
+				Send "{enter}"
+				Sleep lt
+			}
+		;▼ Search on Basic or Advanced Search
 			Send "^v"
 			Sleep nt
 		;▼ Use year of publication in FirstSearch search	
-			if(searchParameter= 1) & (bibArr[25]!= "n/a") & (bibArr[25]!= ""){
+			if(searchParameter= 1) & (bibArr[25]!= "n/a") & (bibArr[25]!= "") & WinExist("WorldCat Advanced Search"){
 					findTextOnSite("Limit to:")
 					Send "{tab}"
 					Sleep wt

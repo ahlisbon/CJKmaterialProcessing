@@ -9,6 +9,7 @@ Some Total Vols display data like "volumes : illustrations ; 22 cm"
 
 
 ##Fixed/Implimented
+- FirstSearch loads with "Home" screen instead of "Basic Search" or "Advanced Search" ^ 2025-05-29 ^ 1.03
 - Formatting of total volume data for journals, should equal n/a ^ 2024-11-22 ^ 1.02
 - FirstSeach Dupe column has a link to your local catalog. ^ 2024-11-22
 - Can search with ISSNs in ISBN10 column, returns ISSN to ISBN-10 column. ^ 2024-11-22
