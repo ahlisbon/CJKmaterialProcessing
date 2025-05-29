@@ -27,6 +27,19 @@
 					bibArr[9]:= ""
 			}
 
+;▼▲▼ Isolate Text to Find and Replace
+isolate(slice, source, cut, confirm){
+	slice:= RegExReplace(source, cut)
+	if !inStr(slice, confirm)
+		slice:= "n/a"
+}
+
+;▼▲▼ Find and Replace (fnr) Text
+fnr(slice, source, cut){
+	slice
+}
+
+
 
 ;▼ --------------- Data clean up ---------------
 		;📚 Total volumes of multivolume sets

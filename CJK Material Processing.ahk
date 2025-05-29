@@ -7,10 +7,12 @@
 #Requires AutoHotkey v2.0
 setTitleMatchMode 2
 
-#Include "%a_scriptdir%\Functions.ahk"
+#Include "%A_scriptdir%\Functions.ahk"
+#Include "%A_ScriptDir%\CJKmP - Find and Replace Data.ahk"
 #Include "%A_ScriptDir%\Diacritics And Nengo.ahk"
 #Include "%A_ScriptDir%\Fix Japanese Publisher Names.ahk"
-#Include "%A_ScriptDir%\CJKmP - Find and Replace Data.ahk"
+
+
 
 ;■■■■■■■■■■■■■ Global Variables
 	global bibArr:= []
@@ -18,13 +20,14 @@ setTitleMatchMode 2
 	global activeSearch:= 0
 	global tutorialMode:= 0
 
+
+
 ;■■■■■■■■■■■■■ Read values in .ini file
-	;Populate variables from INI file
-		CD:=			IniRead("CJKmP - Data to Spreadsheet.ini", "Sheet Names", "CD") ;CD = Collection Development
-		DI:=			IniRead("CJKmP - Data to Spreadsheet.ini", "Sheet Names", "DI") ;DI = Donation Intake
-		US:=			IniRead("CJKmP - Data to Spreadsheet.ini", "Sheet Names", "US") ;US = User Selects
-		fsURL:=			IniRead("CJKmP - Data to Spreadsheet.ini", "Settings", "fsURL")
-		checkMode:=		IniRead("CJKmP - Data to Spreadsheet.ini", "Settings", "checkMode")
+		CD:=			IniRead("CJK Material Processing - Settings.ini", "Sheet Names", "CD") ;CD = Collection Development
+		DI:=			IniRead("CJK Material Processing - Settings.ini", "Sheet Names", "DI") ;DI = Donation Intake
+		US:=			IniRead("CJK Material Processing - Settings.ini", "Sheet Names", "US") ;US = User Selects
+		fsURL:=			IniRead("CJK Material Processing - Settings.ini", "Settings", "fsURL")
+		checkMode:=		IniRead("CJK Material Processing - Settings.ini", "Settings", "checkMode")
 
 
 
@@ -84,10 +87,10 @@ setTitleMatchMode 2
 			;Check inputs
 				checkGUIinputs(saved.CD, saved.DI, saved.US, saved.fsURL)
 			;Save values in .ini file
-				IniWrite(saved.FSurl,	"CJKmP - Data to Spreadsheet.ini", "Settings", "FSurl")
-				IniWrite(saved.CD,		"CJKmP - Data to Spreadsheet.ini", "Sheet Names", "CD")
-				IniWrite(saved.DI,		"CJKmP - Data to Spreadsheet.ini", "Sheet Names", "DI")
-				IniWrite(saved.US,		"CJKmP - Data to Spreadsheet.ini", "Sheet Names", "US")
+				IniWrite(saved.FSurl,	"CJK Material Processing - Settings.ini", "Settings", "FSurl")
+				IniWrite(saved.CD,		"CJK Material Processing - Settings.ini", "Sheet Names", "CD")
+				IniWrite(saved.DI,		"CJK Material Processing - Settings.ini", "Sheet Names", "DI")
+				IniWrite(saved.US,		"CJK Material Processing - Settings.ini", "Sheet Names", "US")
 			;Tutorial window
 				if(tutorialMode= 1){
 					tutorialGUI()
