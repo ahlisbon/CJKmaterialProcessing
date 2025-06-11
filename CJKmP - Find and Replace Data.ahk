@@ -1,5 +1,20 @@
 ﻿;■■■■■■■■■■■■■ Put bibliographic data from a FirstSearch detailed record and put it in a spreadsheet.
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼ Functions
+
+;▼▲▼ Isolate Text to Find and Replace
+isolate(source, confirm, cut){
+	if !inStr(source, confirm)
+		return "n/a"
+	else
+		return RegExReplace(source, cut)
+		
+}
+
+;▼▲▼ Find and Replace (fnr) Text
+fnr(source, cut){
+	return RegExReplace(source, cut)
+}
+
 ;▼▲▼ Get bibliograhic data from the source code of a WorldCat detailed record in FirstSearch.
 	pullBibData(){
 			global bibArr
@@ -26,21 +41,6 @@
 					bibArr[1]:= ""
 					bibArr[9]:= ""
 			}
-
-;▼▲▼ Isolate Text to Find and Replace
-isolate(slice, source, cut, confirm){
-	slice:= RegExReplace(source, cut)
-	if !inStr(slice, confirm)
-		slice:= "n/a"
-}
-
-;▼▲▼ Find and Replace (fnr) Text
-fnr(slice, source, cut){
-	slice
-}
-
-
-
 ;▼ --------------- Data clean up ---------------
 		;📚 Total volumes of multivolume sets
 			volumes:= RegExReplace(data, ".*<b>Description:|</font></td>.*")
