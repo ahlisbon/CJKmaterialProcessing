@@ -160,6 +160,7 @@ fixRomanizedPublisherNames(pub){
 			pub:= regExReplace(pub, "i)tokyohoreishuppan", "Tōkyō Hōrei Shuppan")
 		;u	
 			pub:= regExReplace(pub, "i)ueibushuppan", "Ueibu Shuppan")
+			pub:= regExReplace(pub, "i)ushoishuppansha", "Ushio Shuppansha")
 		;y	
 			pub:= regExReplace(pub, "i)yachiyo\shuppan", "Yahiyo Shuppan")
 			pub:= regExReplace(pub, "i)yamakawashuppansha", "Yamakawa Shuppansha")
@@ -221,4 +222,3 @@ fixRomanizedPublisherNames(pub){
 			fixPub()
 		}
 	}
-F9::fixpub()

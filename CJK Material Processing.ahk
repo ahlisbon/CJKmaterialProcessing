@@ -8,7 +8,8 @@
 setTitleMatchMode 2
 
 #Include "%A_scriptdir%\Functions.ahk"
-#Include "%A_ScriptDir%\CJKmP - Find and Replace Data.ahk"
+#Include "%A_ScriptDir%\CJKmP - Find and Replace - FirstSearch.ahk"
+#Include "%A_ScriptDir%\CJKmP - Find and Replace - WorldCat.ahk"
 #Include "%A_ScriptDir%\Diacritics And Nengo.ahk"
 #Include "%A_ScriptDir%\Fix Japanese Publisher Names.ahk"
 
@@ -18,16 +19,21 @@ setTitleMatchMode 2
 	global bibArr:= []
 	global active
 	global activeSearch:= 0
-	global tutorialMode:= 0
+	global useFS
+	global useFC
 
 
 
 ;■■■■■■■■■■■■■ Read values in .ini file
-		CD:=			IniRead("CJK Material Processing - Settings.ini", "Sheet Names", "CD") ;CD = Collection Development
-		DI:=			IniRead("CJK Material Processing - Settings.ini", "Sheet Names", "DI") ;DI = Donation Intake
-		US:=			IniRead("CJK Material Processing - Settings.ini", "Sheet Names", "US") ;US = User Selects
-		fsURL:=			IniRead("CJK Material Processing - Settings.ini", "Settings", "fsURL")
-		checkMode:=		IniRead("CJK Material Processing - Settings.ini", "Settings", "checkMode")
+		CD:=			iniRead("CJK Material Processing - Settings.ini", "Sheet Names", "CD") ;CD = Collection Development
+		DI:=			iniRead("CJK Material Processing - Settings.ini", "Sheet Names", "DI") ;DI = Donation Intake
+		US:=			iniRead("CJK Material Processing - Settings.ini", "Sheet Names", "US") ;US = User Selects
+		US:=			iniRead("CJK Material Processing - Settings.ini", "Sheet Names", "US") ;US = User Selects
+		useFS:=			iniRead("CJK Material Processing - Settings.ini", "Search Method", "useFS")
+		useWC:=			iniRead("CJK Material Processing - Settings.ini", "Search Method", "useWC")
+		fsURL:=			iniRead("CJK Material Processing - Settings.ini", "Settings", "fsURL")
+		libName:= 		iniRead("CJK Material Processing - Settings.ini", "Settings", "libName")
+		checkMode:=		iniRead("CJK Material Processing - Settings.ini", "Settings", "checkMode")
 
 
 
@@ -35,50 +41,57 @@ setTitleMatchMode 2
 	; GUI Interface
 		bib:= Gui(, "CJK Material Processing - v 1.03")
 	;Question 1:
-		bib.Add("Text",		"					x180 y20",	"▼ File Name Prefixes of Your Spreadsheets (Case Sensitive)")
+		bib.Add("Text",		"					x190 y20",	"▼ File Name Prefixes of Your Spreadsheets (Case Sensitive)")
 		bib.Add("Link",		"					x192 y40",	"<a href=`"https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#----file-name-prefixes`">Read about file naming conventions</a>")
-		;Q1 answer 1
-			bib.Add("Text",	"					x10  y65",	"Collection Development:")
-			bib.Add("Edit",	"vCD		w300	x180 y60",	CD)
-		;Q1 answer 2
-			bib.Add("Text",	"					x10  y95",	"Donation Intake:")
-			bib.Add("Edit",	"vDI		w300	x180 y90",	DI)
-		;Q1 answer 3
-			bib.Add("Text",	"					x10  y125",	"Users Select Materials:")
-			bib.Add("Edit",	"vUS		w300	x180 y120",	US)
+			;Q1 answer 1
+				bib.Add("Text",	"				x10  y65",	"Collection Development:")
+				bib.Add("Edit",	"vCD	w300	x190 y60",	CD)
+			;Q1 answer 2
+				bib.Add("Text",	"				x10  y95",	"Donation Intake:")
+				bib.Add("Edit",	"vDI	w300	x190 y90",	DI)
+			;Q1 answer 3
+				bib.Add("Text",	"				x10  y125",	"Users Select Materials:")
+				bib.Add("Edit",	"vUS	w300	x190 y120",	US)
 	;Question 3:
-		bib.Add("Text",		"					x10	 y170",	"FirstSearch URL for your institution:")
-		bib.Add("Edit",		"vfsURL		w300	x180 y165",	fsURL)
+		bib.Add("Text",	"						x10  y175",	"Use Worldcat or FirstSearch:")
+		bib.Add("radio", "	vuseFS				x190 y175 checked" useFS, "FirstSearch")
+		bib.Add("radio", "	vuseWC				x190 y195 checked" useWC, "WorldCat")
 	;Question 4:
-		bib.Add("Text", "						x10	 y200", "Use &Check Mode:")
-		bib.Add("Checkbox",	"vcheckMode			x180 y200")
-		bib.Add("Text", "						x220 y200", "Review data before it's imported into your spreadsheet.")
+		bib.Add("Text",		"					x10	 y245",	"FirstSearch URL for your institution:")
+		bib.Add("Edit",		"vfsURL		w300	x190 y240",	fsURL)
 	;Question 5:
-		bib.Add("Text", "						x10	 y230", "Use &Tutorial Mode:")
-		bib.Add("Checkbox",	"vtutorialMode		x180 y230")
-		bib.Add("Text", "						x220 y230", "Get pop up instructions on using hotkeys.")
+		bib.Add("Text",		"					x10	 y275",	"Your institution's name on WorldCat:")
+		bib.Add("Edit",		"vlibName	w300	x190 y270",	libName)
+		bib.Add("Text",		"					x190 y295",	"▲ Must be identical to spelling on WorldCat.org (Case Sensitive)")
 	;Question 6:
-		bib.Add("Text",		"					x10  y260", "&Wait longer for websites to load:")
-		bib.Add("DDL", 		"vloadTime	w30		x180 y255 Choose1", ["1", "2", "3"])
-		bib.Add("Link",		"					x220 y260",	"<a href=`"https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#----wait-longer-for-websites-to-load`">What is this?</a>")
+		bib.Add("Text", "						x10	 y345", "Use &Check Mode:")
+		bib.Add("Checkbox",	"vcheckMode			x190 y345")
+		bib.Add("Text", "						x207 y345", "Review data before importing it into your spreadsheet.")
+	;Question 7:
+		bib.Add("Text",		"					x10  y375", "&Wait longer for websites to load:")
+		bib.Add("DDL", 		"vloadTime	w30		x190 y370 Choose1", ["1", "2", "3"])
+		bib.Add("Link",		"					x224 y375",	"<a href=`"https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#----wait-longer-for-websites-to-load`">What is this?</a>")
 	;Process answers into variables
-		bib.Add("Button",	"default			x180 y300", "&Save Settings").OnEvent("Click", settings)
+		bib.Add("Button",	"default			x190 y430", "&Save Settings").OnEvent("Click", settings)
+		guiConfirm:= bib.Add("Text", 	"		x273 y434 hidden", "✔ Updated")
+
 	;Help Text/Link
-		bib.Add("Link", 	"					x10  y310", "Read the <a href=`"https://github.com/ahlisbon/CJKmaterialProcessing#-hotkeys-to-activate-macro`">Hotkey Guide</a> on GitHub")
+		bib.Add("Link", 	"					x10  y485", "Read the <a href=`"https://github.com/ahlisbon/CJKmaterialProcessing#-hotkeys-to-activate-macro`">Hotkey Guide</a> on GitHub")
 		bib.Show()
 	;Save and error check inputs
 		settings(*){
-			;Post that settings are updated
-				bib.Add("Text", 	"			x264 y305", "✔ Updated")
-				bib.Show()
 			;Set variables
 				saved:= bib.Submit(0)
+				;Use FirstSearch or WorldCat
+					if((saved.useFS= 0) & (saved.useWC= 0)){
+						msgbox("You must choose to use FirstSeach or WorldCat", stopped, 4096) 
+						exit
+					}
+				;Library name
+					libName:= saved.libName
 				;Check Mode
 					global checkMode
 					checkMode:= saved.checkMode
-				;Tutorial Mode
-					global tutorialMode
-					tutorialMode:= saved.tutorialMode
 				;Load Time
 					global loadTime
 					loadTime:= 3000*saved.loadtime
@@ -87,20 +100,19 @@ setTitleMatchMode 2
 			;Check inputs
 				checkGUIinputs(saved.CD, saved.DI, saved.US, saved.fsURL)
 			;Save values in .ini file
-				IniWrite(saved.FSurl,	"CJK Material Processing - Settings.ini", "Settings", "FSurl")
 				IniWrite(saved.CD,		"CJK Material Processing - Settings.ini", "Sheet Names", "CD")
 				IniWrite(saved.DI,		"CJK Material Processing - Settings.ini", "Sheet Names", "DI")
 				IniWrite(saved.US,		"CJK Material Processing - Settings.ini", "Sheet Names", "US")
-			;Tutorial window
-				if(tutorialMode= 1){
-					tutorialGUI()
-					tutorialContent(1,	"",
-										"Your Spreadsheet",
-										"Numpad Plus   OR   F1",
-										"Select the row of the current active cell to look up your item on FirstSearch.")
-					tutorialShow()
-				}
-}
+				IniWrite(saved.useFS,	"CJK Material Processing - Settings.ini", "Search Method", "useFS")
+				IniWrite(saved.useWC,	"CJK Material Processing - Settings.ini", "Search Method", "useWC")
+				IniWrite(saved.FSurl,	"CJK Material Processing - Settings.ini", "Settings", "FSurl")
+				IniWrite(saved.libName,	"CJK Material Processing - Settings.ini", "Settings", "libName")
+}	
+
+
+
+;▼▲▼▲▼▲▼▲▼▲▼▲▼ Functions
+;▼▲▼ Confirms sheet name prefixes are not duplicates
 			checkGUIinputs(CD, DI, US, fsURL){
 				;Blank value alert
 					if(CD= "") & (DI= "") & (US= ""){
@@ -118,8 +130,11 @@ setTitleMatchMode 2
 						MsgBox("You cannot have two file names that are identical.", stopped, 4096)
 						exit
 					}
+			;Post that settings are updated
+				guiConfirm.visible:= 1
+				sleep 1250
+				guiConfirm.visible:= 0
 }
-;▼▲▼▲▼▲▼▲▼▲▼▲▼ Functions
 ;▼▲▼ Error checking to stop script if criteria aren't met. Declares what spreadsheet is actively being used.
 	sheetCheck(){
 			spreadsheet:= ""
@@ -184,7 +199,7 @@ setTitleMatchMode 2
 				exit
 			}
 }
-;▼▲▼
+;▼▲▼ Search in FirstSearch
 	searchFS(searchParameter){
 			spreadsheet:= sheetCheck()
 			activateBrowser()
@@ -238,116 +253,93 @@ setTitleMatchMode 2
 					}
 			}
 }
-;▼▲▼
-			searchWith(oclc, isbn13, isbn10, titleR, titleN){		
-					if((oclc!= "") & (oclc!= "n/a"))
-						return "no:" . oclc
-					if((isbn13!= "") & (isbn13!= "n/a"))
-						return "bn:" . isbn13
-				;▼ Allows ISBN10 column to be used to serach titles or ISBNs. Will not work if a book title is only numbers.
-					if((isbn10!= "") & (isbn10!= "n/a")){
-						if(isText:= RegExMatch(isbn10, "\d{9}")){
-							if(isText= 1)
-								return "bn:" . isbn10
-							else
-								return "ti:" . isbn10
-						}
-						if(isText:= RegExMatch(isbn10, "\d{4}-\d{4}")){
-							if(isText:= 1)
-								return "in:" . isbn10
-							else
-								return "ti:" . isbn10
-						}
-						return "ti:" . isbn10
-					}
-				;▼ Search with title
-					if((titleN!= "") & (titleN!= "n/a"))
-						return "ti:" . titleN
-					if((titleR!= "") & (titleR!= "n/a"))
-						return "ti:" . titleR
-			}
-;▼▲▼ Tutorial GUI
-	FSresultsTutorial(){
-		Sleep wt*2.5
-		if(tutorialMode= 1){
-			if WinExist("List"){
-				tutorialGUI()
-				tutorialContent(1,	"",
-									"FirstSearch: WorldCat List of Records",
-									"Numpad Plus   OR   F1",
-									"open each record from the search results in a new tab.`n● Occaisionally, an individual record will not open automatically, but you can open it manually.")
-				tutorialContent(0,	"=== OR =========",
-									"",
-									"Instead of using a hotkey, you can click on any result.",
-									"determine if you will import the data of that particular record.")
-				tutorialContent(0,	"=== AND IF YOU CLICK OPEN A RECORD WITH DATA YOU WANT TO IMPORT =========",
-									"",
-									"Numpad Enter   OR   Enter",
-									"import the data in detailed record into your spreadsheet.")
-				tutorialShow()
-			}
-			if WinExist("Detailed"){
-				tutorialGUI()
-				tutorialContent(1, 	"",
-									"FirstSearch: WorldCat Detailed Record",
-									"Numpad Enter   OR   Enter",
-									"Bring the data from this record back into the spreadsheet.")
-				tutorialContent(0, 	"=== OR =========",
-									"",
-									"Numpad Plus   OR   F1",
-									"activate the `" Search for versions with same title and author`" link. If there is no link then nothing will happen.")
-				tutorialShow()
-			}
-		}
+;▼▲▼ Search in WorldCat
+	searchWC(searchParameter){
+			spreadsheet:= sheetCheck()
+			activateBrowser()
+		;▼ Search priority= oclc, isbn13, isbn10, native tile, romanized title
+			searchText:= searchWith(bibArr[20], bibArr[18], bibArr[19], bibArr[24], bibArr[23])
+			inClip(searchText)
+		;▼ Search
+			if(searchParameter= 1) & (bibArr[25]!= "n/a") & (bibArr[25]!= "")
+				newWin("https://search.worldcat.org/search?q=" . searchText . "&datePublished=" . bibArr[25])
+			else
+				newWin("https://search.worldcat.org/search?q=" . searchText)			
+			Send "{enter}"
 }
+;▼▲▼ Prepare search text to use in database.
+	searchWith(oclc, isbn13, isbn10, titleR, titleN){		
+			if((oclc!= "") & (oclc!= "n/a"))
+				return "no:" . oclc
+			if((isbn13!= "") & (isbn13!= "n/a"))
+				return "bn:" . isbn13
+		;▼ Allows ISBN10 column to be used to serach titles or ISBNs. Will not work if a book title is only numbers.
+			if((isbn10!= "") & (isbn10!= "n/a")){
+				if(isText:= RegExMatch(isbn10, "\d{9}")){
+					if(isText= 1)
+						return "bn:" . isbn10
+					else
+						return "ti:" . isbn10
+				}
+				if(isText:= RegExMatch(isbn10, "\d{4}-\d{4}")){
+					if(isText:= 1)
+						return "in:" . isbn10
+					else
+						return "ti:" . isbn10
+				}
+				return "ti:" . isbn10
+			}
+		;▼ Search with title
+			if((titleN!= "") & (titleN!= "n/a"))
+				return "ti:" . titleN
+			if((titleR!= "") & (titleR!= "n/a"))
+				return "ti:" . titleR
+	}
+
 ;■■■
 numpadAdd::{
 		confirmBrowserOpen()
 		global activeSearch:= 1
-		tutorialOff()
 		activeGUI()
 		getDataFromBibSpreadsheet()
-		searchFS(searchParameter:= 0)
+		if(useFS= 1)
+			searchFS(searchParameter:= 0)
+		else
+			searchWC(searchParameter:= 0)
 		active.Destroy()
-		FSresultsTutorial()
 }
 F1::{
 		confirmBrowserOpen()
 		global activeSearch:= 1
-		tutorialOff()
+
 		activeGUI()
 		getDataFromBibSpreadsheet()
 		searchFS(searchParameter:= 0)
 		active.Destroy()
-		FSresultsTutorial()
 }
 ;■■■ Include year in search
 >^numpadAdd::{
 		confirmBrowserOpen()
 		global activeSearch:= 1
-		tutorialOff()
 		activeGUI()
 		getDataFromBibSpreadsheet()
 		searchFS(searchParameter:= 1)
 		active.Destroy()
-		FSresultsTutorial()
 }
 >^F1::{
 		confirmBrowserOpen()
 		global activeSearch:= 1
-		tutorialOff()
 		activeGUI()
 		getDataFromBibSpreadsheet()
 		searchFS(searchParameter:= 1)
 		active.Destroy()
-		FSresultsTutorial()
 }
 
 
 
 ;■■■■■■■■■■■■■ Open other versions link in FirstSearch Detailed Record.
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼ Functions
-;▼▲▼ Tutorial GUI
+;▼▲▼
 	showRecordsList(){
 			siteText:= copyAll()
 		;Open other versions link in FirstSearch Detailed Record.
@@ -357,7 +349,7 @@ F1::{
 			}else
 				Send "{tab}"	
 }
-;▼▲▼ Tutorial GUI
+;▼▲▼
 	openRecordsList(){
 		;▼ Determine how many tabs to open.
 			data:= copyAll()
@@ -401,59 +393,30 @@ F1::{
 ;■■■ Open browser tab for each search result.
 #HotIf WinActive("WorldCat Detailed Record")
 numpadAdd::{
-		tutorialOff()
 		activeGUI()
 		showRecordsList()
 		active.Destroy()
-		FSresultsTutorial()
 }
 F1::{
-		tutorialOff()
 		activeGUI()
 		showRecordsList()
 		active.Destroy()
-		FSresultsTutorial()
 }
-
 
 
 
 ;■■■■■■■■■■■■■ Open browser tab for each search result.
-;▼▲▼▲▼▲▼▲▼▲▼▲▼ Functions
-;▼▲▼ Tutorial GUI
-	FSlistTutorial(){
-		if(tutorialMode= 1){
-			tutorialGUI()
-			tutorialContent(1,	"Browser window with many FirstSearch records loaded.",
-								"",
-								"Numpad 0   OR   Ctrl+Tab",
-								"quickly swap browser tabs and browse for a record with data you want to import to your spreadsheet.")
-			tutorialContent(0,	"=== OR =========",
-								"",
-								"Numpad Minus   OR   Ctrl+W",
-								"close browser tabs of records you are not interested in.")
-			tutorialContent(0,	"=== ON A RECORD YOU WANT TO IMPORT DATA FROM =========",
-								"",
-								"Numpad Enter   OR   Enter",
-								"import the data in detailed record into your spreadsheet.")
-			tutorialShow()
-		}
-}
 ;■■■
 #HotIf WinActive("WorldCat List of Records")
 numpadAdd::{
-		tutorialOff()
 		activeGUI()
 		openRecordsList()
 		active.Destroy()
-		FSlistTutorial()
 }
 F1::{
-		tutorialOff()
 		activeGUI()
 		openRecordsList()
 		active.Destroy()
-		FSlistTutorial()
 }
 numpadEnter::{
 activeGUI()

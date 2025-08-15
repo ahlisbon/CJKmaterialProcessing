@@ -1,9 +1,6 @@
 ﻿#requires AutoHotkey v2.0
 setTitleMatchMode 2
 
-;global variables 
-	tutorialMode:= "0"
-
 ;global variables for sleep time
 	nt:= 250	;normal time
 	lt:= 3000	;load time
@@ -89,9 +86,33 @@ setTitleMatchMode 2
 
 
 
+;▼▲▼▲▼▲▼▲▼▲▼▲▼ Find and Replace
+	;▼▲▼ Isolate Text to Find and Replace
+		isolate(source, confirm, cut){
+			if !inStr(source, confirm)
+				return "n/a"
+			data:= RegExReplace(source, cut)
+			if data= "null"
+				return "n/a"
+			else
+				return data
+		}
+
+	;▼▲▼ Find and Delete (fnd) Text
+		fnd(source, cut){
+			return RegExReplace(source, cut)
+		}
+
+	;▼▲▼ Find and Replace (fnd) Text
+		fnr(source, cut, replace){
+			return RegExReplace(source, cut, replace)
+		}
+
+
+
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼ Text Normalizing
-	;▼▲▼ Normalize text for parsing: removes \r, \n, \t, double spaces, and certain CJK punctuation
-			normalizeText(txt, removeRNT:= 0){
+	;▼▲▼ Normalize text for parsing: removes \r, \n, \t, double spaces
+			singleLine(txt, removeRNT:= 1){
 				;▼ Remove \r \n \t
 					if(removeRNT= 1)
 						txt:= RegExReplace(txt, "`r|`n|`t")
@@ -103,12 +124,16 @@ setTitleMatchMode 2
 								break
 						}
 					}
-				;▼ Remove double (or more) spaces, i.e. "  "
-					loop{
-						txt := strReplace(txt, "  ", " ")
-						if !inStr(txt, "  ")
-							break
-					}
+				;;▼ Remove double (or more) spaces, i.e. "  "
+				;	loop{
+				;		txt := strReplace(txt, "  ", " ")
+				;		if !inStr(txt, "  ")
+				;			break
+				;	}
+				return txt
+			}
+	;▼▲▼ Make composed Romaninzed Japanese decomposed, replace some Japanese punctuation with standard ones
+			decompose(txt){
 				;▼ Replace composed chatacers with decomposed ones
 					txt:= RegExReplace(txt, "ā", "ā")
 					txt:= RegExReplace(txt, "ī", "ī")
@@ -122,15 +147,25 @@ setTitleMatchMode 2
 					return txt
 			}
 	;▼▲▼ DeDuping
-		deDupe(txt){
-			txt := StrReplace(txt, "`r")
-			str := ''
-			loop parse, txt, '`n'					;Parse by LF
-				if !InStr(str, A_LoopField '`n')	;If str does not contain a matching line
-					str .= A_LoopField '`n'			;Add line and LF
-			str:= RTrim(str, '`n')					;Snip off extra LF and return
-			return str:= LTrim(str, '`n')			;Snip off extra LF and return
-		}
+			deDupe(txt){
+				txt := StrReplace(txt, "`r")
+				str := ''
+				loop parse, txt, '`n'					;Parse by LF
+					if !InStr(str, A_LoopField '`n')	;If str does not contain a matching line
+						str .= A_LoopField '`n'			;Add line and LF
+				str:= RTrim(str, '`n')					;Snip off extra LF and return
+				return str:= LTrim(str, '`n')			;Snip off extra LF and return
+			}
+
+dedupe2(txt) {
+    txt:= RegExReplace(txt, " \^ ", "^")
+    str := ""								; Str to return
+    loop parse, txt, "^"					; Parse by LF
+        if !InStr(str, A_LoopField "`n")	; If str does not contain a matching line
+            str .= A_LoopField "`n"			; Add line and LF
+    txt:= RTrim(str, "`n")					; Snip off extra LF and return
+    return RegExReplace(txt, "`n", " ^ ")
+}
 
 
 
@@ -151,59 +186,6 @@ setTitleMatchMode 2
 			active.Add("Text", "x85 y118", "Do not use your mouse")
 			active.Show("w250 h250 NoActivate")
 			sleep wt
-		}
-
-
-
-;▼▲▼▲▼▲▼▲▼▲▼▲▼ Tutorial GUIs
-	;▼▲▼ GUI explaining what to do next.
-		;▼▲▼ Establish Tutorial GUI
-			tutorialGUI(){
-				if(tutorialMode= 1){
-					global tutorial
-					tutorial:= GUI("alwaysOnTop +ToolWindow", "Tutorial Mode")
-				}
-		}
-		;▼▲▼ Create GUI Content, Repeatable
-			tutorialContent(firstS, option, onWindow, keys, action){
-				global tutorial
-				if(firstS= 1){
-					tutorial.Add("text",, 					"On this window/program: " . onWindow)
-					tutorial.Add("text",	"section y+25",	"Press Hotkey:")
-					tutorial.Add("text",, 			 		"In order to:")
-					tutorial.Add("text",	"ys",			keys)
-					tutorial.Add("text",,					action)
-				}
-				if(firstS= 0){
-					tutorial.Add("text",	"section xs y+25",	option)
-					tutorial.Add("text",	"section xs y+25",	"Press Hotkey:")
-					tutorial.Add("text",, 						"In order to:")
-					tutorial.Add("text",	"ys",				keys)
-					tutorial.Add("text",,						action)
-				}
-				if(firstS= 2){
-					tutorial.Add("text",	"section xs y+25",	option)
-					tutorial.Add("text",, 						"On this window/program: " . onWindow)
-					tutorial.Add("text",	"section xs y+25",	"Do This:")
-					tutorial.Add("text",, 						"In order to:")
-					tutorial.Add("text",	"ys",				keys)
-					tutorial.Add("text",,						action)
-				}
-		}
-		;▼▲▼ Render GUI
-			tutorialShow(){
-				global tutorial
-				tutorial.Show()
-				Send "!{esc}"
-				Sleep wt
-		}	
-		;▼▲▼ Turn off tutorial GUI if present.
-			tutorialOff(){
-				global tutorialMode
-				global tutorial
-				if(tutorialMode= 1)
-					tutorial.Destroy
-				
 		}
 
 
@@ -532,16 +514,11 @@ setTitleMatchMode 2
 		}
 
 	;▼▲▼ activeGUI
-	::acg::{raw}activeGUI()
-	::acd::{raw}active.Destroy()
-	
-	;▼▲▼ tutorialGUI
-	::tg::{raw}tutorialGUI()
-	::tc::{raw}tutorialContent(
-	::toff::{raw}tutorialOff()
+		::acg::{raw}activeGUI()
+		::acd::{raw}active.Destroy()
 
 	;▼▲▼ GUI prompts
-	::gat::{raw}.Add("Text",,)
+		::gat::{raw}.Add("Text",,)
 #HotIf
 
 
@@ -563,6 +540,21 @@ setTitleMatchMode 2
 	::shang::上
 	::zhong::中
 	::xia::下
+
+;▼▲▼▲▼▲▼▲▼▲▼▲▼ Bibliographic data functions
+;▼▲▼
+	getPriceURL(isbn10, language){			
+		if(language= "Japanese") & (isbn10!= "") & (isbn10!= "n/a")
+			url:= "https://www.amazon.co.jp/dp/" . isbn10
+		else if(language="English") & (isbn10!= "") & (isbn10!= "n/a")
+			url:= "http://www.amazon.com/dp/" . isbn10
+		else
+			url:= "n/a"
+		trim(url)
+		if inStr(isbn10, A_space)
+			url:= "n/a"
+	return url
+}
 
 
 

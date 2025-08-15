@@ -6,7 +6,7 @@ Some Series RE titles have volume data ",; v."
 Some Total Vols display data like "volumes : illustrations ; 22 cm"
 
 ##Features
-
+Add new field in GUI to build search strings with OCLC#s so that if an item is a dupe in WorldCat, if can link back to the local record in the spreadsheet. ^ 2025-08-08
 
 ##Fixed/Implimented
 - Updated .ini filename from "Bibdata to Spreadsheet" to "CJKmP - Settings" ^ 2025-05-29 ^ 1.03

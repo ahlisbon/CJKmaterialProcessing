@@ -1,22 +1,6 @@
 ﻿;■■■■■■■■■■■■■ Put bibliographic data from a FirstSearch detailed record and put it in a spreadsheet.
-;▼▲▼▲▼▲▼▲▼▲▼▲▼ Functions
-
-;▼▲▼ Isolate Text to Find and Replace
-isolate(source, confirm, cut){
-	if !inStr(source, confirm)
-		return "n/a"
-	else
-		return RegExReplace(source, cut)
-		
-}
-
-;▼▲▼ Find and Replace (fnr) Text
-fnr(source, cut){
-	return RegExReplace(source, cut)
-}
-
 ;▼▲▼ Get bibliograhic data from the source code of a WorldCat detailed record in FirstSearch.
-	pullBibData(){
+	pullBibDataFS(){
 			global bibArr
 			global activeSearch
 		;▼ Error check that spreadsheet and fsURL variables are not blank.
@@ -26,10 +10,10 @@ fnr(source, cut){
 			if !WinExist("Detailed Record") & !WinExist("Libraries that Own Item"){
 				exit
 				active.destroy()
-				}
+			}
 			WinActivate
 			data:= loadSourceCode("pagename", "FirstSearch Detailed Record")
-			data:= normalizeText(data, 1)
+			data:= singleLine(data, 1)
 			data:= RegExReplace(data, "<span class\=matchterm[0-9]>") 	;Removes code for yellow text highlighting.
 			data:= RegExReplace(data, "</span>") 						;Because of highlighting above, all "</span>" are removed.
 		;Determine if active search is happening
@@ -52,12 +36,12 @@ fnr(source, cut){
 			
 		;🏛 Check against local holdings
 					if InStr(data, "FirstSearch indicates your institution"){
-						FSdupe:= RegExReplace(data, ".*</b><LI class=OPAC>|</tr>.*")
-						FSdupe:= RegExReplace(FSdupe, ".*href=`"|`".*")
-						FSdupe:= "=hyperlink(`"" . FSdupe . "`",`"yes`")"
+						dupe:= RegExReplace(data, ".*</b><LI class=OPAC>|</tr>.*")
+						dupe:= RegExReplace(dupe, ".*href=`"|`".*")
+						dupe:= "=hyperlink(`"" . dupe . "`",`"yes`")"
 					}
 					else
-						FSdupe:= "n"
+						dupe:= "n"
 						
 						
 		;👬 Get count of libraries that also have this item
@@ -141,7 +125,7 @@ fnr(source, cut){
 				}
 				
 				
-		;🔢ISSN
+		;🔢 ISSN
 				if inStr(data, "<b>ISSN:"){
 					isbn13:= "n/a"
 					issnL:= strLen(bibArr[19])
@@ -164,7 +148,7 @@ fnr(source, cut){
 
 
 		;💰 Price URL
-			priceURL:= getPriceURL(isbn10, language)
+				priceURL:= getPriceURL(isbn10, language)
 
 				
 		;📔 Title
@@ -212,7 +196,7 @@ fnr(source, cut){
 								creatorN:= cleanCreator(creatorN)
 							}
 					}
-		;🏫 Corporate Creator
+				;🏫 Corporate Creator
 					if !InStr(data, "<b>Corp Author(s):"){
 						corpR:= "n/a"
 						corpN:= "n/a"
@@ -241,7 +225,7 @@ fnr(source, cut){
 					creatorsN:= RegExReplace(creatorsN, " \^ n/a|n/a \^ ")
 							
 							
-		;📚 Series	
+		;📚 Series Title
 				if !InStr(data, "<b>Series:"){
 					seriesR:= "n/a"
 					seriesN:= "n/a"
@@ -416,8 +400,8 @@ fnr(source, cut){
 								. seriesR				. "`n"
 								. seriesN				. "`n`n"
 							. "Publisher:`n"
-								. pubR			. "`n"
-								. pubN			. "`n`n"
+								. pubR					. "`n"
+								. pubN					. "`n`n"
 							. "Year: `n"
 								. yearR					. "`n"
 								. yearN					. "`n`n"
@@ -439,7 +423,7 @@ fnr(source, cut){
 			bibArr[8]:= priceURL
 			bibArr[10]:= vol
 			bibArr[13]:= volumes
-			bibArr[16]:= FSdupe
+			bibArr[16]:= dupe
 			bibArr[18]:= isbn13
 			bibArr[19]:= isbn10
 			bibArr[20]:= oclc
@@ -497,11 +481,8 @@ fnr(source, cut){
 		;Remove trailing punctuation & creator designation
 			creator:= Trim(creator)
 			creator:= RegExReplace(creator, "m),$|\.$")
-		;Language Specific
-		;	if(language= "Japanese")
-		;		creator:= RegExReplace(creator, ", ")
 		;Remove dupes
-			creator:= deDupe(creator)
+			creator:= deDupe2(creator)
 		;Single line and clean up
 			creator:= RegExReplace(creator, "`n", " ^ ")
 			Loop{
@@ -521,53 +502,17 @@ fnr(source, cut){
 }
 
 
-;▼▲▼
-	getPriceURL(isbn10, language){			
-			if(language= "Japanese") & (isbn10!= "") & (isbn10!= "n/a")
-				url:= "https://www.amazon.co.jp/dp/" . isbn10
-			else if(language="English") & (isbn10!= "") & (isbn10!= "n/a")
-				url:= "http://www.amazon.com/dp/" . isbn10
-			else
-				url:= "n/a"
-			trim(url)
-			if inStr(isbn10, A_space)
-				url:= "n/a"
-	return url
-}
-
-
-;▼▲▼
-importDataFinishedTutorial(){
-	if(tutorialMode= 1){
-		spreadsheet:= sheetCheck()
-		tutorialGUI()
-		tutorialContent(1,	"",
-							"Your Spreadsheet",
-							"Numpad Plus   OR   F1",
-							"select the row of the current active cell to look up your item on FirstSearch.")
-		tutorialContent(2,	"=== STOP USING TUTORIAL MODE? =========",
-							"Bibliograpic Data to Spreadsheet - Options Interface",
-							"Uncheck tutorial mode when you feel comfortable with the hotkeys.",
-							"Look like a wizard to you colleagues 🧙‍")
-		tutorialShow()
-	}
-}
-
 
 ;■■■ Pull data from FirstSearch record into spreadsheet.
 #HotIf WinActive("Detailed Record") | WinActive("Libraries that Own Item")
 numpadEnter::{
-		tutorialOff()
 		activeGUI()
-		pullBibData()
+		pullBibDataFS()
 		active.Destroy()
-		importDataFinishedTutorial()
 }
 F2::{
-		tutorialOff()
 		activeGUI()
-		pullBibData()
+		pullBibDataFS()
 		active.Destroy()
-		importDataFinishedTutorial()
 }
 #HotIf
