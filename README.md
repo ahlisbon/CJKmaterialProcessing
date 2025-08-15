@@ -13,9 +13,9 @@ This macro has been tested extensively in FireFox while using the spreadsheet as
 
 2. Files to download:
    - The AHK executable file:
-     - [BibData to Spreadsheet.exe](https://github.com/ahlisbon/CJKmaterialProcessing/raw/refs/heads/master/CJK%20Material%20Processing.exe)
-   - The save file, Please right click this link and choose "Save As":
-     - [Bibdata to Spreadsheet.ini](https://github.com/ahlisbon/CJKmaterialProcessing/raw/refs/heads/master/BibData%20to%20Spreadsheet.ini)
+     - [CJK Material Processing.exe](https://github.com/ahlisbon/CJKmaterialProcessing/raw/refs/heads/master/CJK%20Material%20Processing.exe)
+   - The settings and preferences file. To save, please right click this link and choose "Save As":
+     - [CJK Material Processing - Settings.ini](https://github.com/ahlisbon/CJKmaterialProcessing/raw/refs/heads/master/CJK%20Material%20Processing%20-%20Settings.ini)
      - This is for saving your settings and preferences
    - ⚠ Always keep these two files above together in the same folder.
    - One of three compatible Excel spreadsheets:
