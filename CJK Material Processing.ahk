@@ -131,7 +131,7 @@ setTitleMatchMode 2
 					}
 			;Post that settings are updated
 				guiConfirm.visible:= 1
-				sleep 1250
+				sleep 1000
 				guiConfirm.visible:= 0
 }
 ;▼▲▼ Error checking to stop script if criteria aren't met. Declares what spreadsheet is actively being used.
@@ -310,10 +310,12 @@ numpadAdd::{
 F1::{
 		confirmBrowserOpen()
 		global activeSearch:= 1
-
 		activeGUI()
 		getDataFromBibSpreadsheet()
-		searchFS(searchParameter:= 0)
+		if(useFS= 1)
+			searchFS(searchParameter:= 0)
+		else
+			searchWC(searchParameter:= 0)
 		active.Destroy()
 }
 ;■■■ Include year in search
@@ -322,7 +324,10 @@ F1::{
 		global activeSearch:= 1
 		activeGUI()
 		getDataFromBibSpreadsheet()
-		searchFS(searchParameter:= 1)
+		if(useFS= 1)
+			searchFS(searchParameter:= 0)
+		else
+			searchWC(searchParameter:= 0)
 		active.Destroy()
 }
 >^F1::{
@@ -330,7 +335,10 @@ F1::{
 		global activeSearch:= 1
 		activeGUI()
 		getDataFromBibSpreadsheet()
-		searchFS(searchParameter:= 1)
+		if(useFS= 1)
+			searchFS(searchParameter:= 0)
+		else
+			searchWC(searchParameter:= 0)
 		active.Destroy()
 }
 
