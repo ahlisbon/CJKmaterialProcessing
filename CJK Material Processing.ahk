@@ -28,7 +28,6 @@ setTitleMatchMode 2
 		CD:=			iniRead("CJK Material Processing - Settings.ini", "Sheet Names", "CD") ;CD = Collection Development
 		DI:=			iniRead("CJK Material Processing - Settings.ini", "Sheet Names", "DI") ;DI = Donation Intake
 		US:=			iniRead("CJK Material Processing - Settings.ini", "Sheet Names", "US") ;US = User Selects
-		US:=			iniRead("CJK Material Processing - Settings.ini", "Sheet Names", "US") ;US = User Selects
 		useFS:=			iniRead("CJK Material Processing - Settings.ini", "Search Method", "useFS")
 		useWC:=			iniRead("CJK Material Processing - Settings.ini", "Search Method", "useWC")
 		fsURL:=			iniRead("CJK Material Processing - Settings.ini", "Settings", "fsURL")
@@ -39,7 +38,7 @@ setTitleMatchMode 2
 
 ;■■■■■■■■■■■■■ Run GUI
 	; GUI Interface
-		bib:= Gui(, "CJK Material Processing - v 1.03")
+		bib:= Gui(, "CJK Material Processing - v 1.04")
 	;Question 1:
 		bib.Add("Text",		"					x190 y20",	"▼ File Name Prefixes of Your Spreadsheets (Case Sensitive)")
 		bib.Add("Link",		"					x192 y40",	"<a href=`"https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#----file-name-prefixes`">Read about file naming conventions</a>")
