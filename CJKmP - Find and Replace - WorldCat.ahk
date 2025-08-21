@@ -19,7 +19,7 @@ creatorCleanup(clean){
 		clean:= fnr(clean, "`n", " ^ ")
 	;beginning and end
 		clean:= fnd(clean, "^ \^ | \^ $")
-		clean:= fnr(clean, ", \^", " ^")
+		clean:= fnr(clean, ", \^ ", " ^ ")
 		return clean
 }
 
@@ -58,8 +58,8 @@ pullBibDataWC(){
 			dupe:= "n"
 	;👬 Get count of libraries that also have this item
 		libCount:= isolate(data, "Find a Copy at a Library", ".*Find a Copy at a Library|Filter.*")
-		libCount:= fnd(libCount, ".*in | libraries.*")
-		bibArr[17]:= libCount
+		libCount:= fnd(libCount, " libraries.*")
+		libCount:= fnd(libCount, ".* in ")
 
 ;▼ --------------- Bibliographic Data Cleanup - Bib Data from Source Code ---------------
 		data:= loadSourceCode("pageProps", "WorldCat Record")
@@ -224,7 +224,7 @@ pullBibDataWC(){
 										;creatorRS:= fnd(creatorRS, ".*\}.*")
 										creatorRS:= creatorCleanup(creatorRS)
 								}
-					;Romanized Corp ＊＊＊without＊＊＊	Romanized text in WorldCat metadata
+					;Romanized Creator ＊＊＊without＊＊＊	Romanized text in WorldCat metadata
 						}else{
 							;Primary Romanized Creator
 									creatorRP:= fnd(creator, ".*fromStatementOfResponsibility:")
@@ -252,14 +252,21 @@ pullBibDataWC(){
 						corp:= isolate(data, "contributors: ", ".*contributors: |, accessibilityContent.*")
 					;Native Corp
 						if !inStr(corp, "romanizedText")
-							corpN:= "n/a"
+							corpNP:= "n/a"
 						else{	
 							;Primary Native Corp
-								corpNP:= fnd(corp, "contributorNotes.*")
-								if !inStr(corpNP, "nonPersonName")
+								if !inStr(corp, "nonPersonName")
 									corpNP:= "n/a"
-								else
-									msgbox "Work on Primary Native Corp Author"
+								else{
+										corpNP:= fnd(corp, "contributorNotes.*")
+										corpNP:= fnd(corpNP, ".*fromStatementOfResponsibility:")
+										corpNP:= fnr(corpNP, "firstName: text: ", "`n`n")
+										corpNP:= fnr(corpNP, "nonPersonName: text:", "`n`nnonPersonName")
+										corpNP:= fnd(corpNP, ".*firstName.*")
+										corpNP:= fnd(corpNP, ".*nonPersonName |, romanizedText.*")
+									;Cleanup
+										corpNP:= creatorCleanup(corpNP)
+								}
 							;Secondary Native Corp
 								corpNS:= fnd(corp, "^.+?contributorNotes")
 								if !inStr(corpNS, "nonPersonName")
@@ -280,14 +287,23 @@ pullBibDataWC(){
 								if((corpNP!= "n/a") & (corpNS!= "n/a"))
 									corpN:= corpNP . " ^ " . corpNS						
 							}
-					;Romanized Corp with Romanized text in WorldCat metadata
+					;Romanized Corp ＊＊＊with＊＊＊ Romanized text in WorldCat metadata
 						if inStr(corp, "romanizedText"){
 							;Primary Romanized Corp
 								corpRP:= fnd(corp, "contributorNotes.*")
 								if !inStr(corpRP, "nonPersonName")
 									corpRP:= "n/a"
-								else
-									msgbox "Work on Primary Romanized Corp Author"
+								else{
+										corpRP:= fnd(corp, "contributorNotes.*")
+										corpRP:= fnd(corpRP, ".*fromStatementOfResponsibility:")
+										corpRP:= fnr(corpRP, "firstName: text: ", "`n`n")
+										corpRP:= fnr(corpRP, "nonPersonName: text:", "`n`nnonPersonName")
+										corpRP:= fnd(corpRP, ".*firstName.*")
+										corpRP:= fnd(corpRP, ".*romanizedText: |, languageCode.*")
+									;Cleanup
+										corpRP:= creatorCleanup(corpRP)
+								}
+									
 							;Secondary Romanized Corp
 								corpRS:= fnd(corp, "^.+?contributorNotes")
 								if !inStr(corpRS, "nonPersonName")
@@ -299,7 +315,7 @@ pullBibDataWC(){
 										corpRS:= fnd(corpRS, " \(.+?\)")
 										corpRS:= creatorCleanup(corpRS)
 								}
-					;Romanized Corp *without* Romanized text in WorldCat metadata
+					;Romanized Corp ＊＊＊without＊＊＊ Romanized text in WorldCat metadata
 						}else{
 							;Primary Romanized Corp
 								corpRP:= fnd(corp, "contributorNotes.*")
@@ -336,6 +352,7 @@ pullBibDataWC(){
 				if((creatorN!= "n/a") & (corpN!= "n/a"))
 					creatorN:= creatorN . " ^ " . corpN
 					creatorN:= dedupe2(creatorN)
+					creatorN:= fnd(creatorN, "^ \^ ")
 			;Merge Romanized
 				if((creatorR= "n/a") & (corpR= "n/a"))
 					creator:= "n/a"
@@ -346,8 +363,9 @@ pullBibDataWC(){
 				if((creatorR!= "n/a") & (corpR!= "n/a"))
 					creatorR:= creatorR . " ^ " . corpR
 					creatorR:= dedupe2(creatorR)
-
-
+					creatorR:= fnd(creatorR, "^ \^ ")
+					
+					
 	;📚 Series Title
 			seriesR:= isolate(data, "series: ", ".*series: |, seriesVolumes.*")
 			seriesN:= "n/a"
@@ -360,6 +378,7 @@ pullBibDataWC(){
 			vol:= isolate(data, "seriesVolumes: ", ".*seriesVolumes: |,.*")
 		;Cleanup
 			vol:= fnd(vol, "\[|\]")
+			vol:= fnd(vol, "^dai |-kan")
 			
 			
 	;🏢 Publisher
@@ -445,6 +464,7 @@ pullBibDataWC(){
 			bibArr[10]:= vol
 			bibArr[13]:= volumes
 			bibArr[16]:= dupe
+			bibArr[17]:= libCount
 			bibArr[18]:= isbn13
 			bibArr[19]:= isbn10
 			bibArr[20]:= oclc
