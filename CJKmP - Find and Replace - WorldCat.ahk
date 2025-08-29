@@ -20,6 +20,10 @@ creatorCleanup(clean){
 	;beginning and end
 		clean:= fnd(clean, "^ \^ | \^ $")
 		clean:= fnr(clean, ", \^ ", " ^ ")
+	;
+		if(clean= "")
+			clean:= "n/a"
+	;
 		return clean
 }
 

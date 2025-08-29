@@ -7,7 +7,7 @@
 #Requires AutoHotkey v2.0
 setTitleMatchMode 2
 
-#Include "%A_scriptdir%\Functions.ahk"
+#Include "%A_scriptDir%\..\Functions.ahk"
 #Include "%A_ScriptDir%\CJKmP - Find and Replace - FirstSearch.ahk"
 #Include "%A_ScriptDir%\CJKmP - Find and Replace - WorldCat.ahk"
 #Include "%A_ScriptDir%\Diacritics And Nengo.ahk"
@@ -35,10 +35,9 @@ setTitleMatchMode 2
 		checkMode:=		iniRead("CJK Material Processing - Settings.ini", "Settings", "checkMode")
 
 
-
 ;■■■■■■■■■■■■■ Run GUI
 	; GUI Interface
-		bib:= Gui(, "CJK Material Processing - v 1.04")
+		bib:= Gui(, "CJK Material Processing - v 1.05")
 	;Question 1:
 		bib.Add("Text",		"					x190 y20",	"▼ File Name Prefixes of Your Spreadsheets (Case Sensitive)")
 		bib.Add("Link",		"					x192 y40",	"<a href=`"https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#----file-name-prefixes`">Read about file naming conventions</a>")

@@ -30,6 +30,8 @@
 			volumes:= RegExReplace(data, ".*<b>Description:|</font></td>.*")
 			if !inStr(volumes, "volumes")
 				volumes:= "n/a"
+			else if inStr(volumes, ">volumes")
+				volumes:= "n/a"
 			else
 				volumes:= RegExReplace(volumes, ".*>| volumes.*")
 			
@@ -260,6 +262,8 @@
 							;Romanized
 									seriesNoR:= RegExReplace(seriesNo, "`; <b>Variation:.*")
 									seriesNoR:= RegExReplace(seriesNoR, ".*`;`; |.*,`; |number |no\. |v\. |\[|\]")
+								;▼ Clean up
+									seriesNoR:= RegExReplace(seriesNoR, "\.(`;|<).*|-`;.*|, etc.*")
 								;▼ Logic test for when series data has no number
 									isText:= RegExMatch(seriesNoR, "\d")
 									if(isText= 0)

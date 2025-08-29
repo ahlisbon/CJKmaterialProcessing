@@ -6,7 +6,7 @@
 
 #Requires AutoHotkey v2.0
 setTitleMatchMode 2
-#Include "%A_ScriptDir%\Functions.ahk"
+#Include "%A_ScriptDir%\..\Functions.ahk"
 
 
 
