@@ -52,9 +52,6 @@ In order to pull data like an OCLC#, ISBN#, or Title from the spreadsheet to sea
 ### -- ✅ Use Check Mode
 Before pasting data to your spreadsheet, a window will appear for you to review the bibliographic data.
 
-### -- 👨‍🏫 Tutorial Mode
-Tutorial mode pops up windows to tell you what to do next and what hotkeys to push in order to start the process.
-
 ### -- 🕗 Wait longer for Websites to Load
 - If your internet connection is slow, you can increase the time the script will wait for a webpage to to load.
 - The default is 1, which equals 3 seconds. 2 and 3 are multipliers, so the script will wait 6 or 9 seconds respectively.
