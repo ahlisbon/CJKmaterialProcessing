@@ -31,6 +31,7 @@ creatorCleanup(clean){
 pullBibDataWC(){
 			global bibArr
 			global activeSearch
+			global spreadsheet
 		;▼ Error check that spreadsheet and fsURL variables are not blank.
 			checkGUIinputs(CD, DI, US, fsURL)
 			spreadsheet:= sheetCheck()

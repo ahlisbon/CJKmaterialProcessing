@@ -3,6 +3,7 @@
 	pullBibDataFS(){
 			global bibArr
 			global activeSearch
+			global spreadsheet
 		;▼ Error check that spreadsheet and fsURL variables are not blank.
 			checkGUIinputs(CD, DI, US, fsURL)
 			spreadsheet:= sheetCheck()
@@ -155,21 +156,19 @@
 				
 		;📔 Title
 				;Setup
-						title:= RegExReplace(data, ".*<b>Title:.+?</td>|</td>.*")
-						title:= RegExReplace(title, "<", "`n<")
-						title:= RegExReplace(title, "m) /$|\.$")
+						title:= fnd(data, ".*<b>Title:.+?</td>|</td>.*")
+						title:= fnr(title, "<", "`n<")
+						title:= fnd(title, "m) /$|\.$")
 				;Romanized
-						;titleR:= RegExReplace(title, "<br>|<.*|`n")
-						titleR:= RegExReplace(title, "<br>|</div>|<.*|`n")
-						titleR:= RegExReplace(titleR, "=.*")
-						
-					;Remove Single line and clean up
+						titleR:= fnd(title, "<br>|</div>|<.*|`n")
+						titleR:= fnd(titleR, "=.*")
+						titleR:= fnr(titleR, "&lt;&gt;", "n/a")
 				;Native
 						if !InStr(title, "=vernacular")
 							titleN:= "n/a"
 						else{
-							titleN:= RegExReplace(title, ".*class=vernacular.*>|<.*|`n")
-							titleN:= RegExReplace(titleN, " = .*| =.*")
+							titleN:= fnd(title, ".*class=vernacular.*>|<.*|`n")
+							titleN:= fnd(titleN, " = .*| =.*")
 						}
 				;Translated
 					if !inStr(title, " = ")

@@ -1,3 +1,5 @@
+Test
+
 # Chinese Japanese Korean Material Processing (CJKmP)
 This is a macro script for screen scraping data form OCLC's WorldCat.org or FirstSearch database. It's primary purpose is to quickly get bibliographic data into a spreadsheet ot help with processing library material requests and orders. It works for materials in any language with a special emphasis on Japanese in particular. The macro is written in [AutoHotkey](https://www.autohotkey.com/) (AHK) and is designed to work in tandem with custom designed spreadsheets.
 
@@ -51,6 +53,9 @@ In order to pull data like an OCLC#, ISBN#, or Title from the spreadsheet to sea
 
 ### -- ✅ Use Check Mode
 Before pasting data to your spreadsheet, a window will appear for you to review the bibliographic data.
+
+### -- 👨‍🏫 Tutorial Mode
+Tutorial mode pops up windows to tell you what to do next and what hotkeys to push in order to start the process.
 
 ### -- 🕗 Wait longer for Websites to Load
 - If your internet connection is slow, you can increase the time the script will wait for a webpage to to load.

@@ -8,6 +8,9 @@ Some Series RE titles have volume data ",; v."
 Add new field in GUI to build search strings with OCLC#s so that if an item is a dupe in WorldCat, if can link back to the local record in the spreadsheet. ^ 2025-08-08
 
 ##Fixed/Implimented
+- Some FirstSerach records have ＜＞ for "romanized" titles. Sets Title R/E to "n/a" ^ 2025-02-25 ^ 10.05.02
+- "Save Settings" would not actually update values in .ini file. ^ 2026-02-25
+- Removed experimental feature for copying and pasting titles to ChatGPT ^ 2025-12-09 ^ 1.05.01
 - Some Volume for Korean materials have trailing text ^ 2025-08-27 ^ 1.05
 - Some Total Vols display data like "volumes : illustrations ; 22 cm" ^ 2025-08-27 ^ 1.05
 - Support for searching and pulling data from WorldCat added. ^ 2025-08-21 ^ 1.04

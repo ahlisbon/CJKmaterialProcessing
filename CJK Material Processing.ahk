@@ -7,6 +7,8 @@
 #Requires AutoHotkey v2.0
 setTitleMatchMode 2
 
+version:= "CJK Material Processing - v 1.05.02"
+
 #Include "%A_scriptDir%\..\Functions.ahk"
 #Include "%A_ScriptDir%\CJKmP - Find and Replace - FirstSearch.ahk"
 #Include "%A_ScriptDir%\CJKmP - Find and Replace - WorldCat.ahk"
@@ -19,25 +21,28 @@ setTitleMatchMode 2
 	global bibArr:= []
 	global active
 	global activeSearch:= 0
+	global CD
+	global DI
+	global US
 	global useFS
 	global useFC
 
 
 
 ;■■■■■■■■■■■■■ Read values in .ini file
-		CD:=			iniRead("CJK Material Processing - Settings.ini", "Sheet Names", "CD") ;CD = Collection Development
-		DI:=			iniRead("CJK Material Processing - Settings.ini", "Sheet Names", "DI") ;DI = Donation Intake
-		US:=			iniRead("CJK Material Processing - Settings.ini", "Sheet Names", "US") ;US = User Selects
-		useFS:=			iniRead("CJK Material Processing - Settings.ini", "Search Method", "useFS")
-		useWC:=			iniRead("CJK Material Processing - Settings.ini", "Search Method", "useWC")
-		fsURL:=			iniRead("CJK Material Processing - Settings.ini", "Settings", "fsURL")
-		libName:= 		iniRead("CJK Material Processing - Settings.ini", "Settings", "libName")
-		checkMode:=		iniRead("CJK Material Processing - Settings.ini", "Settings", "checkMode")
+	CD:=			iniRead("CJK Material Processing - Settings.ini", "Sheet Names", "CD") ;CD = Collection Development
+	DI:=			iniRead("CJK Material Processing - Settings.ini", "Sheet Names", "DI") ;DI = Donation Intake
+	US:=			iniRead("CJK Material Processing - Settings.ini", "Sheet Names", "US") ;US = User Selects
+	useFS:=			iniRead("CJK Material Processing - Settings.ini", "Search Method", "useFS")
+	useWC:=			iniRead("CJK Material Processing - Settings.ini", "Search Method", "useWC")
+	fsURL:=			iniRead("CJK Material Processing - Settings.ini", "Settings", "fsURL")
+	libName:= 		iniRead("CJK Material Processing - Settings.ini", "Settings", "libName")
+	checkMode:=		iniRead("CJK Material Processing - Settings.ini", "Settings", "checkMode")
 
 
 ;■■■■■■■■■■■■■ Run GUI
 	; GUI Interface
-		bib:= Gui(, "CJK Material Processing - v 1.05")
+		bib:= Gui(, version)
 	;Question 1:
 		bib.Add("Text",		"					x190 y20",	"▼ File Name Prefixes of Your Spreadsheets (Case Sensitive)")
 		bib.Add("Link",		"					x192 y40",	"<a href=`"https://github.com/ahlisbon/CJKmaterialProcessing/blob/master/README.md#----file-name-prefixes`">Read about file naming conventions</a>")
@@ -105,7 +110,9 @@ setTitleMatchMode 2
 				IniWrite(saved.useWC,	"CJK Material Processing - Settings.ini", "Search Method", "useWC")
 				IniWrite(saved.FSurl,	"CJK Material Processing - Settings.ini", "Settings", "FSurl")
 				IniWrite(saved.libName,	"CJK Material Processing - Settings.ini", "Settings", "libName")
-}	
+			;Refresh to enact changes
+				Reload	
+}
 
 
 
@@ -133,8 +140,11 @@ setTitleMatchMode 2
 				sleep 1000
 				guiConfirm.visible:= 0
 }
-;▼▲▼ Error checking to stop script if criteria aren't met. Declares what spreadsheet is actively being used.
+;▼▲▼ Declares what spreadsheet is actively being used.
 	sheetCheck(){
+			global CD
+			global DI
+			global US
 			spreadsheet:= ""
 			if(CD= "") & (DI= "") & (US= ""){
 				active.Destroy()
@@ -541,6 +551,7 @@ activeGUI()
 				Send "{right 17}"
 				Sleep nt
 }
+;▼▲▼
 		splitISBNdown(){
 				isbn:= copy()
 				isbn:= RegExReplace(isbn, " \^ ", "`r`n")
@@ -554,6 +565,7 @@ activeGUI()
 				Sleep nt
 				return volumes
 }
+;▼▲▼
 		splitVolumesDown(volumes){
 				Send "{left 9}"
 				Sleep nt
@@ -649,7 +661,7 @@ F12::{
 
 
 ;■■■■■■■■■■■■■ Convert ISBN13 to ISBN10
-#HotIf WinActive(CD) | WinActive(DI)
+#HotIf WinActive(CD) | WinActive(DI) | WinActive("OCLC Connexion") 
 ;▼▲▼▲▼▲▼▲▼▲▼▲▼
 ;▼▲▼
 	convertISBN(){
@@ -684,158 +696,14 @@ F7::{
 		convertISBN()
 		active.Destroy()
 }
+#HotIf 
 
+numpadDiv::convertISBNS()
 
+;■■■■■■■■■■■■■ Convert ISBN's anywhere
+^numpad7::convertISBNS()
+^F7::convertISBNS()
 
-;■■■■■■■■■■■■■ Translate title with ChatGPT.
-;▼▲▼
-translateWithChatGPT(){
-	spreadsheet:= sheetCheck()
-			global chatGPTmode
-			global gptPending
-			gptPending:= 0
-			
-			if !WinExist("Translate"){
-				active.Destroy()
-				msg:= "There is no browser window with an active tab open to Chat GPT.`n`n"
-					. "1) Check you have ChatGPT open in your browser.`n"
-					. "2) Make sure ChatGPT is your browser's the active tab.`n"
-					. "3) You need to save and keep active a chat called `"Translate`" (case sensitive)."
-				MsgBox(msg, stopped, 4096)
-				return
-			}
-			Send "{esc}"
-			Sleep nt
-			copy()
-			A_clipboard:= RegExReplace(A_clipboard, "`r`n$")
-			if !InStr(A_Clipboard, "`r`n"){
-					chatGPTmode:= 1
-				;▼ Copy native language and native title and verify enough information is available for translation.
-					global gptArr
-					gptArr:= copyRowMakeArray()
-					if(gptArr[21]= "English"){
-						active.Destroy()
-						MsgBox("This item is already in English and doesn't need to be translated.", stopped, 4096)
-						exit
-					}
-					if((gptArr[23]= "n/a") | (gptArr[23]="")) & ((gptArr[24]="n/a") | (gptArr[24]= "")){
-						active.Destroy()
-						MsgBox("There is no non-English title to translate.", stopped, 4096)
-						exit
-					}
-					title:= copy()
-					if(title= "n/a") | (title= ""){
-						active.Destroy()
-						MsgBox("There is no title to translate.`n`nReview Column X", stopped, 4096)
-						exit
-						}
-				;▼ Determine which title data to use
-					if(gptArr[24]= "n/a") | (gptArr[24]="")
-						title:= gptArr[23]
-					else
-						title:= gptArr[24]
-					A_clipboard:= ""
-			}
-			if InStr(A_Clipboard, "`r`n"){
-					chatGPTmode:= 2
-					title:= A_Clipboard
-			}
-		;▼ Go to ChatGPT window
-			if WinExist("Translate")
-					WinActivate
-			Sleep wt
-			findTextOnSite("Message ChatGPT")
-		;▼ Paste translation request
-			if(chatGPTmode= 1){
-					prompt:= "Provide an English translation of this title:" . title . "`r`n`r`nThe response should only include the translated title and no other text. Do not put quotation marks around the title."
-					inClip(prompt)
-					Send "^v"
-					Sleep nt*3
-					Send "{enter}" ; Does not appear to be working.
-					Sleep nt
-					gptPending:= 1
-			}
-			if(chatGPTmode= 2){
-					prompt:= "Provide English translations of these titles:`r`n" . title . "`r`n`r`nThe response should only include the translated titles and no other text. Do not put quotation marks around the titles."
-					inClip(prompt)
-					Send "^v"
-					Sleep nt
-					Send "{enter}"
-					Sleep nt
-					gptPending:= 1
-			}
-}
-;▼▲▼
-sendTraslationBackToSpreadsheet(){
-		spreadsheet:= sheetCheck()
-		global gptPending
-		global chatGPTmode
-		if(gptPending= 0){
-				active.Destroy()
-				MsgBox("An error has occured while using ChatGPT to translate a title.`n`nRestart the script and try again.", stopped, 4096)
-				exit
-		}
-	;▼ Single title translation process
-		if(chatGPTmode= 1){
-			;▼ Copy response
-				Send "+{tab 4}"
-				Sleep nt
-				Send "{space}"
-				Sleep nt
-			;▼ Paste translation request
-				title:= A_Clipboard
-				title:= title . " - ChatGPT translation"
-				inClip(gptArr[1] . "`t" . gptArr[2] . "`t" . gptArr[3] . "`t" . gptArr[4] . "`t" . gptArr[5] . "`t" . gptArr[6] . "`t" . gptArr[7] . "`t" . gptArr[8] . "`t" . gptArr[9] . "`t" . gptArr[10] . "`t" . gptArr[11] . "`t" . gptArr[12] . "`t" . gptArr[13] . "`t" . gptArr[14] . "`t" . gptArr[15] . "`t" . gptArr[16] . "`t" . gptArr[17] . "`t" . gptArr[18] . "`t" . gptArr[19] . "`t" . gptArr[20] . "`t" . gptArr[21] . "`t" . title)
-				pasteToBibSpreadsheet()
-		}
-	;▼ Bulk title list transtlation process	
-		if(chatGPTmode= 2){
-			;▼ Copy Response
-				Send "+{tab 4}"
-				Sleep nt
-				Send "{space}"
-				Sleep nt
-			;▼ Paste translation request
-				title:= A_Clipboard
-				title:= title . " - ChatGPT Translation"
-				title:= RegExReplace(title, "  ", " - ChatGPT Translation")
-				inClip(title)
-				dataHere(spreadsheet)
-				Send "{esc}"
-				Sleep nt
-				Send "{left 2}"
-				Sleep nt
-				Send "^v"
-				Sleep nt
-				Send "{esc}"
-				gptPending:= 0
-		}
-		active.Destroy()
-}
-;■■■
-#HotIf WinActive(CD) | WinActive(DI)
-^numpadSub::{
-		activeGUI()
-		translateWithChatGPT()
-		active.Destroy()
-	}
-^-::{
-		activeGUI()
-		translateWithChatGPT()
-		active.Destroy()
-	}
-
-#HotIf winActive("Translate")
-^numpadSub::{
-		activeGUI()
-		sendTraslationBackToSpreadsheet()
-		active.Destroy()
-	}
-^-::{
-		activeGUI()
-		sendTraslationBackToSpreadsheet()
-		active.Destroy()
-	}
 
 
 ;■■■■■■■■■■■■■ Price Look up
